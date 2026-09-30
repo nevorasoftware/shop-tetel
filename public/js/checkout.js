@@ -200,7 +200,7 @@ class CheckoutManager {
       shippingEl.className = shipping.isFree ? 'text-gold' : '';
     }
     if (totalEl) totalEl.textContent = `$${total.toFixed(2)}`;
-    if (wompiPayBtnText) wompiPayBtnText.textContent = `Pagar $${total.toFixed(2)} con Wompi 3DS`;
+    if (wompiPayBtnText) wompiPayBtnText.textContent = `Pagar $${total.toFixed(2)} con 3D Secure`;
   }
 
   renderOrderSummary() {
@@ -249,7 +249,7 @@ class CheckoutManager {
       payBtn.disabled = true;
       payBtn.innerHTML = `
         <span class="spinner" style="display:inline-block; width:16px; height:16px; border:2px solid white; border-top-color:transparent; border-radius:50%; animation: spin 0.8s linear infinite;"></span>
-        Conectando con Wompi El Salvador 3DS...
+        Procesando pago seguro 3DS...
       `;
     }
 
@@ -374,7 +374,7 @@ class CheckoutManager {
         <div class="success-icon-wrapper">✓</div>
         <h2 style="font-size: 2rem; margin-bottom: 0.5rem;">¡Gracias por tu compra!</h2>
         <p style="font-size: 1.05rem; color: var(--color-text-muted);">
-          Tu pago ha sido procesado de forma segura mediante <strong>Wompi El Salvador 3D Secure</strong>.
+          Tu pago ha sido procesado de forma segura mediante <strong>Autenticación 3D Secure</strong>.
         </p>
 
         <div class="receipt-box">
@@ -383,12 +383,12 @@ class CheckoutManager {
             <strong>${order.orderNumber}</strong>
           </div>
           <div class="receipt-row">
-            <span>Código de Autorización Wompi:</span>
+            <span>Código de Autorización 3DS:</span>
             <span style="font-family: var(--font-mono); color: var(--color-wompi);">${order.wompiAuthCode || 'AUTH883921'}</span>
           </div>
           <div class="receipt-row">
-            <span>ID de Transacción Wompi:</span>
-            <span style="font-family: var(--font-mono); font-size: 0.75rem;">${order.wompiTransactionId || 'wompi-3ds-simulated'}</span>
+            <span>Referencia de Transacción:</span>
+            <span style="font-family: var(--font-mono); font-size: 0.75rem;">${order.wompiTransactionId || '3ds-auth-token'}</span>
           </div>
           <div class="receipt-row">
             <span>Cliente:</span>

@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TETEL | Atelier & Alta Moda El Salvador | Pagos Seguros Wompi 3DS</title>
-  <meta name="description" content="E-commerce de moda y prendas exclusivas en El Salvador. Envíos a los 14 departamentos y pagos 100% seguros con Wompi 3D Secure.">
+  <title>TETEL | Atelier & Moda Urbana El Salvador | Pagos Seguros con 3DS</title>
+  <meta name="description" content="E-commerce de moda urbana contemporánea y prendas exclusivas en El Salvador. Envíos a los 14 departamentos y pagos 100% seguros con 3D Secure.">
 
   <!-- Google Fonts: Syne + Space Grotesk + Plus Jakarta Sans + Space Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -27,8 +27,8 @@
   <!-- ============================================================= -->
   <div class="announcement-bar">
     <span>🇸🇻 <strong>Envíos garantizados</strong> a los 14 departamentos de El Salvador</span>
-    <span class="badge-highlight">WOMPI 3DS</span>
-    <span>💳 Tarjetas protegidas con <strong>3D Secure</strong></span>
+    <span class="badge-highlight">PAGOS SEGUROS CON 3DS</span>
+    <span>💳 Tarjetas Visa y Mastercard con <strong>3D Secure</strong></span>
     <span>✨ Envío <strong>GRATIS</strong> en compras mayores a $60</span>
   </div>
 
@@ -40,14 +40,14 @@
       <span class="marquee-item"><span class="highlight-tag">✦ DROP 01</span> THE NEW ERA</span>
       <span class="marquee-item"><span class="highlight-red">★ HECHO CON CULTURA</span> EL SALVADOR</span>
       <span class="marquee-item">LIMITED RELEASE JUNE 2026</span>
-      <span class="marquee-item"><span class="highlight-tag">🔒 WOMPI 3DS</span> PAGOS BLINDADOS CON TARJETA</span>
+      <span class="marquee-item"><span class="highlight-tag">🔒 3D SECURE</span> PAGOS BLINDADOS CON TARJETA</span>
       <span class="marquee-item">SAN SALVADOR [13.6929° N, 89.2182° W]</span>
       <span class="marquee-item"><span class="highlight-red">✦ ENVÍOS 14 DEPARTAMENTOS</span> COBERTURA NACIONAL</span>
       <span class="marquee-item">TETEL URBAN STREETWEAR ATELIER</span>
       <span class="marquee-item"><span class="highlight-tag">✦ DROP 01</span> THE NEW ERA</span>
       <span class="marquee-item"><span class="highlight-red">★ HECHO CON CULTURA</span> EL SALVADOR</span>
       <span class="marquee-item">LIMITED RELEASE JUNE 2026</span>
-      <span class="marquee-item"><span class="highlight-tag">🔒 WOMPI 3DS</span> PAGOS BLINDADOS CON TARJETA</span>
+      <span class="marquee-item"><span class="highlight-tag">🔒 3D SECURE</span> PAGOS BLINDADOS CON TARJETA</span>
       <span class="marquee-item">SAN SALVADOR [13.6929° N, 89.2182° W]</span>
       <span class="marquee-item"><span class="highlight-red">✦ ENVÍOS 14 DEPARTAMENTOS</span> COBERTURA NACIONAL</span>
       <span class="marquee-item">TETEL URBAN STREETWEAR ATELIER</span>
@@ -116,7 +116,7 @@
             THE NEW <span>ERA</span>.
           </h1>
           <p class="hero-description">
-            Una nueva visión. Diseños únicos, inspirados en cultura, hechos para destacar. Chaqueta híbrida eco-cuero & bandana paisley, camisas resort de autor, joggers y accesorios de streetwear contemporáneo en El Salvador con pagos protegidos Wompi 3DS.
+            Una nueva visión. Diseños únicos, inspirados en cultura, hechos para destacar. Chaqueta híbrida eco-cuero & bandana paisley, camisas resort de autor, joggers y accesorios de streetwear contemporáneo en El Salvador con pagos 100% seguros con 3D Secure.
           </p>
           <div class="hero-buttons">
             <a href="#catalogo" class="btn btn-primary btn-lg" onclick="storeApp.setCategory('Todos')">
@@ -133,7 +133,7 @@
             <img src="/assets/campaign-banner.png" alt="TETEL - The New Era Collection" style="object-position: top center;">
           </div>
           <div class="hero-floating-card">
-            <span class="wompi-logo-pill">WOMPI 3DS</span>
+            <span class="wompi-logo-pill">3D SECURE</span>
             <div>
               <div style="font-weight: 800; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.04em;">Pagos 100% Protegidos</div>
               <div style="font-size: 0.75rem; color: var(--color-text-muted);">Envíos a todo El Salvador • 3D Secure</div>
@@ -156,8 +156,8 @@
         <div class="trust-item">
           <div class="trust-icon">🔒</div>
           <div>
-            <div class="trust-title">Wompi 3D Secure</div>
-            <div class="trust-desc">Autenticación bancaria encriptada.</div>
+            <div class="trust-title">Pagos Seguros con 3DS</div>
+            <div class="trust-desc">Autenticación bancaria y cifrado 256-bit.</div>
           </div>
         </div>
         <div class="trust-item">
@@ -481,6 +481,9 @@
         <div class="admin-nav-item active" data-tab="products" onclick="adminManager.switchTab('products')">
           <span>👗</span> Catálogo de Prendas
         </div>
+        <div class="admin-nav-item" data-tab="categories" onclick="adminManager.switchTab('categories')">
+          <span>🏷️</span> Categorías & Subcategorías
+        </div>
         <div class="admin-nav-item" data-tab="orders" onclick="adminManager.switchTab('orders')">
           <span>📦</span> Pedidos & Envíos SV
         </div>
@@ -488,11 +491,18 @@
           <span>🇸🇻</span> Tarifas por Departamento
         </div>
         <div class="admin-nav-item" data-tab="settings" onclick="adminManager.switchTab('settings')">
-          <span>💳</span> Configuración Wompi
+          <span>💳</span> Configuración Pasarela (3DS)
         </div>
       </nav>
 
       <div class="admin-sidebar-footer">
+        <div style="background: rgba(255,255,255,0.06); border: 1px solid var(--color-border); border-radius: var(--radius-xs); padding: 0.6rem; margin-bottom: 0.75rem; text-align: left;">
+          <div style="font-size: 0.68rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em;">Admin Conectado:</div>
+          <div id="admin-user-display" style="font-family: var(--font-mono); font-size: 0.75rem; color: #ffffff; font-weight: 700; word-break: break-all;">admin@tetel.com</div>
+        </div>
+        <button class="btn btn-outline btn-full btn-sm" onclick="adminAuth.logout()" style="margin-bottom: 0.6rem; border-color: rgba(239, 68, 68, 0.4); color: #f87171; font-weight: 700;">
+          🔒 Cerrar Sesión
+        </button>
         <button class="btn btn-secondary btn-full btn-sm" onclick="adminManager.close()" style="margin-bottom: 0.85rem;">
           ← Volver a la Tienda
         </button>
@@ -512,7 +522,7 @@
         <div class="admin-kpi-card">
           <div class="kpi-icon-box kpi-icon-sales">💰</div>
           <div>
-            <div class="kpi-title">Ventas Totales (Wompi)</div>
+            <div class="kpi-title">Ventas Totales (3DS)</div>
             <div class="kpi-value" id="metric-total-sales">$0.00</div>
           </div>
         </div>
@@ -574,12 +584,42 @@
         </div>
       </section>
 
+      <!-- PANEL: GESTIÓN DE CATEGORÍAS Y SUBCATEGORÍAS -->
+      <section id="admin-panel-categories" style="display: none;">
+        <div class="admin-page-header">
+          <div>
+            <h2 class="admin-page-title">Categorías y Subcategorías</h2>
+            <p>Crea, edita y organiza las categorías de prendas de TETEL. Permite asociar subcategorías dinámicas para tus colecciones.</p>
+          </div>
+          <button class="btn btn-primary" onclick="adminManager.openNewCategoryModal()">
+            ＋ Nueva Categoría / Subcategoría
+          </button>
+        </div>
+
+        <div class="admin-card-table">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Categoría</th>
+                <th>Tipo</th>
+                <th>Slug (Código)</th>
+                <th>Pertenece a</th>
+                <th>Subcategorías Hijas</th>
+                <th>Descripción</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="admin-categories-table-body"></tbody>
+          </table>
+        </div>
+      </section>
+
       <!-- PANEL 2: GESTIÓN DE PEDIDOS -->
       <section id="admin-panel-orders" style="display: none;">
         <div class="admin-page-header">
           <div>
             <h2 class="admin-page-title">Pedidos de Clientes y Envíos SV</h2>
-            <p>Control de pagos procesados mediante Wompi 3DS y actualización de estado de entrega.</p>
+            <p>Control de pagos procesados mediante 3D Secure y actualización de estado de entrega.</p>
           </div>
         </div>
 
@@ -591,7 +631,7 @@
                 <th>Cliente</th>
                 <th>Destino en El Salvador</th>
                 <th>Total</th>
-                <th>Pago Wompi</th>
+                <th>Pago 3DS</th>
                 <th>Estado de Envío</th>
                 <th>Detalles</th>
               </tr>
@@ -613,33 +653,33 @@
         <div id="admin-delivery-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem;"></div>
       </section>
 
-      <!-- PANEL 4: CONFIGURACIÓN WOMPI -->
+      <!-- PANEL 4: CONFIGURACIÓN PASARELA 3D SECURE -->
       <section id="admin-panel-settings" style="display: none;">
         <div class="admin-page-header">
           <div>
-            <h2 class="admin-page-title">Configuración Pasarela de Pagos Wompi</h2>
-            <p>Credenciales de autenticación OAuth 2.0 y parámetros de 3D Secure de Wompi El Salvador.</p>
+            <h2 class="admin-page-title">Configuración Pasarela de Pagos (3D Secure)</h2>
+            <p>Parámetros de autenticación OAuth 2.0 y procesamiento bancario seguro 3DS para El Salvador.</p>
           </div>
         </div>
 
         <div style="background: white; border-radius: var(--radius-lg); border: 1px solid var(--color-border); padding: 2rem; max-width: 720px;">
           <form onsubmit="adminManager.saveWompiSettings(event)">
             <div class="form-group">
-              <label class="form-label">Wompi Client ID (App ID)</label>
+              <label class="form-label">Client ID (App ID Wompi SV)</label>
               <input type="text" class="form-input" id="setting-wompi-client-id" placeholder="App ID de tu cuenta Wompi" required>
             </div>
 
             <div class="form-group">
-              <label class="form-label">Wompi Client Secret (API Secret)</label>
+              <label class="form-label">Client Secret (API Secret)</label>
               <input type="password" class="form-input" id="setting-wompi-client-secret" placeholder="Ingresa llave secreta para actualizar">
               <span style="font-size: 0.75rem; color: var(--color-text-subtle);">Por seguridad, la llave existente se mantiene a menos que escribas una nueva.</span>
             </div>
 
             <div class="form-row">
               <div class="form-group">
-                <label class="form-label">Ambiente Wompi</label>
+                <label class="form-label">Ambiente de Operación</label>
                 <select class="form-select" id="setting-wompi-env">
-                  <option value="desarrollo">Desarrollo (Sandbox / Pruebas)</option>
+                  <option value="desarrollo">Desarrollo (Sandbox / Pruebas 3DS)</option>
                   <option value="produccion">Producción (Cobros Reales)</option>
                 </select>
               </div>
@@ -656,12 +696,12 @@
                 Activar Modo Simulador 3DS (Recomendado para pruebas sin tarjeta real)
               </label>
               <p style="font-size: 0.8rem; color: #1e40af; margin: 0.35rem 0 0 2rem;">
-                Permite simular el flujo 3DS con cualquier tarjeta ficticia para validar el carrito y la generación de órdenes en la base de datos SQLite.
+                Permite simular el flujo bancario 3DS con cualquier tarjeta de prueba y validar compras sin cargos reales.
               </p>
             </div>
 
             <button type="submit" class="btn btn-primary btn-lg">
-              💾 Guardar Configuración Wompi
+              💾 Guardar Configuración de Pagos
             </button>
           </form>
         </div>
@@ -812,17 +852,15 @@
 
         <div class="form-row">
           <div class="form-group">
-            <label class="form-label">Categoría</label>
-            <select class="form-select" id="form-product-category" required>
-              <option value="Mujer">Mujer</option>
-              <option value="Hombre">Hombre</option>
-              <option value="Unisex">Unisex</option>
-              <option value="Accesorios">Accesorios</option>
+            <label class="form-label">Categoría Principal</label>
+            <select class="form-select" id="form-product-category" required onchange="adminManager.onProductCategoryChange(this.value)">
+              <!-- Llenado dinámico -->
             </select>
           </div>
           <div class="form-group">
-            <label class="form-label">Subcategoría <span class="optional">(Ej. Vestidos, Blazers)</span></label>
-            <input type="text" class="form-input" id="form-product-subcategory" placeholder="Vestidos">
+            <label class="form-label">Subcategoría <span class="optional">(Opcional / Dinámica)</span></label>
+            <input type="text" list="product-subcategories-datalist" class="form-input" id="form-product-subcategory" placeholder="Selecciona o escribe subcategoría">
+            <datalist id="product-subcategories-datalist"></datalist>
           </div>
         </div>
 
@@ -895,6 +933,98 @@
     </div>
   </div>
 
+  <!-- Modal Admin: Crear / Editar Categoría o Subcategoría -->
+  <div class="modal-backdrop" id="admin-category-modal-backdrop" style="display: none;" onclick="if(event.target === this) adminManager.closeCategoryModal()">
+    <div class="modal-content" style="max-width: 520px; padding: 2rem;">
+      <button class="modal-close-btn" onclick="adminManager.closeCategoryModal()">✕</button>
+      <h3 id="category-modal-title" style="font-size: 1.4rem; margin-bottom: 1.25rem; font-weight: 800;">Crear Categoría o Subcategoría</h3>
+
+      <form id="admin-category-form" onsubmit="adminManager.saveCategory(event)">
+        <input type="hidden" id="form-category-id">
+
+        <div class="form-group">
+          <label class="form-label">Tipo de Elemento</label>
+          <div style="display: flex; gap: 1.25rem; margin-bottom: 0.5rem;">
+            <label style="display: flex; align-items: center; gap: 0.4rem; cursor: pointer; font-size: 0.9rem;">
+              <input type="radio" name="cat_type" id="cat-type-main" value="main" checked onchange="adminManager.toggleCategoryParentSelect(false)">
+              <strong>Categoría Principal</strong>
+            </label>
+            <label style="display: flex; align-items: center; gap: 0.4rem; cursor: pointer; font-size: 0.9rem;">
+              <input type="radio" name="cat_type" id="cat-type-sub" value="sub" onchange="adminManager.toggleCategoryParentSelect(true)">
+              <strong>Subcategoría</strong>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group" id="group-category-parent" style="display: none;">
+          <label class="form-label">Categoría Padre a la que pertenece</label>
+          <select class="form-select" id="form-category-parent">
+            <!-- Se llena dinámicamente con categorías principales -->
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Nombre</label>
+          <input type="text" class="form-input" id="form-category-name" placeholder="Ej. Camisas Resort, Joggers..." required oninput="adminManager.autoSlugCategory(this.value)">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Slug (URL amigable / Código)</label>
+          <input type="text" class="form-input" id="form-category-slug" placeholder="camisas-resort">
+          <span style="font-size: 0.72rem; color: var(--color-text-subtle);">Se genera automáticamente a partir del nombre o puedes personalizarlo.</span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Descripción (Opcional)</label>
+          <textarea class="form-textarea" id="form-category-description" rows="2" placeholder="Breve descripción del tipo de prendas..."></textarea>
+        </div>
+
+        <div style="display: flex; gap: 0.75rem; margin-top: 1.5rem;">
+          <button type="button" class="btn btn-secondary btn-full" onclick="adminManager.closeCategoryModal()">Cancelar</button>
+          <button type="submit" class="btn btn-primary btn-full">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Login Administrador (admin@tetel.com / tetel@$2026) -->
+  <div class="modal-backdrop" id="admin-login-modal" style="display: none;">
+    <div class="modal-content" style="max-width: 440px; padding: 2.25rem 2rem; background: #111215; border: 1px solid var(--color-border); border-radius: var(--radius-lg); box-shadow: 0 25px 50px -12px rgba(0,0,0,0.85);">
+      <div style="text-align: center; margin-bottom: 1.75rem;">
+        <img src="/assets/logo.png" alt="TETEL" style="width: 52px; height: 52px; object-fit: contain; margin-bottom: 0.75rem; border-radius: 6px; background: #ece9e2; padding: 3px; border: 1px solid var(--color-border);">
+        <h3 style="font-family: var(--font-heading); font-size: 1.4rem; font-weight: 800; letter-spacing: -0.02em; color: #ffffff; margin-bottom: 0.35rem;">ACCESO ADMINISTRACIÓN</h3>
+        <p style="font-size: 0.85rem; color: #94a3b8; margin: 0;">Ingresa con las credenciales de administrador de TETEL</p>
+      </div>
+
+      <form id="admin-login-form" onsubmit="adminAuth.handleLogin(event)">
+        <div class="form-group">
+          <label class="form-label" style="color: #cbd5e1;">Correo Electrónico</label>
+          <input type="email" id="login-admin-email" class="form-input" required value="admin@tetel.com" placeholder="admin@tetel.com" autocomplete="username">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" style="color: #cbd5e1;">Contraseña</label>
+          <input type="password" id="login-admin-password" class="form-input" required value="tetel@$2026" placeholder="Contraseña de administrador" autocomplete="current-password">
+        </div>
+
+        <div id="admin-login-error" style="display: none; color: #f87171; background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.25); padding: 0.65rem 0.85rem; font-size: 0.8rem; border-radius: 4px; margin-bottom: 1.25rem;"></div>
+
+        <div style="display: flex; gap: 0.75rem; margin-top: 1.25rem;">
+          <button type="button" class="btn btn-secondary btn-full" onclick="adminAuth.cancelLogin()">
+            Volver a Tienda
+          </button>
+          <button type="submit" class="btn btn-primary btn-full" style="background: var(--color-accent); color: #000; font-weight: 800;">
+            Ingresar al Panel
+          </button>
+        </div>
+      </form>
+
+      <div style="margin-top: 1.5rem; text-align: center; font-size: 0.72rem; color: #64748b; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 1rem;">
+        TETEL E-Commerce Atelier &bull; Desarrollado por <a href="https://nevorasoftware.com/" target="_blank" rel="noopener noreferrer" style="color: #ffffff; text-decoration: underline; font-weight: 700;">Nevora Software</a>
+      </div>
+    </div>
+  </div>
+
   <!-- Toast Container -->
   <div class="toast-container" id="toast-container"></div>
 
@@ -903,39 +1033,39 @@
     <div class="container footer-grid">
       <div>
         <div class="footer-brand-title">TETEL</div>
-        <p style="font-size: 0.9rem; line-height: 1.6; max-width: 320px;">
-          Plataforma de moda de alta costura salvadoreña. Diseños exclusivos, entregas puntuales y pagos protegidos con Wompi 3D Secure.
+        <p style="font-size: 0.9rem; line-height: 1.6; max-width: 320px; color: var(--color-text-muted);">
+          Atelier de moda urbana contemporánea y prendas de autor en El Salvador. Confección premium, entregas a nivel nacional y pagos 100% seguros con 3D Secure.
         </p>
       </div>
 
       <div>
-        <h4 class="footer-heading">Departamentos SV</h4>
+        <h4 class="footer-heading">Colecciones</h4>
         <ul class="footer-links">
-          <li><a href="#catalogo">San Salvador &bull; Santa Tecla</a></li>
-          <li><a href="#catalogo">Santa Ana &bull; Sonsonate</a></li>
-          <li><a href="#catalogo">San Miguel &bull; Usulután</a></li>
-          <li><a href="#catalogo">La Libertad &bull; La Paz</a></li>
-          <li><a href="#catalogo">Cobertura en 14 Departamentos</a></li>
+          <li><a href="#catalogo" onclick="storeApp.setCategory('Todos')">Ver Todo el Catálogo</a></li>
+          <li><a href="#catalogo" onclick="storeApp.setCategory('Chaquetas')">Outerwear & Chaquetas</a></li>
+          <li><a href="#catalogo" onclick="storeApp.setCategory('Camisas')">Camisas Resort & Tops</a></li>
+          <li><a href="#catalogo" onclick="storeApp.setCategory('Pantalones')">Joggers Paisley & Denim</a></li>
+          <li><a href="#ofertas" onclick="storeApp.setCategory('Ofertas')">🔥 Ofertas Especiales</a></li>
         </ul>
       </div>
 
       <div>
-        <h4 class="footer-heading">Seguridad & Pagos</h4>
+        <h4 class="footer-heading">Información & Envíos</h4>
         <ul class="footer-links">
-          <li><a href="#checkout">Wompi 3D Secure 2.0</a></li>
+          <li><a href="#catalogo">Envíos a todo El Salvador</a></li>
+          <li><a href="#catalogo">Entrega 24h a 48h hábiles</a></li>
+          <li><a href="#checkout">Pagos Seguros con 3DS</a></li>
           <li><a href="#checkout">Tarjetas Visa y Mastercard</a></li>
-          <li><a href="#checkout">Banco Agrícola / BAC / Cuscatlán</a></li>
-          <li><a href="#checkout">Cifrado de grado bancario</a></li>
+          <li><a href="#checkout">Autenticación Bancaria Protegida</a></li>
         </ul>
       </div>
 
       <div>
-        <h4 class="footer-heading">Administración</h4>
+        <h4 class="footer-heading">Mi Cuenta</h4>
         <ul class="footer-links">
-          <li><a href="#admin">Panel de Control Shopify Style</a></li>
-          <li><a href="#admin">Subir Prendas con SKU</a></li>
-          <li><a href="#admin">Gestión de Pedidos & Envíos</a></li>
-          <li><a href="#admin">Ajustes de Credenciales Wompi</a></li>
+          <li><a href="javascript:void(0)" onclick="cartStore.openDrawer()">Mi Carrito de Compras</a></li>
+          <li><a href="javascript:void(0)" onclick="wishlistStore.openDrawer()">Lista de Deseos</a></li>
+          <li><a href="#admin">Acceso Administración 🔒</a></li>
         </ul>
       </div>
     </div>
@@ -952,7 +1082,7 @@
           ⚡ By Nevora Software
         </a>
         <div class="wompi-security-badge">
-          🔒 Pagos Wompi SV (3DS Certified)
+          🔒 Pagos Seguros con 3DS (Visa / Mastercard)
         </div>
       </div>
     </div>

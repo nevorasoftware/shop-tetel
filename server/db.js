@@ -128,6 +128,18 @@ export async function initDatabase() {
         );
       `);
 
+      // 5. Tabla de Categorías y Subcategorías
+      await pool.query(`
+        CREATE TABLE IF NOT EXISTS categories (
+          id SERIAL PRIMARY KEY,
+          name TEXT NOT NULL,
+          slug TEXT UNIQUE NOT NULL,
+          parent_id INTEGER REFERENCES categories(id) ON DELETE CASCADE,
+          description TEXT,
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+      `);
+
       console.log('✅ Esquema PostgreSQL inicializado con éxito.');
       await seedPostgresData();
     } catch (err) {
@@ -212,6 +224,17 @@ export async function initDatabase() {
       );
     `);
 
+    sqliteDb.exec(`
+      CREATE TABLE IF NOT EXISTS categories (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        slug TEXT UNIQUE NOT NULL,
+        parent_id INTEGER REFERENCES categories(id) ON DELETE CASCADE,
+        description TEXT,
+        created_at TEXT DEFAULT (datetime('now'))
+      );
+    `);
+
     seedSqliteData();
   }
 }
@@ -263,6 +286,8 @@ async function seedPostgresData() {
 
   const defaultSettings = [
     { key: 'store_name', value: 'TETEL | Hecho con Cultura El Salvador' },
+    { key: 'admin_email', value: 'admin@tetel.com' },
+    { key: 'admin_password', value: 'tetel@$2026' },
     { key: 'wompi_client_id', value: process.env.WOMPI_CLIENT_ID || 'demo_wompi_app_id' },
     { key: 'wompi_client_secret', value: process.env.WOMPI_CLIENT_SECRET || 'demo_wompi_secret' },
     { key: 'wompi_environment', value: process.env.WOMPI_ENVIRONMENT || 'desarrollo' },
@@ -277,7 +302,54 @@ async function seedPostgresData() {
       [s.key, s.value]
     );
   }
+
+  // Sembrar categorías iniciales en PostgreSQL si está vacío
+  const catCountRes = await pool.query('SELECT COUNT(*) as count FROM categories');
+  if (parseInt(catCountRes.rows[0].count, 10) === 0) {
+    console.log('🌱 Sembrando categorías iniciales en PostgreSQL...');
+    const parentMap = {};
+    for (const c of INITIAL_CATEGORIES) {
+      const res = await pool.query(
+        `INSERT INTO categories (name, slug, parent_id, description) VALUES ($1, $2, NULL, $3) RETURNING id`,
+        [c.name, c.slug, c.desc || '']
+      );
+      parentMap[c.slug] = res.rows[0].id;
+    }
+
+    for (const sub of INITIAL_SUBCATEGORIES) {
+      const parentId = parentMap[sub.parentSlug];
+      if (parentId) {
+        await pool.query(
+          `INSERT INTO categories (name, slug, parent_id, description) VALUES ($1, $2, $3, $4)`,
+          [sub.name, sub.slug, parentId, '']
+        );
+      }
+    }
+  }
 }
+
+const INITIAL_CATEGORIES = [
+  { name: 'Chaquetas & Outerwear', slug: 'chaquetas-outerwear', desc: 'Prendas de abrigo urbano, eco-cuero y estampados paisley' },
+  { name: 'Camisas & Tops', slug: 'camisas-tops', desc: 'Camisas resort de autor, playeras oversize y tops de corte moderno' },
+  { name: 'Pantalones & Bottoms', slug: 'pantalones-bottoms', desc: 'Joggers paisley de corte relajado, cargo pants y denim de autor' },
+  { name: 'Calzado', slug: 'calzado', desc: 'Sneakers urbanos y calzado streetwear' },
+  { name: 'Accesorios', slug: 'accesorios', desc: 'Bandanas de seda salvadoreñas, tote bags y accesorios' }
+];
+
+const INITIAL_SUBCATEGORIES = [
+  { name: 'Eco-cuero & Bandana', slug: 'eco-cuero-bandana', parentSlug: 'chaquetas-outerwear' },
+  { name: 'Bomber Jackets', slug: 'bomber-jackets', parentSlug: 'chaquetas-outerwear' },
+  { name: 'Chalecos Streetwear', slug: 'chalecos-streetwear', parentSlug: 'chaquetas-outerwear' },
+  { name: 'Camisas Resort', slug: 'camisas-resort', parentSlug: 'camisas-tops' },
+  { name: 'Boxy Tees Oversize', slug: 'boxy-tees-oversize', parentSlug: 'camisas-tops' },
+  { name: 'Hoodies Gráficos', slug: 'hoodies-graficos', parentSlug: 'camisas-tops' },
+  { name: 'Joggers Paisley', slug: 'joggers-paisley', parentSlug: 'pantalones-bottoms' },
+  { name: 'Cargo Pants Urbanos', slug: 'cargo-pants-urbanos', parentSlug: 'pantalones-bottoms' },
+  { name: 'Denim Streetwear', slug: 'denim-streetwear', parentSlug: 'pantalones-bottoms' },
+  { name: 'Sneakers Urbanos', slug: 'sneakers-urbanos', parentSlug: 'calzado' },
+  { name: 'Bandanas de Seda', slug: 'bandanas-seda', parentSlug: 'accesorios' },
+  { name: 'Tote Bags', slug: 'tote-bags', parentSlug: 'accesorios' }
+];
 
 function seedSqliteData() {
   const countRow = sqliteDb.prepare('SELECT COUNT(*) as count FROM products').get();
@@ -327,6 +399,8 @@ function seedSqliteData() {
 
   const defaultSettings = [
     { key: 'store_name', value: 'TETEL | Hecho con Cultura El Salvador' },
+    { key: 'admin_email', value: 'admin@tetel.com' },
+    { key: 'admin_password', value: 'tetel@$2026' },
     { key: 'wompi_client_id', value: process.env.WOMPI_CLIENT_ID || 'demo_wompi_app_id' },
     { key: 'wompi_client_secret', value: process.env.WOMPI_CLIENT_SECRET || 'demo_wompi_secret' },
     { key: 'wompi_environment', value: process.env.WOMPI_ENVIRONMENT || 'desarrollo' },
@@ -340,6 +414,24 @@ function seedSqliteData() {
   `);
   for (const s of defaultSettings) {
     insertSetting.run(s.key, s.value);
+  }
+
+  // Sembrar categorías iniciales en SQLite si está vacío
+  const catCount = sqliteDb.prepare('SELECT COUNT(*) as count FROM categories').get();
+  if (catCount.count === 0) {
+    console.log('🌱 Sembrando categorías iniciales en SQLite...');
+    const insertCat = sqliteDb.prepare('INSERT INTO categories (name, slug, parent_id, description) VALUES (?, ?, ?, ?)');
+    const parentMap = {};
+    for (const c of INITIAL_CATEGORIES) {
+      const info = insertCat.run(c.name, c.slug, null, c.desc || '');
+      parentMap[c.slug] = Number(info.lastInsertRowid);
+    }
+    for (const sub of INITIAL_SUBCATEGORIES) {
+      const parentId = parentMap[sub.parentSlug];
+      if (parentId) {
+        insertCat.run(sub.name, sub.slug, parentId, '');
+      }
+    }
   }
 }
 
@@ -856,4 +948,146 @@ function formatOrderFromRow(row) {
     notes: row.notes,
     createdAt: row.created_at
   };
+}
+
+// ==============================================================================
+// GESTIÓN DE CATEGORÍAS Y SUBCATEGORÍAS
+// ==============================================================================
+
+export async function getAllCategories() {
+  let rows = [];
+  if (isPostgres) {
+    const res = await pool.query(`
+      SELECT c.*, p.name as parent_name
+      FROM categories c
+      LEFT JOIN categories p ON c.parent_id = p.id
+      ORDER BY c.parent_id NULLS FIRST, c.name ASC
+    `);
+    rows = res.rows;
+  } else {
+    rows = sqliteDb.prepare(`
+      SELECT c.*, p.name as parent_name
+      FROM categories c
+      LEFT JOIN categories p ON c.parent_id = p.id
+      ORDER BY CASE WHEN c.parent_id IS NULL THEN 0 ELSE 1 END, c.name ASC
+    `).all();
+  }
+
+  const parents = rows.filter(r => !r.parent_id);
+  const children = rows.filter(r => r.parent_id);
+
+  const tree = parents.map(p => {
+    const subcats = children
+      .filter(c => Number(c.parent_id) === Number(p.id))
+      .map(c => ({
+        id: c.id,
+        name: c.name,
+        slug: c.slug,
+        parentId: p.id,
+        parentName: p.name,
+        description: c.description || '',
+        createdAt: c.created_at
+      }));
+
+    return {
+      id: p.id,
+      name: p.name,
+      slug: p.slug,
+      description: p.description || '',
+      subcategories: subcats,
+      createdAt: p.created_at
+    };
+  });
+
+  return {
+    tree,
+    flat: rows.map(r => ({
+      id: r.id,
+      name: r.name,
+      slug: r.slug,
+      parentId: r.parent_id,
+      parentName: r.parent_name || null,
+      description: r.description || '',
+      createdAt: r.created_at
+    }))
+  };
+}
+
+export async function createCategory({ name, slug, parentId, description }) {
+  if (!name || !name.trim()) throw new Error('El nombre de la categoría es obligatorio.');
+
+  const cleanName = name.trim();
+  const cleanSlug = slug && slug.trim()
+    ? slug.trim().toLowerCase().replace(/[^a-z0-9_-]+/g, '-')
+    : cleanName.toLowerCase().replace(/[^a-z0-9_-]+/g, '-').replace(/(^-|-$)/g, '');
+  const pid = parentId ? parseInt(parentId, 10) : null;
+  const desc = description ? description.trim() : '';
+
+  if (isPostgres) {
+    const res = await pool.query(
+      `INSERT INTO categories (name, slug, parent_id, description)
+       VALUES ($1, $2, $3, $4) RETURNING *`,
+      [cleanName, cleanSlug, pid, desc]
+    );
+    return res.rows[0];
+  } else {
+    const stmt = sqliteDb.prepare(
+      `INSERT INTO categories (name, slug, parent_id, description) VALUES (?, ?, ?, ?)`
+    );
+    const info = stmt.run(cleanName, cleanSlug, pid, desc);
+    return sqliteDb.prepare('SELECT * FROM categories WHERE id = ?').get(info.lastInsertRowid);
+  }
+}
+
+export async function updateCategory(id, { name, slug, parentId, description }) {
+  const catId = parseInt(id, 10);
+  const cleanName = name ? name.trim() : undefined;
+  const cleanSlug = slug ? slug.trim().toLowerCase().replace(/[^a-z0-9_-]+/g, '-') : undefined;
+  const pid = parentId === '' || parentId === null || parentId === undefined ? null : parseInt(parentId, 10);
+  const desc = description !== undefined ? description.trim() : undefined;
+
+  if (isPostgres) {
+    const res = await pool.query(
+      `UPDATE categories
+       SET name = COALESCE($1, name),
+           slug = COALESCE($2, slug),
+           parent_id = $3,
+           description = COALESCE($4, description)
+       WHERE id = $5 RETURNING *`,
+      [cleanName, cleanSlug, pid, desc, catId]
+    );
+    return res.rows[0];
+  } else {
+    sqliteDb.prepare(`
+      UPDATE categories
+      SET name = COALESCE(?, name),
+          slug = COALESCE(?, slug),
+          parent_id = ?,
+          description = COALESCE(?, description)
+      WHERE id = ?
+    `).run(cleanName, cleanSlug, pid, desc, catId);
+    return sqliteDb.prepare('SELECT * FROM categories WHERE id = ?').get(catId);
+  }
+}
+
+export async function deleteCategory(id) {
+  const catId = parseInt(id, 10);
+  if (isPostgres) {
+    await pool.query('DELETE FROM categories WHERE id = $1', [catId]);
+  } else {
+    sqliteDb.prepare('DELETE FROM categories WHERE id = ?').run(catId);
+  }
+  return true;
+}
+
+// ==============================================================================
+// AUTENTICACIÓN ADMINISTRADOR
+// ==============================================================================
+
+export async function verifyAdminCredentials(email, password) {
+  const adminEmail = (await getSetting('admin_email')) || 'admin@tetel.com';
+  const adminPassword = (await getSetting('admin_password')) || 'tetel@$2026';
+
+  if (!email || !password) return false;
+  return email.trim().toLowerCase() === adminEmail.trim().toLowerCase() && password === adminPassword;
 }

@@ -69,10 +69,20 @@ CREATE TABLE IF NOT EXISTS order_items (
     FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE
 );
 
--- 4. TABLA DE CONFIGURACIÓN DE LA TIENDA Y PASARELA WOMPI
+-- 4. TABLA DE CONFIGURACIÓN DE LA TIENDA Y PASARELA 3DS
 CREATE TABLE IF NOT EXISTS settings (
     key TEXT PRIMARY KEY,
     value TEXT
+);
+
+-- 5. TABLA DE CATEGORÍAS Y SUBCATEGORÍAS
+CREATE TABLE IF NOT EXISTS categories (
+    id SERIAL PRIMARY KEY,
+    name TEXT NOT NULL,
+    slug TEXT UNIQUE NOT NULL,
+    parent_id INTEGER REFERENCES categories(id) ON DELETE CASCADE,
+    description TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- ==============================================================================
@@ -205,13 +215,38 @@ INSERT OR REPLACE INTO products (
 );
 
 -- ==============================================================================
--- CONFIGURACIÓN DE LA TIENDA Y PASARELA WOMPI
+-- CONFIGURACIÓN DE LA TIENDA Y PASARELA 3DS
 -- ==============================================================================
 INSERT OR REPLACE INTO settings (key, value) VALUES
 ('store_name', 'TETEL | Hecho con Cultura El Salvador'),
+('admin_email', 'admin@tetel.com'),
+('admin_password', 'tetel@$2026'),
 ('wompi_client_id', 'demo_wompi_app_id'),
 ('wompi_client_secret', 'demo_wompi_secret'),
 ('wompi_environment', 'desarrollo'),
 ('wompi_simulator_mode', 'true'),
 ('free_shipping_threshold', '60.00'),
 ('currency', 'USD');
+
+-- ==============================================================================
+-- INSERCIÓN DE CATEGORÍAS Y SUBCATEGORÍAS INICIALES
+-- ==============================================================================
+INSERT OR REPLACE INTO categories (id, name, slug, parent_id, description) VALUES
+(1, 'Chaquetas & Outerwear', 'chaquetas-outerwear', NULL, 'Prendas de abrigo urbano, eco-cuero y estampados paisley'),
+(2, 'Camisas & Tops', 'camisas-tops', NULL, 'Camisas resort de autor, playeras oversize y tops de corte moderno'),
+(3, 'Pantalones & Bottoms', 'pantalones-bottoms', NULL, 'Joggers paisley de corte relajado, cargo pants y denim de autor'),
+(4, 'Calzado', 'calzado', NULL, 'Sneakers urbanos y calzado streetwear'),
+(5, 'Accesorios', 'accesorios', NULL, 'Bandanas de seda salvadoreñas, tote bags y accesorios'),
+-- Subcategorías
+(6, 'Eco-cuero & Bandana', 'eco-cuero-bandana', 1, 'Prendas con apliques de eco-cuero'),
+(7, 'Bomber Jackets', 'bomber-jackets', 1, 'Chaquetas bomber de corte relajado'),
+(8, 'Chalecos Streetwear', 'chalecos-streetwear', 1, 'Chalecos utilitarios'),
+(9, 'Camisas Resort', 'camisas-resort', 2, 'Camisas frescas manga corta con estampado'),
+(10, 'Boxy Tees Oversize', 'boxy-tees-oversize', 2, 'Camisetas con cuello reforzado de 240g'),
+(11, 'Hoodies Gráficos', 'hoodies-graficos', 2, 'Sudaderas con capucha de corte amplio'),
+(12, 'Joggers Paisley', 'joggers-paisley', 3, 'Pantalones deportivos con cortes bandana'),
+(13, 'Cargo Pants Urbanos', 'cargo-pants-urbanos', 3, 'Pantalones multibolsillo de corte recto'),
+(14, 'Denim Streetwear', 'denim-streetwear', 3, 'Jeans con detalles de confección'),
+(15, 'Sneakers Urbanos', 'sneakers-urbanos', 4, 'Calzado urbano contemporáneo'),
+(16, 'Bandanas de Seda', 'bandanas-seda', 5, 'Bandanas artesanales de seda y algodón'),
+(17, 'Tote Bags', 'tote-bags', 5, 'Bolsos de lona pesada con estampados');

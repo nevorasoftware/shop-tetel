@@ -18,7 +18,12 @@ import {
   updateOrderDeliveryStatus,
   getAdminMetrics,
   getAllSettings,
-  updateSettings
+  updateSettings,
+  getAllCategories,
+  createCategory,
+  updateCategory,
+  deleteCategory,
+  verifyAdminCredentials
 } from '../db.js';
 
 import {
@@ -420,6 +425,88 @@ router.post('/admin/settings', async (req, res) => {
   try {
     const updated = await updateSettings(req.body);
     res.json({ success: true, message: 'Configuración guardada exitosamente', data: updated });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// -------------------------------------------------------------
+// AUTENTICACIÓN ADMINISTRADOR (admin@tetel.com / tetel@$2026)
+// -------------------------------------------------------------
+
+router.post('/admin/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({ success: false, error: 'Correo y contraseña requeridos' });
+    }
+
+    const isValid = await verifyAdminCredentials(email, password);
+    if (!isValid) {
+      return res.status(401).json({ success: false, error: 'Credenciales inválidas. Verifica tu correo y contraseña.' });
+    }
+
+    const token = `tetel_admin_${Date.now()}_${Math.random().toString(36).substring(2, 10)}`;
+    res.json({
+      success: true,
+      message: 'Autenticación exitosa',
+      token,
+      admin: {
+        email: email.trim().toLowerCase(),
+        name: 'Administrador General TETEL'
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+router.post('/admin/logout', (req, res) => {
+  res.json({ success: true, message: 'Sesión cerrada exitosamente' });
+});
+
+// -------------------------------------------------------------
+// GESTIÓN DE CATEGORÍAS Y SUBCATEGORÍAS
+// -------------------------------------------------------------
+
+router.get('/categories', async (req, res) => {
+  try {
+    const categories = await getAllCategories();
+    res.json({ success: true, data: categories });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+router.post('/categories', async (req, res) => {
+  try {
+    const { name, slug, parentId, description } = req.body;
+    if (!name || !name.trim()) {
+      return res.status(400).json({ success: false, error: 'El nombre de la categoría es obligatorio.' });
+    }
+    const newCategory = await createCategory({ name, slug, parentId, description });
+    res.status(201).json({ success: true, message: 'Categoría creada con éxito', data: newCategory });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+router.put('/categories/:id', async (req, res) => {
+  try {
+    const updated = await updateCategory(req.params.id, req.body);
+    if (!updated) {
+      return res.status(404).json({ success: false, error: 'Categoría no encontrada' });
+    }
+    res.json({ success: true, message: 'Categoría actualizada con éxito', data: updated });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+router.delete('/categories/:id', async (req, res) => {
+  try {
+    await deleteCategory(req.params.id);
+    res.json({ success: true, message: 'Categoría eliminada con éxito' });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }

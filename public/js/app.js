@@ -3,6 +3,7 @@ import { wishlistStore } from './wishlist.js';
 import { deliveryService } from './delivery.js';
 import { checkoutManager } from './checkout.js';
 import { adminManager } from './admin.js';
+import { adminAuth } from './auth.js';
 
 class StoreApp {
   constructor() {
@@ -34,12 +35,20 @@ class StoreApp {
     const adminView = document.getElementById('admin-main-view');
 
     if (hash.startsWith('#admin')) {
-      adminManager.open();
+      if (!adminAuth.isAuthenticated()) {
+        if (storeView) storeView.style.display = 'none';
+        if (checkoutView) checkoutView.style.display = 'none';
+        adminAuth.showLoginModal();
+      } else {
+        adminManager.open();
+      }
     } else if (hash.startsWith('#checkout')) {
+      adminAuth.hideLoginModal();
       if (storeView) storeView.style.display = 'none';
       if (adminView) adminView.style.display = 'none';
       if (checkoutView) checkoutView.style.display = 'block';
     } else {
+      adminAuth.hideLoginModal();
       if (checkoutView) checkoutView.style.display = 'none';
       if (adminView) adminView.style.display = 'none';
       if (storeView) storeView.style.display = 'block';
@@ -299,7 +308,7 @@ class StoreApp {
               <span>🇸🇻</span>
               <div>
                 <strong>Envíos garantizados a todo El Salvador</strong>
-                <p style="margin: 0; font-size: 0.75rem;">Entrega en 24h a San Salvador y 48h al interior. Pagos con Wompi 3DS.</p>
+                <p style="margin: 0; font-size: 0.75rem;">Entrega en 24h a San Salvador y 48h al interior. Pagos 100% seguros con 3D Secure.</p>
               </div>
             </div>
           </div>
