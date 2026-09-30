@@ -25,6 +25,9 @@ app.use(express.urlencoded({ extended: true }));
 
 // Servir archivos estáticos del frontend
 const publicPath = path.join(__dirname, '..', 'public');
+if (process.env.UPLOADS_PATH) {
+  app.use('/uploads', express.static(process.env.UPLOADS_PATH));
+}
 app.use(express.static(publicPath));
 
 // Rutas API

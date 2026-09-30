@@ -31,7 +31,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Configuración de multer para carga de imágenes de productos
-const uploadDir = path.join(__dirname, '..', '..', 'public', 'uploads');
+const uploadDir = process.env.UPLOADS_PATH || path.join(__dirname, '..', '..', 'public', 'uploads');
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
 }

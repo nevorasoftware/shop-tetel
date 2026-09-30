@@ -6,7 +6,11 @@ import { fileURLToPath } from 'node:url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const DB_PATH = path.join(__dirname, 'database.sqlite');
+const DB_PATH = process.env.DATABASE_PATH || path.join(__dirname, 'database.sqlite');
+const dbDir = path.dirname(DB_PATH);
+if (!fs.existsSync(dbDir)) {
+  fs.mkdirSync(dbDir, { recursive: true });
+}
 const db = new DatabaseSync(DB_PATH);
 
 // Habilitar Foreign Keys y modo WAL para mejor concurrencia
