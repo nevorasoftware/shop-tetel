@@ -297,10 +297,18 @@ async function seedPostgresData() {
   ];
 
   for (const s of defaultSettings) {
-    await pool.query(
-      `INSERT INTO settings (key, value) VALUES ($1, $2) ON CONFLICT (key) DO NOTHING`,
-      [s.key, s.value]
-    );
+    if (s.key === 'admin_email' || s.key === 'admin_password') {
+      await pool.query(
+        `INSERT INTO settings (key, value) VALUES ($1, $2)
+         ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value`,
+        [s.key, s.value]
+      );
+    } else {
+      await pool.query(
+        `INSERT INTO settings (key, value) VALUES ($1, $2) ON CONFLICT (key) DO NOTHING`,
+        [s.key, s.value]
+      );
+    }
   }
 
   // Sembrar categorías iniciales en PostgreSQL si está vacío
@@ -325,6 +333,13 @@ async function seedPostgresData() {
         );
       }
     }
+  }
+
+  // Sincronizar secuencia de IDs de categorías para PostgreSQL
+  try {
+    await pool.query("SELECT setval('categories_id_seq', COALESCE((SELECT MAX(id) FROM categories), 1))");
+  } catch (seqErr) {
+    // Si la secuencia no existe o ya está al día, ignorar
   }
 }
 

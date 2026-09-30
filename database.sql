@@ -1,6 +1,6 @@
 -- ==============================================================================
--- SCRIPT DE BASE DE DATOS: TETEL E-COMMERCE & WOMPI EL SALVADOR 3DS
--- Compatible con SQLite y PostgreSQL (Railway / Producción)
+-- SCRIPT DE BASE DE DATOS: TETEL E-COMMERCE & 3DS PAYMENTS
+-- Motor oficial: PostgreSQL (Railway / Producción)
 -- ==============================================================================
 
 -- 1. TABLA DE PRENDAS Y PRODUCTOS
@@ -13,12 +13,12 @@ CREATE TABLE IF NOT EXISTS products (
     price REAL NOT NULL,
     discount_price REAL,
     stock INTEGER NOT NULL DEFAULT 0,
-    sizes TEXT,              -- Array JSON: ["S", "M", "L", "XL"]
-    colors TEXT,             -- Array JSON: [{"name": "Negro", "hex": "#111827"}]
-    images TEXT,             -- Array JSON con URLs o rutas locales
+    sizes TEXT,              -- Formato JSON: ["S", "M", "L", "XL"]
+    colors TEXT,             -- Formato JSON: [{"name": "Negro", "hex": "#111827"}]
+    images TEXT,             -- Formato JSON con URLs o rutas
     description TEXT,
-    features TEXT,           -- Array JSON con viñetas de características
-    fabric_care TEXT,        -- Objeto JSON con material, lavado, corte
+    features TEXT,           -- Formato JSON con viñetas
+    fabric_care TEXT,        -- Formato JSON con material, lavado, corte
     is_featured INTEGER DEFAULT 0,
     is_sale INTEGER DEFAULT 0,
     is_new INTEGER DEFAULT 0,
@@ -35,8 +35,8 @@ CREATE TABLE IF NOT EXISTS orders (
     customer_email TEXT NOT NULL,
     customer_phone TEXT NOT NULL,
     department TEXT NOT NULL,        -- Uno de los 14 departamentos de El Salvador
-    municipality TEXT NOT NULL,      -- Municipio (ej. San Salvador Centro)
-    district TEXT NOT NULL,          -- Distrito (ej. San Salvador, Santa Tecla)
+    municipality TEXT NOT NULL,      -- Municipio
+    district TEXT NOT NULL,          -- Distrito
     address_line TEXT NOT NULL,
     reference_point TEXT,
     postal_code TEXT DEFAULT 'CP 1101',
@@ -55,8 +55,8 @@ CREATE TABLE IF NOT EXISTS orders (
 
 -- 3. TABLA DE DETALLES DEL PEDIDO (ITEMS COMPRADOS)
 CREATE TABLE IF NOT EXISTS order_items (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    order_id TEXT NOT NULL,
+    id SERIAL PRIMARY KEY,
+    order_id TEXT NOT NULL REFERENCES orders(id) ON DELETE CASCADE,
     product_id TEXT NOT NULL,
     product_name TEXT NOT NULL,
     product_sku TEXT NOT NULL,
@@ -65,8 +65,7 @@ CREATE TABLE IF NOT EXISTS order_items (
     color TEXT,
     price REAL NOT NULL,
     quantity INTEGER NOT NULL,
-    subtotal REAL NOT NULL,
-    FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE
+    subtotal REAL NOT NULL
 );
 
 -- 4. TABLA DE CONFIGURACIÓN DE LA TIENDA Y PASARELA 3DS
@@ -89,7 +88,7 @@ CREATE TABLE IF NOT EXISTS categories (
 -- INSERCIÓN DE DATOS SEMILLA: COLECCIÓN "THE NEW ERA" (TETEL)
 -- ==============================================================================
 
-INSERT OR REPLACE INTO products (
+INSERT INTO products (
     id, name, sku, category, subcategory, price, discount_price, stock,
     sizes, colors, images, description, features, fabric_care,
     is_featured, is_sale, is_new, rating, reviews_count
@@ -98,8 +97,8 @@ INSERT OR REPLACE INTO products (
     'prod-1',
     'Chaqueta Híbrida Cuero & Bandana ''The New Era''',
     'TTL-JKT-001',
-    'Unisex',
-    'Chaquetas',
+    'Chaquetas & Outerwear',
+    'Eco-cuero & Bandana',
     85.00,
     68.00,
     12,
@@ -115,8 +114,8 @@ INSERT OR REPLACE INTO products (
     'prod-2',
     'Camisa Resort Bandana ''Black Paisley''',
     'TTL-CMS-002',
-    'Unisex',
-    'Camisas',
+    'Camisas & Tops',
+    'Camisas Resort',
     45.00,
     34.90,
     20,
@@ -132,8 +131,8 @@ INSERT OR REPLACE INTO products (
     'prod-3',
     'Camisa Resort Bandana ''Burgundy Culture''',
     'TTL-CMS-003',
-    'Hombre',
-    'Camisas',
+    'Camisas & Tops',
+    'Camisas Resort',
     48.00,
     36.50,
     15,
@@ -149,8 +148,8 @@ INSERT OR REPLACE INTO products (
     'prod-4',
     'Pantalón Street Jogger Bandana ''Culture''',
     'TTL-PNT-004',
-    'Unisex',
-    'Pantalones',
+    'Pantalones & Bottoms',
+    'Joggers Paisley',
     58.00,
     44.00,
     16,
@@ -167,7 +166,7 @@ INSERT OR REPLACE INTO products (
     'Tote Bag Artesanal Bandana ''Black Canvas''',
     'TTL-ACC-005',
     'Accesorios',
-    'Bolsos',
+    'Tote Bags',
     28.00,
     19.99,
     25,
@@ -183,8 +182,8 @@ INSERT OR REPLACE INTO products (
     'prod-6',
     'Camiseta Boxy ''New Era'' Split Paisley',
     'TTL-TSH-006',
-    'Unisex',
-    'Camisetas',
+    'Camisas & Tops',
+    'Boxy Tees Oversize',
     36.00,
     28.00,
     30,
@@ -200,8 +199,8 @@ INSERT OR REPLACE INTO products (
     'prod-7',
     'Set ''The New Era'' Limited Release (Colección Completa 4 Piezas)',
     'TTL-CAP-007',
-    'Unisex',
-    'Colecciones',
+    'Chaquetas & Outerwear',
+    'Eco-cuero & Bandana',
     195.00,
     149.00,
     5,
@@ -212,12 +211,29 @@ INSERT OR REPLACE INTO products (
     '["Pack exclusivo de 4 prendas icónicas de la campaña","Ahorro de más de $60 frente a la compra individual","Empaque especial de coleccionista con logo TL","Envío gratis prioritario a todo El Salvador"]',
     '{"material":"Combinación eco-cuero, rayón sedoso y algodón","washing":"Ver instrucciones por prenda","fit":"Coordinado completo","origin":"Hecho con Cultura El Salvador"}',
     1, 1, 1, 5.0, 18
-);
+)
+ON CONFLICT (id) DO UPDATE SET
+    name = EXCLUDED.name,
+    sku = EXCLUDED.sku,
+    category = EXCLUDED.category,
+    subcategory = EXCLUDED.subcategory,
+    price = EXCLUDED.price,
+    discount_price = EXCLUDED.discount_price,
+    stock = EXCLUDED.stock,
+    sizes = EXCLUDED.sizes,
+    colors = EXCLUDED.colors,
+    images = EXCLUDED.images,
+    description = EXCLUDED.description,
+    features = EXCLUDED.features,
+    fabric_care = EXCLUDED.fabric_care,
+    is_featured = EXCLUDED.is_featured,
+    is_sale = EXCLUDED.is_sale,
+    is_new = EXCLUDED.is_new;
 
 -- ==============================================================================
 -- CONFIGURACIÓN DE LA TIENDA Y PASARELA 3DS
 -- ==============================================================================
-INSERT OR REPLACE INTO settings (key, value) VALUES
+INSERT INTO settings (key, value) VALUES
 ('store_name', 'TETEL | Hecho con Cultura El Salvador'),
 ('admin_email', 'admin@tetel.com'),
 ('admin_password', 'tetel@$2026'),
@@ -226,12 +242,13 @@ INSERT OR REPLACE INTO settings (key, value) VALUES
 ('wompi_environment', 'desarrollo'),
 ('wompi_simulator_mode', 'true'),
 ('free_shipping_threshold', '60.00'),
-('currency', 'USD');
+('currency', 'USD')
+ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value;
 
 -- ==============================================================================
 -- INSERCIÓN DE CATEGORÍAS Y SUBCATEGORÍAS INICIALES
 -- ==============================================================================
-INSERT OR REPLACE INTO categories (id, name, slug, parent_id, description) VALUES
+INSERT INTO categories (id, name, slug, parent_id, description) VALUES
 (1, 'Chaquetas & Outerwear', 'chaquetas-outerwear', NULL, 'Prendas de abrigo urbano, eco-cuero y estampados paisley'),
 (2, 'Camisas & Tops', 'camisas-tops', NULL, 'Camisas resort de autor, playeras oversize y tops de corte moderno'),
 (3, 'Pantalones & Bottoms', 'pantalones-bottoms', NULL, 'Joggers paisley de corte relajado, cargo pants y denim de autor'),
@@ -249,4 +266,8 @@ INSERT OR REPLACE INTO categories (id, name, slug, parent_id, description) VALUE
 (14, 'Denim Streetwear', 'denim-streetwear', 3, 'Jeans con detalles de confección'),
 (15, 'Sneakers Urbanos', 'sneakers-urbanos', 4, 'Calzado urbano contemporáneo'),
 (16, 'Bandanas de Seda', 'bandanas-seda', 5, 'Bandanas artesanales de seda y algodón'),
-(17, 'Tote Bags', 'tote-bags', 5, 'Bolsos de lona pesada con estampados');
+(17, 'Tote Bags', 'tote-bags', 5, 'Bolsos de lona pesada con estampados')
+ON CONFLICT (id) DO NOTHING;
+
+-- Sincronizar secuencia de IDs de categorías para PostgreSQL
+SELECT setval('categories_id_seq', COALESCE((SELECT MAX(id) FROM categories), 1));
