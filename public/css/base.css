@@ -19,14 +19,29 @@ body {
   display: flex;
   flex-direction: column;
   overflow-x: hidden;
+  background-color: var(--color-bg);
+  color: var(--color-text-main);
 }
 
-/* Tipografía */
-h1, h2, h3, h4, .font-serif {
-  font-family: var(--font-serif);
-  font-weight: 700;
-  letter-spacing: -0.02em;
+/* Tipografía Urbana y Streetwear */
+h1, h2, h3, h4 {
+  font-family: var(--font-urban);
+  font-weight: 800;
+  letter-spacing: -0.03em;
   color: var(--color-primary);
+  text-transform: uppercase;
+}
+
+h5, h6, .font-heading {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: var(--color-primary);
+  letter-spacing: -0.01em;
+}
+
+.font-mono, .sku-code {
+  font-family: var(--font-mono);
+  letter-spacing: 0.05em;
 }
 
 p {
@@ -67,10 +82,10 @@ img {
   padding-right: 1.5rem;
 }
 
-/* Barra de desplazamiento moderna */
+/* Barra de desplazamiento urbana oscura */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
 }
 
 ::-webkit-scrollbar-track {
@@ -78,12 +93,12 @@ img {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: #232736;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: var(--color-accent);
 }
 
 /* Estados de enfoque accesibles */
@@ -92,7 +107,7 @@ img {
   outline-offset: 2px;
 }
 
-/* Utilidades Comunes */
+/* Utilidades Streetwear */
 .sr-only {
   position: absolute;
   width: 1px;
@@ -105,50 +120,66 @@ img {
   border-width: 0;
 }
 
-.text-gold {
-  color: var(--color-accent);
+.text-accent, .text-gold {
+  color: var(--color-accent) !important;
 }
 
-.bg-gold {
+.text-lime {
+  color: var(--color-urban-lime) !important;
+}
+
+.bg-accent, .bg-gold {
   background-color: var(--color-accent);
   color: white;
 }
 
+/* Badges Técnicos Streetwear */
 .badge {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
   padding: 0.25rem 0.65rem;
-  border-radius: var(--radius-full);
-  font-size: 0.75rem;
-  font-weight: 600;
+  border-radius: var(--radius-xs);
+  font-size: 0.72rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
+  font-family: var(--font-heading);
 }
 
 .badge-sale {
   background: var(--color-sale);
   color: white;
+  box-shadow: 0 0 12px rgba(255, 51, 75, 0.4);
 }
 
 .badge-new {
-  background: var(--color-primary);
-  color: white;
+  background: var(--color-urban-lime);
+  color: #090a0f;
+  font-weight: 800;
 }
 
 .badge-wompi {
-  background: #1e3a8a;
+  background: var(--color-wompi);
   color: white;
 }
 
 .badge-stock {
-  background: #f1f5f9;
-  color: var(--color-text-main);
-  border: 1px solid var(--color-border);
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.3);
 }
 
 .badge-low-stock {
-  background: #fffbeb;
-  color: #b45309;
-  border: 1px solid #fef3c7;
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.badge-street {
+  background: rgba(255, 255, 255, 0.08);
+  color: #f8fafc;
+  border: 1px solid var(--color-border);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
 }

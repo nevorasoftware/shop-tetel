@@ -1,4 +1,9 @@
 /* -------------------------------------------------------------
+   TETEL URBAN STREETWEAR COMPONENTS
+   Botones de Alto Contraste, Inputs Técnicos, Modales y Drawers
+------------------------------------------------------------- */
+
+/* -------------------------------------------------------------
    BOTONES
 ------------------------------------------------------------- */
 .btn {
@@ -6,41 +11,52 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
-  border-radius: var(--radius-md);
-  font-weight: 600;
-  font-size: 0.95rem;
+  padding: 0.8rem 1.6rem;
+  border-radius: var(--radius-xs);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.925rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
   transition: all var(--transition-base);
   user-select: none;
   text-align: center;
+  position: relative;
+  overflow: hidden;
 }
 
 .btn-primary {
-  background-color: var(--color-primary);
-  color: var(--color-text-inverse);
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+  background-color: #ffffff;
+  color: #090a0f;
+  border: 1px solid #ffffff;
+  box-shadow: 0 4px 16px rgba(255, 255, 255, 0.15);
 }
 
 .btn-primary:hover {
-  background-color: var(--color-primary-light);
-  transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.25);
+  background-color: var(--color-accent);
+  color: #ffffff;
+  border-color: var(--color-accent);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-red-glow);
 }
 
 .btn-primary:active {
   transform: translateY(0);
 }
 
-.btn-gold {
-  background: linear-gradient(135deg, #d4af37, #aa7c11);
+.btn-accent, .btn-gold {
+  background-color: var(--color-accent);
   color: #ffffff;
-  box-shadow: 0 4px 14px rgba(197, 155, 39, 0.35);
+  border: 1px solid var(--color-accent);
+  box-shadow: 0 4px 18px rgba(255, 42, 85, 0.35);
 }
 
-.btn-gold:hover {
-  background: linear-gradient(135deg, #dfbc45, #b88615);
-  transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(197, 155, 39, 0.45);
+.btn-accent:hover, .btn-gold:hover {
+  background-color: #ffffff;
+  color: #090a0f;
+  border-color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 22px rgba(255, 255, 255, 0.25);
 }
 
 .btn-secondary {
@@ -51,28 +67,30 @@
 
 .btn-secondary:hover {
   background-color: var(--color-surface-hover);
-  border-color: #cbd5e1;
+  border-color: var(--color-text-muted);
+  transform: translateY(-1px);
 }
 
 .btn-outline {
-  border: 1.5px solid var(--color-primary);
-  color: var(--color-primary);
+  border: 1.5px solid var(--color-border);
+  color: var(--color-text-main);
   background: transparent;
 }
 
 .btn-outline:hover {
-  background-color: var(--color-primary);
-  color: white;
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  background: var(--color-accent-subtle);
 }
 
 .btn-sm {
-  padding: 0.45rem 0.85rem;
-  font-size: 0.825rem;
-  border-radius: var(--radius-sm);
+  padding: 0.45rem 0.95rem;
+  font-size: 0.8rem;
+  border-radius: var(--radius-xs);
 }
 
 .btn-lg {
-  padding: 1rem 2rem;
+  padding: 1.05rem 2.2rem;
   font-size: 1.05rem;
 }
 
@@ -87,45 +105,49 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-xs);
   color: var(--color-text-main);
   background: var(--color-surface);
-  border: 1px solid var(--color-border-subtle);
+  border: 1px solid var(--color-border);
   transition: all var(--transition-fast);
 }
 
 .btn-icon:hover {
   background: var(--color-surface-hover);
+  border-color: var(--color-accent);
+  color: var(--color-accent);
   transform: scale(1.05);
-  box-shadow: var(--shadow-sm);
 }
 
 .btn-wompi {
-  background: linear-gradient(135deg, #1e40af, #172554);
+  background: linear-gradient(135deg, #2563eb, #1e40af);
   color: white;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 4px 16px rgba(30, 64, 175, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 4px 18px rgba(37, 99, 235, 0.4);
 }
 
 .btn-wompi:hover {
-  background: linear-gradient(135deg, #2563eb, #1e3a8a);
-  box-shadow: 0 6px 20px rgba(30, 64, 175, 0.45);
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  box-shadow: 0 6px 24px rgba(37, 99, 235, 0.55);
+  transform: translateY(-1px);
 }
 
 /* -------------------------------------------------------------
-   FORMULARIOS Y CAMPOS
+   FORMULARIOS Y CAMPOS TÉCNICOS
 ------------------------------------------------------------- */
 .form-group {
   display: flex;
   flex-direction: column;
   gap: 0.45rem;
-  margin-bottom: 1.1rem;
+  margin-bottom: 1.15rem;
 }
 
 .form-label {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--color-text-main);
+  font-size: 0.825rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -134,15 +156,16 @@
 .form-label .optional {
   font-weight: 400;
   color: var(--color-text-subtle);
-  font-size: 0.75rem;
+  font-size: 0.72rem;
+  text-transform: none;
 }
 
 .form-input, .form-select, .form-textarea {
   width: 100%;
-  padding: 0.75rem 1rem;
+  padding: 0.8rem 1.1rem;
   border: 1.5px solid var(--color-border);
-  border-radius: var(--radius-md);
-  background-color: var(--color-surface);
+  border-radius: var(--radius-xs);
+  background-color: var(--color-bg-alt);
   color: var(--color-text-main);
   font-size: 0.95rem;
   transition: all var(--transition-fast);
@@ -150,8 +173,9 @@
 
 .form-input:focus, .form-select:focus, .form-textarea:focus {
   border-color: var(--color-accent);
-  box-shadow: 0 0 0 3px rgba(197, 155, 39, 0.15);
+  box-shadow: 0 0 0 3px rgba(255, 42, 85, 0.2);
   outline: none;
+  background-color: var(--color-surface);
 }
 
 .form-row {
@@ -167,20 +191,20 @@
 }
 
 /* -------------------------------------------------------------
-   PANELES Y GLASSMORPHISM
+   PANELES Y GLASSMORPHISM NOIR
 ------------------------------------------------------------- */
 .glass-panel {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  border-radius: var(--radius-lg);
+  background: rgba(20, 22, 32, 0.85);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
   box-shadow: var(--shadow-glass);
 }
 
 .card {
   background: var(--color-surface);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-sm);
   border: 1px solid var(--color-border);
   box-shadow: var(--shadow-sm);
   overflow: hidden;
@@ -189,17 +213,17 @@
 
 .card:hover {
   box-shadow: var(--shadow-lg);
-  border-color: #cbd5e1;
+  border-color: #3b4258;
 }
 
 /* -------------------------------------------------------------
-   SLIDE-OVER DRAWERS (CARRITO Y WISHLIST ESTILO SHOPIFY)
+   SLIDE-OVER DRAWERS (CARRITO Y WISHLIST STREETWEAR)
 ------------------------------------------------------------- */
 .drawer-backdrop {
   position: fixed;
   inset: 0;
-  background-color: rgba(15, 23, 42, 0.6);
-  backdrop-filter: blur(4px);
+  background-color: rgba(9, 10, 15, 0.8);
+  backdrop-filter: blur(6px);
   z-index: 1000;
   opacity: 0;
   visibility: hidden;
@@ -217,14 +241,15 @@
   right: 0;
   bottom: 0;
   width: 100%;
-  max-width: 440px;
-  background-color: var(--color-surface);
+  max-width: 460px;
+  background-color: var(--color-surface-elevated);
   z-index: 1001;
-  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.15);
+  box-shadow: -10px 0 40px rgba(0, 0, 0, 0.8);
   display: flex;
   flex-direction: column;
   transform: translateX(100%);
   transition: transform var(--transition-smooth);
+  border-left: 1px solid var(--color-border);
 }
 
 .drawer-backdrop.active .drawer {
@@ -232,20 +257,23 @@
 }
 
 .drawer-header {
-  padding: 1.25rem 1.5rem;
+  padding: 1.35rem 1.6rem;
   border-bottom: 1px solid var(--color-border);
   display: flex;
   align-items: center;
   justify-content: space-between;
+  background: var(--color-bg-alt);
 }
 
 .drawer-title {
-  font-size: 1.25rem;
-  font-weight: 700;
+  font-family: var(--font-urban);
+  font-size: 1.3rem;
+  font-weight: 800;
   color: var(--color-primary);
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.6rem;
+  letter-spacing: -0.02em;
 }
 
 .drawer-body {
@@ -255,9 +283,9 @@
 }
 
 .drawer-footer {
-  padding: 1.25rem 1.5rem;
+  padding: 1.35rem 1.6rem;
   border-top: 1px solid var(--color-border);
-  background: var(--color-bg);
+  background: var(--color-bg-alt);
 }
 
 /* -------------------------------------------------------------
@@ -266,8 +294,8 @@
 .modal-backdrop {
   position: fixed;
   inset: 0;
-  background-color: rgba(15, 23, 42, 0.7);
-  backdrop-filter: blur(6px);
+  background-color: rgba(9, 10, 15, 0.85);
+  backdrop-filter: blur(8px);
   z-index: 1100;
   display: flex;
   align-items: center;
@@ -284,15 +312,16 @@
 }
 
 .modal-content {
-  background: var(--color-surface);
-  border-radius: var(--radius-xl);
+  background: var(--color-surface-elevated);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
   width: 100%;
-  max-width: 840px;
+  max-width: 860px;
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8);
   position: relative;
-  transform: scale(0.95) translateY(10px);
+  transform: scale(0.96) translateY(10px);
   transition: transform var(--transition-smooth);
 }
 
@@ -304,20 +333,23 @@
   position: absolute;
   top: 1.25rem;
   right: 1.25rem;
-  width: 36px;
-  height: 36px;
-  border-radius: var(--radius-full);
-  background: var(--color-bg);
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-xs);
+  background: var(--color-bg-alt);
+  border: 1px solid var(--color-border);
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--color-text-main);
   z-index: 10;
-  transition: background var(--transition-fast);
+  transition: all var(--transition-fast);
 }
 
 .modal-close-btn:hover {
-  background: #e2e8f0;
+  background: var(--color-accent);
+  color: white;
+  border-color: var(--color-accent);
 }
 
 /* -------------------------------------------------------------
@@ -336,17 +368,19 @@
 
 .toast {
   pointer-events: auto;
-  min-width: 300px;
-  max-width: 420px;
-  background: var(--color-primary);
+  min-width: 320px;
+  max-width: 440px;
+  background: #141722;
   color: white;
-  padding: 0.9rem 1.25rem;
-  border-radius: var(--radius-md);
+  padding: 1rem 1.4rem;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--color-border);
   box-shadow: var(--shadow-xl);
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.85rem;
   font-size: 0.9rem;
+  font-family: var(--font-heading);
   transform: translateY(20px);
   opacity: 0;
   animation: toastIn 0.3s forwards cubic-bezier(0.16, 1, 0.3, 1);
@@ -372,40 +406,43 @@
    SWATCHES DE COLOR Y TALLAS
 ------------------------------------------------------------- */
 .size-pill {
-  min-width: 42px;
-  height: 42px;
-  padding: 0 0.6rem;
+  min-width: 44px;
+  height: 44px;
+  padding: 0 0.75rem;
   border: 1.5px solid var(--color-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-xs);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-weight: 600;
-  font-size: 0.85rem;
-  background: var(--color-surface);
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.875rem;
+  background: var(--color-bg-alt);
   color: var(--color-text-main);
   cursor: pointer;
   transition: all var(--transition-fast);
 }
 
 .size-pill:hover {
-  border-color: var(--color-primary);
+  border-color: #ffffff;
+  color: #ffffff;
 }
 
 .size-pill.active {
-  background: var(--color-primary);
-  color: white;
-  border-color: var(--color-primary);
+  background: #ffffff;
+  color: #090a0f;
+  border-color: #ffffff;
+  font-weight: 800;
 }
 
 .color-dot {
-  width: 28px;
-  height: 28px;
-  border-radius: var(--radius-full);
+  width: 30px;
+  height: 30px;
+  border-radius: var(--radius-xs);
   display: inline-block;
   cursor: pointer;
   position: relative;
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 0 0 1px var(--color-border);
   transition: transform var(--transition-fast);
 }
 
@@ -414,6 +451,6 @@
 }
 
 .color-dot.active {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
 }

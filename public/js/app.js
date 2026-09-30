@@ -110,8 +110,8 @@ class StoreApp {
             <img src="${mainImg}" alt="${p.name}" class="product-image" loading="lazy">
             <div class="product-badges">
               ${hasDiscount ? `<span class="badge badge-sale">-${discountPercent}% OFF</span>` : ''}
-              ${p.isNew ? `<span class="badge badge-new">NUEVO</span>` : ''}
-              ${p.isFeatured ? `<span class="badge bg-gold">EXCLUSIVO</span>` : ''}
+              ${p.isNew ? `<span class="badge badge-new">DROP 01</span>` : ''}
+              ${p.isFeatured ? `<span class="badge badge-street">CULTURA</span>` : ''}
             </div>
 
             <button class="wishlist-toggle-btn ${isWish ? 'active' : ''}" onclick="storeApp.toggleWishlist('${p.id}')" title="Guardar en lista de deseos">

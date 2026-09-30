@@ -6,10 +6,10 @@
   <title>TETEL | Atelier & Alta Moda El Salvador | Pagos Seguros Wompi 3DS</title>
   <meta name="description" content="E-commerce de moda y prendas exclusivas en El Salvador. Envíos a los 14 departamentos y pagos 100% seguros con Wompi 3D Secure.">
 
-  <!-- Google Fonts: Playfair Display + Plus Jakarta Sans + IBM Plex Mono -->
+  <!-- Google Fonts: Syne + Space Grotesk + Plus Jakarta Sans + Space Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@700;800;900&display=swap" rel="stylesheet">
 
   <!-- Estilos CSS Modulares -->
   <link rel="stylesheet" href="/css/variables.css">
@@ -23,13 +23,35 @@
 <body>
 
   <!-- ============================================================= -->
-  <!-- BARRA DE ANUNCIOS SUPERIOR (SHOPIFY STYLE) -->
+  <!-- BARRA DE ANUNCIOS SUPERIOR URBAN STREETWEAR -->
   <!-- ============================================================= -->
   <div class="announcement-bar">
     <span>🇸🇻 <strong>Envíos garantizados</strong> a los 14 departamentos de El Salvador</span>
     <span class="badge-highlight">WOMPI 3DS</span>
-    <span>💳 Tarjetas de crédito y débito protegidas con <strong>3D Secure</strong></span>
+    <span>💳 Tarjetas protegidas con <strong>3D Secure</strong></span>
     <span>✨ Envío <strong>GRATIS</strong> en compras mayores a $60</span>
+  </div>
+
+  <!-- ============================================================= -->
+  <!-- CINTA MARQUEE TICKER TAPE URBANA (CONTINUOUS SCROLL) -->
+  <!-- ============================================================= -->
+  <div class="urban-marquee-ticker">
+    <div class="marquee-track">
+      <span class="marquee-item"><span class="highlight-tag">✦ DROP 01</span> THE NEW ERA</span>
+      <span class="marquee-item"><span class="highlight-red">★ HECHO CON CULTURA</span> EL SALVADOR</span>
+      <span class="marquee-item">LIMITED RELEASE JUNE 2026</span>
+      <span class="marquee-item"><span class="highlight-tag">🔒 WOMPI 3DS</span> PAGOS BLINDADOS CON TARJETA</span>
+      <span class="marquee-item">SAN SALVADOR [13.6929° N, 89.2182° W]</span>
+      <span class="marquee-item"><span class="highlight-red">✦ ENVÍOS 14 DEPARTAMENTOS</span> COBERTURA NACIONAL</span>
+      <span class="marquee-item">TETEL URBAN STREETWEAR ATELIER</span>
+      <span class="marquee-item"><span class="highlight-tag">✦ DROP 01</span> THE NEW ERA</span>
+      <span class="marquee-item"><span class="highlight-red">★ HECHO CON CULTURA</span> EL SALVADOR</span>
+      <span class="marquee-item">LIMITED RELEASE JUNE 2026</span>
+      <span class="marquee-item"><span class="highlight-tag">🔒 WOMPI 3DS</span> PAGOS BLINDADOS CON TARJETA</span>
+      <span class="marquee-item">SAN SALVADOR [13.6929° N, 89.2182° W]</span>
+      <span class="marquee-item"><span class="highlight-red">✦ ENVÍOS 14 DEPARTAMENTOS</span> COBERTURA NACIONAL</span>
+      <span class="marquee-item">TETEL URBAN STREETWEAR ATELIER</span>
+    </div>
   </div>
 
   <!-- ============================================================= -->
@@ -40,7 +62,7 @@
       <!-- Logo Marca con Logo TL Oficial -->
       <a href="/" class="brand-logo" onclick="window.location.hash = ''">
         <div style="display: flex; align-items: center; gap: 0.75rem;">
-          <img src="/assets/logo.png" alt="TETEL TL Logo" style="width: 44px; height: 44px; object-fit: contain; border-radius: 4px; border: 1px solid var(--color-border);">
+          <img src="/assets/logo.png" alt="TETEL TL Logo" style="width: 44px; height: 44px; object-fit: contain; border-radius: 4px; border: 1px solid var(--color-border); background: #ece9e2; padding: 2px;">
           <div>
             <span class="brand-title">TETEL</span>
             <span class="brand-subtitle">HECHO CON CULTURA &bull; EL SALVADOR</span>
@@ -54,7 +76,7 @@
         <a href="#mujer" class="nav-link" onclick="storeApp.setCategory('Mujer')">Mujer</a>
         <a href="#hombre" class="nav-link" onclick="storeApp.setCategory('Hombre')">Hombre</a>
         <a href="#unisex" class="nav-link" onclick="storeApp.setCategory('Unisex')">Unisex</a>
-        <a href="#ofertas" class="nav-link text-gold" onclick="storeApp.setCategory('Ofertas')">🔥 Ofertas Especiales</a>
+        <a href="#ofertas" class="nav-link text-accent" onclick="storeApp.setCategory('Ofertas')">🔥 Ofertas Especiales</a>
       </nav>
 
       <!-- Acciones de Usuario -->
@@ -72,7 +94,7 @@
         </button>
 
         <!-- Acceso Directo al Panel de Administración -->
-        <a href="#admin" class="btn btn-sm btn-outline" style="border-radius: var(--radius-full); font-size: 0.8rem; font-weight: 700;">
+        <a href="#admin" class="btn btn-sm btn-outline" style="border-radius: var(--radius-xs); font-size: 0.8rem; font-weight: 700;">
           ⚙️ Admin Store
         </a>
       </div>
@@ -83,22 +105,22 @@
   <!-- VISTA 1: TIENDA ONLINE / STOREFRONT -->
   <!-- ============================================================= -->
   <main id="store-main-view">
-    <!-- Hero Banner The New Era -->
+    <!-- Hero Banner The New Era Streetwear -->
     <section class="hero-section">
       <div class="container hero-grid">
         <div>
           <div class="hero-tag">
-            <span>✦ LIMITED RELEASE &bull; JUNE 2026 &bull; HECHO CON CULTURA</span>
+            <span>✦ DROP 01 // LIMITED RELEASE // JUNE 2026 // HECHO CON CULTURA</span>
           </div>
           <h1 class="hero-title">
             THE NEW <span>ERA</span>.
           </h1>
           <p class="hero-description">
-            Una nueva visión. Diseños únicos inspirados en cultura, hechos para destacar. Descubre las chaquetas de eco-cuero con bandana paisley, camisas resort urbanas, joggers y accesorios exclusivos con envíos a los 14 departamentos de El Salvador.
+            Una nueva visión. Diseños únicos, inspirados en cultura, hechos para destacar. Chaqueta híbrida eco-cuero & bandana paisley, camisas resort de autor, joggers y accesorios de streetwear contemporáneo en El Salvador con pagos protegidos Wompi 3DS.
           </p>
           <div class="hero-buttons">
-            <a href="#catalogo" class="btn btn-gold btn-lg" onclick="storeApp.setCategory('Todos')">
-              Descubre la Colección
+            <a href="#catalogo" class="btn btn-primary btn-lg" onclick="storeApp.setCategory('Todos')">
+              Descubrir Colección
             </a>
             <a href="#ofertas" class="btn btn-secondary btn-lg" onclick="storeApp.setCategory('Ofertas')">
               Ver Ofertas con Descuento
@@ -113,10 +135,12 @@
           <div class="hero-floating-card">
             <span class="wompi-logo-pill">WOMPI 3DS</span>
             <div>
-              <div style="font-weight: 700; font-size: 0.9rem;">Pagos 100% Protegidos</div>
+              <div style="font-weight: 800; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.04em;">Pagos 100% Protegidos</div>
               <div style="font-size: 0.75rem; color: var(--color-text-muted);">Envíos a todo El Salvador • 3D Secure</div>
             </div>
           </div>
+        </div>
+      </div>
     </section>
 
     <!-- Barra de Confianza & Beneficios -->
@@ -158,10 +182,10 @@
       <div class="sv-delivery-banner">
         <div class="sv-delivery-content">
           <div>
-            <span class="badge" style="background:#1e3a8a; color:white; margin-bottom: 0.5rem;">LOGÍSTICA EL SALVADOR</span>
-            <h2 class="sv-delivery-title">Consulta el costo y tiempo de entrega en tu zona</h2>
-            <p style="margin: 0; font-size: 0.95rem;">
-              Selecciona tu departamento y distrito para conocer la tarifa exacta de envío antes de ordenar.
+            <span class="badge" style="background: rgba(37, 99, 235, 0.2); color: #60a5fa; border: 1px solid rgba(37, 99, 235, 0.4); margin-bottom: 0.65rem;">SV LOGISTICS TERMINAL &bull; 14 DEPARTAMENTOS</span>
+            <h2 class="sv-delivery-title">Calculadora de Flete & Tiempo de Entrega</h2>
+            <p style="margin: 0; font-size: 0.95rem; color: #94a3b8;">
+              Cotiza la tarifa de envío a domicilio y conoce el tiempo de tránsito exacto en tu municipio antes de ordenar.
             </p>
           </div>
 
@@ -179,12 +203,12 @@
 
             <div class="sv-delivery-result">
               <div>
-                <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--color-text-subtle); font-weight: 700;">Tarifa de Envío</div>
+                <div style="font-size: 0.72rem; text-transform: uppercase; color: var(--color-text-subtle); font-weight: 700; font-family: var(--font-mono);">Tarifa de Envío</div>
                 <div class="sv-cost-tag" id="home-calc-cost">$3.50</div>
               </div>
               <div style="text-align: right;">
-                <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--color-text-subtle); font-weight: 700;">Tiempo de Tránsito</div>
-                <div style="font-weight: 700; font-size: 0.95rem;" id="home-calc-time">⏱️ 24 horas hábiles</div>
+                <div style="font-size: 0.72rem; text-transform: uppercase; color: var(--color-text-subtle); font-weight: 700; font-family: var(--font-mono);">Tiempo de Tránsito</div>
+                <div style="font-weight: 700; font-size: 0.95rem; color: #ffffff;" id="home-calc-time">⏱️ 24 horas hábiles</div>
               </div>
             </div>
           </div>
@@ -192,13 +216,13 @@
       </div>
     </div>
 
-    <!-- Catálogo de Prendas -->
+    <!-- Catálogo de Prendas Streetwear -->
     <section class="container catalog-section" id="catalogo">
       <div class="catalog-header">
         <div>
-          <span class="badge" style="background: var(--color-accent-subtle); color: var(--color-accent-hover); margin-bottom: 0.35rem;">CATÁLOGO TETEL</span>
-          <h2 class="section-title">Prendas y Tendencias de Moda</h2>
-          <p>Piezas curadas con código SKU único, detalles de confección y precios especiales.</p>
+          <span class="badge" style="background: rgba(255, 42, 85, 0.15); color: var(--color-accent); border: 1px solid rgba(255, 42, 85, 0.35); margin-bottom: 0.4rem;">DROP 01 // CATÁLOGO OFICIAL</span>
+          <h2 class="section-title">Prendas & Streetwear Atelier</h2>
+          <p style="color: #94a3b8;">Diseños exclusivos con código SKU, detalles bandana paisley y confección de alto gramaje.</p>
         </div>
 
         <!-- Filtro de Ordenamiento -->

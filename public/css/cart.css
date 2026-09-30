@@ -1,37 +1,46 @@
 /* -------------------------------------------------------------
-   BARRA DE PROGRESO DE ENVÍO GRATIS (SHOPIFY PROGRESS METER)
+   TETEL URBAN STREETWEAR CART STYLES
+   Slide-Over Drawer, Medidor de Envío Gratis y Resumen de Compra
+------------------------------------------------------------- */
+
+/* -------------------------------------------------------------
+   BARRA DE PROGRESO DE ENVÍO GRATIS (URBAN METER)
 ------------------------------------------------------------- */
 .free-shipping-meter {
   background: var(--color-bg);
-  border-radius: var(--radius-md);
-  padding: 0.85rem 1rem;
+  border-radius: var(--radius-xs);
+  padding: 0.95rem 1.15rem;
   margin-bottom: 1.25rem;
   border: 1px solid var(--color-border);
 }
 
 .free-shipping-text {
-  font-size: 0.825rem;
-  font-weight: 600;
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  font-weight: 700;
   color: var(--color-text-main);
   margin-bottom: 0.5rem;
   display: flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.45rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .meter-track {
   width: 100%;
   height: 6px;
-  background-color: #e2e8f0;
+  background-color: #232736;
   border-radius: var(--radius-full);
   overflow: hidden;
 }
 
 .meter-bar {
   height: 100%;
-  background: linear-gradient(90deg, var(--color-accent), #10b981);
+  background: linear-gradient(90deg, var(--color-accent), var(--color-urban-lime));
   border-radius: var(--radius-full);
   transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 0 10px rgba(204, 255, 0, 0.5);
 }
 
 /* -------------------------------------------------------------
@@ -46,19 +55,20 @@
 .cart-item {
   display: grid;
   grid-template-columns: 75px 1fr auto;
-  gap: 1rem;
+  gap: 1.15rem;
   align-items: center;
   padding-bottom: 1.25rem;
-  border-bottom: 1px solid var(--color-border-subtle);
+  border-bottom: 1px solid var(--color-border);
   position: relative;
 }
 
 .cart-item-image {
   width: 75px;
   height: 95px;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-xs);
   overflow: hidden;
-  background-color: #f1f5f9;
+  background-color: #0d0f17;
+  border: 1px solid var(--color-border);
 }
 
 .cart-item-image img {
@@ -74,9 +84,10 @@
 }
 
 .cart-item-title {
+  font-family: var(--font-heading);
   font-size: 0.95rem;
   font-weight: 700;
-  color: var(--color-text-main);
+  color: #ffffff;
   line-height: 1.3;
 }
 
@@ -89,42 +100,48 @@
 }
 
 .cart-item-meta-badge {
-  background: #f1f5f9;
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  font-family: var(--font-mono);
   padding: 0.15rem 0.45rem;
-  border-radius: var(--radius-sm);
-  font-weight: 600;
+  border-radius: var(--radius-xs);
+  font-weight: 700;
+  border: 1px solid var(--color-border);
 }
 
 .cart-item-stepper {
   display: inline-flex;
   align-items: center;
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  background: white;
+  border-radius: var(--radius-xs);
+  background: var(--color-bg);
   width: fit-content;
   margin-top: 0.4rem;
 }
 
 .stepper-btn {
-  width: 26px;
-  height: 26px;
+  width: 28px;
+  height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 700;
-  color: var(--color-text-main);
-  transition: background var(--transition-fast);
+  color: #ffffff;
+  transition: all var(--transition-fast);
 }
 
 .stepper-btn:hover {
-  background-color: var(--color-bg);
+  background-color: var(--color-surface);
+  color: var(--color-accent);
 }
 
 .stepper-value {
   min-width: 28px;
   text-align: center;
+  font-family: var(--font-mono);
   font-size: 0.85rem;
-  font-weight: 600;
+  font-weight: 700;
+  color: #ffffff;
 }
 
 .cart-item-price-col {
@@ -136,9 +153,10 @@
 }
 
 .cart-item-price {
-  font-weight: 700;
-  font-size: 1rem;
-  color: var(--color-primary);
+  font-family: var(--font-mono);
+  font-weight: 800;
+  font-size: 1.05rem;
+  color: #ffffff;
 }
 
 .cart-item-remove-btn {
@@ -154,16 +172,19 @@
 
 /* Estimador de envío en carrito */
 .cart-shipping-calc-box {
-  background: white;
+  background: var(--color-bg);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  padding: 0.85rem;
+  border-radius: var(--radius-xs);
+  padding: 0.85rem 1rem;
   margin: 1rem 0;
 }
 
 .cart-shipping-calc-box label {
-  font-size: 0.8rem;
-  font-weight: 600;
+  font-family: var(--font-heading);
+  font-size: 0.775rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
   margin-bottom: 0.35rem;
   display: block;
 }
@@ -180,11 +201,12 @@
 
 .cart-summary-row.total-row {
   border-top: 1px solid var(--color-border);
-  padding-top: 0.75rem;
-  margin-top: 0.75rem;
-  font-size: 1.15rem;
+  padding-top: 0.85rem;
+  margin-top: 0.85rem;
+  font-size: 1.25rem;
   font-weight: 800;
-  color: var(--color-primary);
+  color: #ffffff;
+  font-family: var(--font-mono);
 }
 
 .empty-state {
@@ -197,10 +219,11 @@
 }
 
 .empty-state-icon {
-  width: 64px;
-  height: 64px;
-  border-radius: var(--radius-full);
+  width: 68px;
+  height: 68px;
+  border-radius: var(--radius-xs);
   background: var(--color-bg);
+  border: 1px solid var(--color-border);
   display: flex;
   align-items: center;
   justify-content: center;
