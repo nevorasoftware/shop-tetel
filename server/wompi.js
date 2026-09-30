@@ -9,9 +9,9 @@ let tokenExpiresAt = 0;
  * Endpoint: POST https://id.wompi.sv/connect/token
  */
 export async function getWompiAccessToken() {
-  const clientId = getSetting('wompi_client_id');
-  const clientSecret = getSetting('wompi_client_secret');
-  const isSimulator = getSetting('wompi_simulator_mode') === 'true';
+  const clientId = await getSetting('wompi_client_id');
+  const clientSecret = await getSetting('wompi_client_secret');
+  const isSimulator = (await getSetting('wompi_simulator_mode')) === 'true';
 
   if (isSimulator || !clientId || clientId.startsWith('demo_')) {
     return 'demo_simulated_bearer_token_' + Date.now();
@@ -85,9 +85,9 @@ export async function createWompiTransaction3DS({
   orderNumber,
   redirectUrlBase
 }) {
-  const isSimulator = getSetting('wompi_simulator_mode') === 'true';
-  const clientId = getSetting('wompi_client_id');
-  const clientSecret = getSetting('wompi_client_secret');
+  const isSimulator = (await getSetting('wompi_simulator_mode')) === 'true';
+  const clientId = await getSetting('wompi_client_id');
+  const clientSecret = await getSetting('wompi_client_secret');
 
   const idRegion = DEPARTMENT_ISO_MAP[delivery.department] || 'SV-SS';
   const cleanCardNumber = cardData.cardNumber.replace(/\s+/g, '');
@@ -192,7 +192,7 @@ export async function createWompiTransaction3DS({
  * Endpoint: GET https://api.wompi.sv/TransaccionCompra/{id}
  */
 export async function getWompiTransaction(transactionId) {
-  const isSimulator = getSetting('wompi_simulator_mode') === 'true';
+  const isSimulator = (await getSetting('wompi_simulator_mode')) === 'true';
   if (isSimulator) {
     return {
       idTransaccion: transactionId,

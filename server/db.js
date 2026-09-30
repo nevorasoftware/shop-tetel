@@ -1,114 +1,292 @@
 import { DatabaseSync } from 'node:sqlite';
+import pg from 'pg';
 import path from 'node:path';
 import fs from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
+const { Pool } = pg;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const DB_PATH = process.env.DATABASE_PATH || path.join(__dirname, 'database.sqlite');
-const dbDir = path.dirname(DB_PATH);
-if (!fs.existsSync(dbDir)) {
-  fs.mkdirSync(dbDir, { recursive: true });
-}
-const db = new DatabaseSync(DB_PATH);
+// Detectar si estamos conectados a PostgreSQL (ej. Railway) o SQLite local
+const isPostgres = Boolean(process.env.DATABASE_URL);
 
-// Habilitar Foreign Keys y modo WAL para mejor concurrencia
-db.exec('PRAGMA foreign_keys = ON;');
+let pool = null;
+let sqliteDb = null;
 
-export function initDatabase() {
-  // 1. Tabla de Productos
-  db.exec(`
-    CREATE TABLE IF NOT EXISTS products (
-      id TEXT PRIMARY KEY,
-      name TEXT NOT NULL,
-      sku TEXT UNIQUE NOT NULL,
-      category TEXT NOT NULL,
-      subcategory TEXT,
-      price REAL NOT NULL,
-      discount_price REAL,
-      stock INTEGER NOT NULL DEFAULT 0,
-      sizes TEXT,
-      colors TEXT,
-      images TEXT,
-      description TEXT,
-      features TEXT,
-      fabric_care TEXT,
-      is_featured INTEGER DEFAULT 0,
-      is_sale INTEGER DEFAULT 0,
-      is_new INTEGER DEFAULT 0,
-      rating REAL DEFAULT 5.0,
-      reviews_count INTEGER DEFAULT 0,
-      created_at TEXT DEFAULT (datetime('now'))
-    );
-  `);
+if (isPostgres) {
+  const connectionString = process.env.DATABASE_URL;
+  const isInternal = connectionString.includes('.railway.internal');
 
-  // 2. Tabla de Pedidos / Órdenes
-  db.exec(`
-    CREATE TABLE IF NOT EXISTS orders (
-      id TEXT PRIMARY KEY,
-      order_number TEXT UNIQUE NOT NULL,
-      customer_name TEXT NOT NULL,
-      customer_email TEXT NOT NULL,
-      customer_phone TEXT NOT NULL,
-      department TEXT NOT NULL,
-      municipality TEXT NOT NULL,
-      district TEXT NOT NULL,
-      address_line TEXT NOT NULL,
-      reference_point TEXT,
-      postal_code TEXT,
-      subtotal REAL NOT NULL,
-      shipping_cost REAL NOT NULL,
-      total REAL NOT NULL,
-      payment_method TEXT DEFAULT 'wompi_3ds',
-      payment_status TEXT DEFAULT 'PENDIENTE',
-      wompi_transaction_id TEXT,
-      wompi_auth_code TEXT,
-      wompi_hash TEXT,
-      delivery_status TEXT DEFAULT 'Procesando',
-      notes TEXT,
-      created_at TEXT DEFAULT (datetime('now'))
-    );
-  `);
-
-  // 3. Tabla de Artículos por Pedido
-  db.exec(`
-    CREATE TABLE IF NOT EXISTS order_items (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      order_id TEXT NOT NULL,
-      product_id TEXT NOT NULL,
-      product_name TEXT NOT NULL,
-      product_sku TEXT NOT NULL,
-      product_image TEXT,
-      size TEXT,
-      color TEXT,
-      price REAL NOT NULL,
-      quantity INTEGER NOT NULL,
-      subtotal REAL NOT NULL,
-      FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE
-    );
-  `);
-
-  // 4. Tabla de Configuración de la Tienda
-  db.exec(`
-    CREATE TABLE IF NOT EXISTS settings (
-      key TEXT PRIMARY KEY,
-      value TEXT
-    );
-  `);
-
-  // Sembrar datos iniciales si no hay productos
-  seedInitialData();
+  console.log(`🐘 Conectando a Base de Datos PostgreSQL en Railway (${isInternal ? 'Red Privada' : 'Proxy'})...`);
+  pool = new Pool({
+    connectionString,
+    ssl: isInternal ? false : { rejectUnauthorized: false }
+  });
+} else {
+  const DB_PATH = process.env.DATABASE_PATH || path.join(__dirname, 'database.sqlite');
+  const dbDir = path.dirname(DB_PATH);
+  if (!fs.existsSync(dbDir)) {
+    fs.mkdirSync(dbDir, { recursive: true });
+  }
+  sqliteDb = new DatabaseSync(DB_PATH);
+  sqliteDb.exec('PRAGMA foreign_keys = ON;');
+  console.log(`📁 Usando motor de base de datos SQLite local: ${DB_PATH}`);
 }
 
-function seedInitialData() {
-  const countRow = db.prepare('SELECT COUNT(*) as count FROM products').get();
-  if (countRow.count === 0) {
-    console.log('🌱 Inicializando catálogo de prendas en SQLite...');
+/**
+ * Convierte consultas SQL universales con '?' a formato PostgreSQL ($1, $2, ...)
+ */
+function toPgQuery(sql, params = []) {
+  let index = 1;
+  const text = sql.replace(/\?/g, () => `$${index++}`);
+  return { text, values: params };
+}
+
+// ==============================================================================
+// INICIALIZACIÓN DE TABLAS Y DATOS SEMILLA
+// ==============================================================================
+export async function initDatabase() {
+  if (isPostgres) {
+    try {
+      // 1. Tabla de Productos
+      await pool.query(`
+        CREATE TABLE IF NOT EXISTS products (
+          id TEXT PRIMARY KEY,
+          name TEXT NOT NULL,
+          sku TEXT UNIQUE NOT NULL,
+          category TEXT NOT NULL,
+          subcategory TEXT,
+          price REAL NOT NULL,
+          discount_price REAL,
+          stock INTEGER NOT NULL DEFAULT 0,
+          sizes TEXT,
+          colors TEXT,
+          images TEXT,
+          description TEXT,
+          features TEXT,
+          fabric_care TEXT,
+          is_featured INTEGER DEFAULT 0,
+          is_sale INTEGER DEFAULT 0,
+          is_new INTEGER DEFAULT 0,
+          rating REAL DEFAULT 5.0,
+          reviews_count INTEGER DEFAULT 0,
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+      `);
+
+      // 2. Tabla de Pedidos / Órdenes
+      await pool.query(`
+        CREATE TABLE IF NOT EXISTS orders (
+          id TEXT PRIMARY KEY,
+          order_number TEXT UNIQUE NOT NULL,
+          customer_name TEXT NOT NULL,
+          customer_email TEXT NOT NULL,
+          customer_phone TEXT NOT NULL,
+          department TEXT NOT NULL,
+          municipality TEXT NOT NULL,
+          district TEXT NOT NULL,
+          address_line TEXT NOT NULL,
+          reference_point TEXT,
+          postal_code TEXT,
+          subtotal REAL NOT NULL,
+          shipping_cost REAL NOT NULL,
+          total REAL NOT NULL,
+          payment_method TEXT DEFAULT 'wompi_3ds',
+          payment_status TEXT DEFAULT 'PENDIENTE',
+          wompi_transaction_id TEXT,
+          wompi_auth_code TEXT,
+          wompi_hash TEXT,
+          delivery_status TEXT DEFAULT 'Procesando',
+          notes TEXT,
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+      `);
+
+      // 3. Tabla de Artículos por Pedido
+      await pool.query(`
+        CREATE TABLE IF NOT EXISTS order_items (
+          id SERIAL PRIMARY KEY,
+          order_id TEXT NOT NULL REFERENCES orders(id) ON DELETE CASCADE,
+          product_id TEXT NOT NULL,
+          product_name TEXT NOT NULL,
+          product_sku TEXT NOT NULL,
+          product_image TEXT,
+          size TEXT,
+          color TEXT,
+          price REAL NOT NULL,
+          quantity INTEGER NOT NULL,
+          subtotal REAL NOT NULL
+        );
+      `);
+
+      // 4. Tabla de Configuración de la Tienda
+      await pool.query(`
+        CREATE TABLE IF NOT EXISTS settings (
+          key TEXT PRIMARY KEY,
+          value TEXT
+        );
+      `);
+
+      console.log('✅ Esquema PostgreSQL inicializado con éxito.');
+      await seedPostgresData();
+    } catch (err) {
+      console.error('❌ Error al inicializar PostgreSQL:', err);
+      throw err;
+    }
+  } else {
+    // Inicialización SQLite
+    sqliteDb.exec(`
+      CREATE TABLE IF NOT EXISTS products (
+        id TEXT PRIMARY KEY,
+        name TEXT NOT NULL,
+        sku TEXT UNIQUE NOT NULL,
+        category TEXT NOT NULL,
+        subcategory TEXT,
+        price REAL NOT NULL,
+        discount_price REAL,
+        stock INTEGER NOT NULL DEFAULT 0,
+        sizes TEXT,
+        colors TEXT,
+        images TEXT,
+        description TEXT,
+        features TEXT,
+        fabric_care TEXT,
+        is_featured INTEGER DEFAULT 0,
+        is_sale INTEGER DEFAULT 0,
+        is_new INTEGER DEFAULT 0,
+        rating REAL DEFAULT 5.0,
+        reviews_count INTEGER DEFAULT 0,
+        created_at TEXT DEFAULT (datetime('now'))
+      );
+    `);
+
+    sqliteDb.exec(`
+      CREATE TABLE IF NOT EXISTS orders (
+        id TEXT PRIMARY KEY,
+        order_number TEXT UNIQUE NOT NULL,
+        customer_name TEXT NOT NULL,
+        customer_email TEXT NOT NULL,
+        customer_phone TEXT NOT NULL,
+        department TEXT NOT NULL,
+        municipality TEXT NOT NULL,
+        district TEXT NOT NULL,
+        address_line TEXT NOT NULL,
+        reference_point TEXT,
+        postal_code TEXT,
+        subtotal REAL NOT NULL,
+        shipping_cost REAL NOT NULL,
+        total REAL NOT NULL,
+        payment_method TEXT DEFAULT 'wompi_3ds',
+        payment_status TEXT DEFAULT 'PENDIENTE',
+        wompi_transaction_id TEXT,
+        wompi_auth_code TEXT,
+        wompi_hash TEXT,
+        delivery_status TEXT DEFAULT 'Procesando',
+        notes TEXT,
+        created_at TEXT DEFAULT (datetime('now'))
+      );
+    `);
+
+    sqliteDb.exec(`
+      CREATE TABLE IF NOT EXISTS order_items (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        order_id TEXT NOT NULL,
+        product_id TEXT NOT NULL,
+        product_name TEXT NOT NULL,
+        product_sku TEXT NOT NULL,
+        product_image TEXT,
+        size TEXT,
+        color TEXT,
+        price REAL NOT NULL,
+        quantity INTEGER NOT NULL,
+        subtotal REAL NOT NULL,
+        FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE
+      );
+    `);
+
+    sqliteDb.exec(`
+      CREATE TABLE IF NOT EXISTS settings (
+        key TEXT PRIMARY KEY,
+        value TEXT
+      );
+    `);
+
+    seedSqliteData();
+  }
+}
+
+async function seedPostgresData() {
+  const res = await pool.query('SELECT COUNT(*) as count FROM products');
+  if (parseInt(res.rows[0].count, 10) === 0) {
+    console.log('🌱 Sembrando catálogo inicial en PostgreSQL...');
     const seedPath = path.join(__dirname, 'data', 'seed_products.json');
     if (fs.existsSync(seedPath)) {
       const seedProducts = JSON.parse(fs.readFileSync(seedPath, 'utf-8'));
-      const insert = db.prepare(`
+      for (const prod of seedProducts) {
+        await pool.query(
+          `INSERT INTO products (
+            id, name, sku, category, subcategory, price, discount_price, stock,
+            sizes, colors, images, description, features, fabric_care,
+            is_featured, is_sale, is_new, rating, reviews_count
+          ) VALUES (
+            $1, $2, $3, $4, $5, $6, $7, $8,
+            $9, $10, $11, $12, $13, $14,
+            $15, $16, $17, $18, $19
+          )`,
+          [
+            prod.id,
+            prod.name,
+            prod.sku,
+            prod.category,
+            prod.subcategory || '',
+            prod.price,
+            prod.discountPrice ?? null,
+            prod.stock,
+            JSON.stringify(prod.sizes || []),
+            JSON.stringify(prod.colors || []),
+            JSON.stringify(prod.images || []),
+            prod.description || '',
+            JSON.stringify(prod.features || []),
+            JSON.stringify(prod.fabricCare || {}),
+            prod.isFeatured ? 1 : 0,
+            prod.isSale ? 1 : 0,
+            prod.isNew ? 1 : 0,
+            prod.rating || 5.0,
+            prod.reviewsCount || 0
+          ]
+        );
+      }
+      console.log(`✅ ${seedProducts.length} prendas registradas en PostgreSQL.`);
+    }
+  }
+
+  const defaultSettings = [
+    { key: 'store_name', value: 'TETEL | Hecho con Cultura El Salvador' },
+    { key: 'wompi_client_id', value: process.env.WOMPI_CLIENT_ID || 'demo_wompi_app_id' },
+    { key: 'wompi_client_secret', value: process.env.WOMPI_CLIENT_SECRET || 'demo_wompi_secret' },
+    { key: 'wompi_environment', value: process.env.WOMPI_ENVIRONMENT || 'desarrollo' },
+    { key: 'wompi_simulator_mode', value: 'true' },
+    { key: 'free_shipping_threshold', value: '60.00' },
+    { key: 'currency', value: 'USD' }
+  ];
+
+  for (const s of defaultSettings) {
+    await pool.query(
+      `INSERT INTO settings (key, value) VALUES ($1, $2) ON CONFLICT (key) DO NOTHING`,
+      [s.key, s.value]
+    );
+  }
+}
+
+function seedSqliteData() {
+  const countRow = sqliteDb.prepare('SELECT COUNT(*) as count FROM products').get();
+  if (countRow.count === 0) {
+    console.log('🌱 Sembrando catálogo inicial en SQLite...');
+    const seedPath = path.join(__dirname, 'data', 'seed_products.json');
+    if (fs.existsSync(seedPath)) {
+      const seedProducts = JSON.parse(fs.readFileSync(seedPath, 'utf-8'));
+      const insert = sqliteDb.prepare(`
         INSERT INTO products (
           id, name, sku, category, subcategory, price, discount_price, stock,
           sizes, colors, images, description, features, fabric_care,
@@ -143,22 +321,21 @@ function seedInitialData() {
           prod.reviewsCount || 0
         );
       }
-      console.log(`✅ ${seedProducts.length} prendas registradas exitosamente.`);
+      console.log(`✅ ${seedProducts.length} prendas registradas en SQLite.`);
     }
   }
 
-  // Valores predeterminados de configuración
   const defaultSettings = [
-    { key: 'store_name', value: 'TETEL | Atelier & Moda El Salvador' },
+    { key: 'store_name', value: 'TETEL | Hecho con Cultura El Salvador' },
     { key: 'wompi_client_id', value: process.env.WOMPI_CLIENT_ID || 'demo_wompi_app_id' },
     { key: 'wompi_client_secret', value: process.env.WOMPI_CLIENT_SECRET || 'demo_wompi_secret' },
     { key: 'wompi_environment', value: process.env.WOMPI_ENVIRONMENT || 'desarrollo' },
-    { key: 'wompi_simulator_mode', value: 'true' }, // Permite probar 3DS de inmediato sin credenciales reales
+    { key: 'wompi_simulator_mode', value: 'true' },
     { key: 'free_shipping_threshold', value: '60.00' },
     { key: 'currency', value: 'USD' }
   ];
 
-  const insertSetting = db.prepare(`
+  const insertSetting = sqliteDb.prepare(`
     INSERT OR IGNORE INTO settings (key, value) VALUES (?, ?)
   `);
   for (const s of defaultSettings) {
@@ -166,8 +343,10 @@ function seedInitialData() {
   }
 }
 
-// Helpers para Productos
-export function getAllProducts(filters = {}) {
+// ==============================================================================
+// PRODUCTOS
+// ==============================================================================
+export async function getAllProducts(filters = {}) {
   let sql = 'SELECT * FROM products WHERE 1=1';
   const params = [];
 
@@ -185,7 +364,7 @@ export function getAllProducts(filters = {}) {
   }
 
   if (filters.search) {
-    sql += ' AND (name LIKE ? OR sku LIKE ? OR description LIKE ?)';
+    sql += ' AND (LOWER(name) LIKE LOWER(?) OR LOWER(sku) LIKE LOWER(?) OR LOWER(description) LIKE LOWER(?))';
     const term = `%${filters.search}%`;
     params.push(term, term, term);
   }
@@ -198,38 +377,45 @@ export function getAllProducts(filters = {}) {
     sql += ' ORDER BY created_at DESC';
   }
 
-  const rows = db.prepare(sql).all(...params);
-  return rows.map(formatProductFromRow);
+  if (isPostgres) {
+    const q = toPgQuery(sql, params);
+    const res = await pool.query(q.text, q.values);
+    return res.rows.map(formatProductFromRow);
+  } else {
+    const rows = sqliteDb.prepare(sql).all(...params);
+    return rows.map(formatProductFromRow);
+  }
 }
 
-export function getProductById(id) {
-  const row = db.prepare('SELECT * FROM products WHERE id = ?').get(id);
-  return row ? formatProductFromRow(row) : null;
+export async function getProductById(id) {
+  if (isPostgres) {
+    const res = await pool.query('SELECT * FROM products WHERE id = $1', [id]);
+    return res.rows[0] ? formatProductFromRow(res.rows[0]) : null;
+  } else {
+    const row = sqliteDb.prepare('SELECT * FROM products WHERE id = ?').get(id);
+    return row ? formatProductFromRow(row) : null;
+  }
 }
 
-export function getProductBySku(sku) {
-  const row = db.prepare('SELECT * FROM products WHERE sku = ?').get(sku);
-  return row ? formatProductFromRow(row) : null;
+export async function getProductBySku(sku) {
+  const cleanSku = (sku || '').trim().toUpperCase();
+  if (isPostgres) {
+    const res = await pool.query('SELECT * FROM products WHERE UPPER(sku) = $1', [cleanSku]);
+    return res.rows[0] ? formatProductFromRow(res.rows[0]) : null;
+  } else {
+    const row = sqliteDb.prepare('SELECT * FROM products WHERE UPPER(sku) = ?').get(cleanSku);
+    return row ? formatProductFromRow(row) : null;
+  }
 }
 
-export function createProduct(prod) {
+export async function createProduct(prod) {
   const id = prod.id || `prod-${Date.now()}`;
-  const insert = db.prepare(`
-    INSERT INTO products (
-      id, name, sku, category, subcategory, price, discount_price, stock,
-      sizes, colors, images, description, features, fabric_care,
-      is_featured, is_sale, is_new, rating, reviews_count
-    ) VALUES (
-      ?, ?, ?, ?, ?, ?, ?, ?,
-      ?, ?, ?, ?, ?, ?,
-      ?, ?, ?, ?, ?
-    )
-  `);
+  const sku = prod.sku.toUpperCase();
 
-  insert.run(
+  const values = [
     id,
     prod.name,
-    prod.sku.toUpperCase(),
+    sku,
     prod.category,
     prod.subcategory || '',
     parseFloat(prod.price) || 0,
@@ -246,37 +432,43 @@ export function createProduct(prod) {
     prod.isNew ? 1 : 0,
     prod.rating || 5.0,
     prod.reviewsCount || 0
-  );
+  ];
+
+  if (isPostgres) {
+    await pool.query(
+      `INSERT INTO products (
+        id, name, sku, category, subcategory, price, discount_price, stock,
+        sizes, colors, images, description, features, fabric_care,
+        is_featured, is_sale, is_new, rating, reviews_count
+      ) VALUES (
+        $1, $2, $3, $4, $5, $6, $7, $8,
+        $9, $10, $11, $12, $13, $14,
+        $15, $16, $17, $18, $19
+      )`,
+      values
+    );
+  } else {
+    sqliteDb.prepare(`
+      INSERT INTO products (
+        id, name, sku, category, subcategory, price, discount_price, stock,
+        sizes, colors, images, description, features, fabric_care,
+        is_featured, is_sale, is_new, rating, reviews_count
+      ) VALUES (
+        ?, ?, ?, ?, ?, ?, ?, ?,
+        ?, ?, ?, ?, ?, ?,
+        ?, ?, ?, ?, ?
+      )
+    `).run(...values);
+  }
 
   return getProductById(id);
 }
 
-export function updateProduct(id, prod) {
-  const current = getProductById(id);
+export async function updateProduct(id, prod) {
+  const current = await getProductById(id);
   if (!current) return null;
 
-  const update = db.prepare(`
-    UPDATE products SET
-      name = ?,
-      sku = ?,
-      category = ?,
-      subcategory = ?,
-      price = ?,
-      discount_price = ?,
-      stock = ?,
-      sizes = ?,
-      colors = ?,
-      images = ?,
-      description = ?,
-      features = ?,
-      fabric_care = ?,
-      is_featured = ?,
-      is_sale = ?,
-      is_new = ?
-    WHERE id = ?
-  `);
-
-  update.run(
+  const values = [
     prod.name ?? current.name,
     (prod.sku ?? current.sku).toUpperCase(),
     prod.category ?? current.category,
@@ -294,45 +486,61 @@ export function updateProduct(id, prod) {
     prod.isSale !== undefined ? (prod.isSale ? 1 : 0) : (current.isSale ? 1 : 0),
     prod.isNew !== undefined ? (prod.isNew ? 1 : 0) : (current.isNew ? 1 : 0),
     id
-  );
+  ];
+
+  if (isPostgres) {
+    await pool.query(
+      `UPDATE products SET
+        name = $1, sku = $2, category = $3, subcategory = $4,
+        price = $5, discount_price = $6, stock = $7,
+        sizes = $8, colors = $9, images = $10,
+        description = $11, features = $12, fabric_care = $13,
+        is_featured = $14, is_sale = $15, is_new = $16
+      WHERE id = $17`,
+      values
+    );
+  } else {
+    sqliteDb.prepare(`
+      UPDATE products SET
+        name = ?, sku = ?, category = ?, subcategory = ?,
+        price = ?, discount_price = ?, stock = ?,
+        sizes = ?, colors = ?, images = ?,
+        description = ?, features = ?, fabric_care = ?,
+        is_featured = ?, is_sale = ?, is_new = ?
+      WHERE id = ?
+    `).run(...values);
+  }
 
   return getProductById(id);
 }
 
-export function deleteProduct(id) {
-  const result = db.prepare('DELETE FROM products WHERE id = ?').run(id);
-  return result.changes > 0;
+export async function deleteProduct(id) {
+  if (isPostgres) {
+    const res = await pool.query('DELETE FROM products WHERE id = $1', [id]);
+    return res.rowCount > 0;
+  } else {
+    const result = sqliteDb.prepare('DELETE FROM products WHERE id = ?').run(id);
+    return result.changes > 0;
+  }
 }
 
-// Helpers para Pedidos
-export function createOrder(orderData, items = []) {
+// ==============================================================================
+// PEDIDOS
+// ==============================================================================
+export async function createOrder(orderData, items = []) {
   const id = orderData.id || `ord-${Date.now()}`;
   const randomSuffix = Math.floor(1000 + Math.random() * 9000);
   const orderNumber = orderData.orderNumber || `TTL-SV-${Date.now().toString().slice(-4)}${randomSuffix}`;
 
-  const insertOrder = db.prepare(`
-    INSERT INTO orders (
-      id, order_number, customer_name, customer_email, customer_phone,
-      department, municipality, district, address_line, reference_point, postal_code,
-      subtotal, shipping_cost, total, payment_method, payment_status,
-      wompi_transaction_id, wompi_auth_code, wompi_hash, delivery_status, notes
-    ) VALUES (
-      ?, ?, ?, ?, ?,
-      ?, ?, ?, ?, ?, ?,
-      ?, ?, ?, ?, ?,
-      ?, ?, ?, ?, ?
-    )
-  `);
-
-  insertOrder.run(
+  const orderValues = [
     id,
     orderNumber,
     orderData.customerName,
     orderData.customerEmail,
     orderData.customerPhone,
     orderData.department,
-    orderData.municipality,
-    orderData.district,
+    orderData.municipality || '',
+    orderData.district || '',
     orderData.addressLine,
     orderData.referencePoint || '',
     orderData.postalCode || 'CP 1101',
@@ -346,123 +554,254 @@ export function createOrder(orderData, items = []) {
     orderData.wompiHash || '',
     orderData.deliveryStatus || 'Procesando',
     orderData.notes || ''
-  );
+  ];
 
-  const insertItem = db.prepare(`
-    INSERT INTO order_items (
-      order_id, product_id, product_name, product_sku, product_image,
-      size, color, price, quantity, subtotal
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-  `);
-
-  // Descontar inventario y guardar items
-  const updateStock = db.prepare(`
-    UPDATE products SET stock = MAX(0, stock - ?) WHERE id = ?
-  `);
-
-  for (const item of items) {
-    insertItem.run(
-      id,
-      item.productId || item.id,
-      item.name,
-      item.sku || '',
-      item.image || '',
-      item.size || '',
-      item.color || '',
-      parseFloat(item.price) || 0,
-      parseInt(item.quantity, 10) || 1,
-      parseFloat(item.subtotal || item.price * item.quantity) || 0
+  if (isPostgres) {
+    await pool.query(
+      `INSERT INTO orders (
+        id, order_number, customer_name, customer_email, customer_phone,
+        department, municipality, district, address_line, reference_point, postal_code,
+        subtotal, shipping_cost, total, payment_method, payment_status,
+        wompi_transaction_id, wompi_auth_code, wompi_hash, delivery_status, notes
+      ) VALUES (
+        $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11,
+        $12, $13, $14, $15, $16, $17, $18, $19, $20, $21
+      )`,
+      orderValues
     );
 
-    if (item.productId || item.id) {
-      updateStock.run(parseInt(item.quantity, 10) || 1, item.productId || item.id);
+    for (const item of items) {
+      const qty = parseInt(item.quantity, 10) || 1;
+      const pid = item.productId || item.id;
+
+      await pool.query(
+        `INSERT INTO order_items (
+          order_id, product_id, product_name, product_sku, product_image,
+          size, color, price, quantity, subtotal
+        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
+        [
+          id,
+          pid,
+          item.name,
+          item.sku || '',
+          item.image || '',
+          item.size || '',
+          item.color || '',
+          parseFloat(item.price) || 0,
+          qty,
+          parseFloat(item.subtotal || item.price * qty) || 0
+        ]
+      );
+
+      if (pid) {
+        await pool.query(
+          `UPDATE products SET stock = CASE WHEN stock >= $1 THEN stock - $1 ELSE 0 END WHERE id = $2`,
+          [qty, pid]
+        );
+      }
+    }
+  } else {
+    sqliteDb.prepare(`
+      INSERT INTO orders (
+        id, order_number, customer_name, customer_email, customer_phone,
+        department, municipality, district, address_line, reference_point, postal_code,
+        subtotal, shipping_cost, total, payment_method, payment_status,
+        wompi_transaction_id, wompi_auth_code, wompi_hash, delivery_status, notes
+      ) VALUES (
+        ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
+        ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+      )
+    `).run(...orderValues);
+
+    const insertItem = sqliteDb.prepare(`
+      INSERT INTO order_items (
+        order_id, product_id, product_name, product_sku, product_image,
+        size, color, price, quantity, subtotal
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `);
+
+    const updateStock = sqliteDb.prepare(`
+      UPDATE products SET stock = CASE WHEN stock >= ? THEN stock - ? ELSE 0 END WHERE id = ?
+    `);
+
+    for (const item of items) {
+      const qty = parseInt(item.quantity, 10) || 1;
+      const pid = item.productId || item.id;
+
+      insertItem.run(
+        id,
+        pid,
+        item.name,
+        item.sku || '',
+        item.image || '',
+        item.size || '',
+        item.color || '',
+        parseFloat(item.price) || 0,
+        qty,
+        parseFloat(item.subtotal || item.price * qty) || 0
+      );
+
+      if (pid) {
+        updateStock.run(qty, qty, pid);
+      }
     }
   }
 
   return getOrderById(id);
 }
 
-export function getAllOrders() {
-  const rows = db.prepare('SELECT * FROM orders ORDER BY created_at DESC').all();
-  return rows.map(formatOrderFromRow);
-}
-
-export function getOrderById(id) {
-  const row = db.prepare('SELECT * FROM orders WHERE id = ? OR order_number = ?').get(id, id);
-  if (!row) return null;
-
-  const order = formatOrderFromRow(row);
-  const items = db.prepare('SELECT * FROM order_items WHERE order_id = ?').all(order.id);
-  order.items = items;
-  return order;
-}
-
-export function updateOrderPayment(id, { paymentStatus, wompiTransactionId, wompiAuthCode, wompiHash }) {
-  const update = db.prepare(`
-    UPDATE orders SET
-      payment_status = ?,
-      wompi_transaction_id = COALESCE(?, wompi_transaction_id),
-      wompi_auth_code = COALESCE(?, wompi_auth_code),
-      wompi_hash = COALESCE(?, wompi_hash)
-    WHERE id = ? OR order_number = ?
-  `);
-  update.run(
-    paymentStatus ?? null,
-    wompiTransactionId ?? null,
-    wompiAuthCode ?? null,
-    wompiHash ?? null,
-    id,
-    id
-  );
-  return getOrderById(id);
-}
-
-export function updateOrderDeliveryStatus(id, deliveryStatus) {
-  db.prepare('UPDATE orders SET delivery_status = ? WHERE id = ? OR order_number = ?').run(deliveryStatus, id, id);
-  return getOrderById(id);
-}
-
-// Métricas de ventas para el Administrador
-export function getAdminMetrics() {
-  const totalSales = db.prepare("SELECT COALESCE(SUM(total), 0) as total FROM orders WHERE payment_status = 'APROBADO'").get().total;
-  const totalOrders = db.prepare('SELECT COUNT(*) as count FROM orders').get().count;
-  const paidOrders = db.prepare("SELECT COUNT(*) as count FROM orders WHERE payment_status = 'APROBADO'").get().count;
-  const totalProducts = db.prepare('SELECT COUNT(*) as count FROM products').get().count;
-  const lowStockProducts = db.prepare('SELECT COUNT(*) as count FROM products WHERE stock <= 5').get().count;
-  const recentOrders = db.prepare('SELECT * FROM orders ORDER BY created_at DESC LIMIT 5').all().map(formatOrderFromRow);
-
-  return {
-    totalSales,
-    totalOrders,
-    paidOrders,
-    totalProducts,
-    lowStockProducts,
-    recentOrders
-  };
-}
-
-// Configuración
-export function getSetting(key, defaultValue = null) {
-  const row = db.prepare('SELECT value FROM settings WHERE key = ?').get(key);
-  return row ? row.value : defaultValue;
-}
-
-export function getAllSettings() {
-  const rows = db.prepare('SELECT key, value FROM settings').all();
-  const obj = {};
-  for (const r of rows) {
-    obj[r.key] = r.value;
+export async function getAllOrders() {
+  if (isPostgres) {
+    const res = await pool.query('SELECT * FROM orders ORDER BY created_at DESC');
+    return res.rows.map(formatOrderFromRow);
+  } else {
+    const rows = sqliteDb.prepare('SELECT * FROM orders ORDER BY created_at DESC').all();
+    return rows.map(formatOrderFromRow);
   }
-  return obj;
 }
 
-export function updateSettings(settingsObj) {
-  const upsert = db.prepare(`
-    INSERT INTO settings (key, value) VALUES (?, ?)
-    ON CONFLICT(key) DO UPDATE SET value = excluded.value
-  `);
-  for (const [key, value] of Object.entries(settingsObj)) {
-    upsert.run(key, String(value));
+export async function getOrderById(id) {
+  if (isPostgres) {
+    const res = await pool.query('SELECT * FROM orders WHERE id = $1 OR order_number = $1', [id]);
+    if (!res.rows[0]) return null;
+    const order = formatOrderFromRow(res.rows[0]);
+    const itemsRes = await pool.query('SELECT * FROM order_items WHERE order_id = $1', [order.id]);
+    order.items = itemsRes.rows;
+    return order;
+  } else {
+    const row = sqliteDb.prepare('SELECT * FROM orders WHERE id = ? OR order_number = ?').get(id, id);
+    if (!row) return null;
+    const order = formatOrderFromRow(row);
+    const items = sqliteDb.prepare('SELECT * FROM order_items WHERE order_id = ?').all(order.id);
+    order.items = items;
+    return order;
+  }
+}
+
+export async function updateOrderPayment(id, { paymentStatus, wompiTransactionId, wompiAuthCode, wompiHash }) {
+  if (isPostgres) {
+    await pool.query(
+      `UPDATE orders SET
+        payment_status = COALESCE($1, payment_status),
+        wompi_transaction_id = COALESCE($2, wompi_transaction_id),
+        wompi_auth_code = COALESCE($3, wompi_auth_code),
+        wompi_hash = COALESCE($4, wompi_hash)
+      WHERE id = $5 OR order_number = $5`,
+      [paymentStatus ?? null, wompiTransactionId ?? null, wompiAuthCode ?? null, wompiHash ?? null, id]
+    );
+  } else {
+    sqliteDb.prepare(`
+      UPDATE orders SET
+        payment_status = COALESCE(?, payment_status),
+        wompi_transaction_id = COALESCE(?, wompi_transaction_id),
+        wompi_auth_code = COALESCE(?, wompi_auth_code),
+        wompi_hash = COALESCE(?, wompi_hash)
+      WHERE id = ? OR order_number = ?
+    `).run(
+      paymentStatus ?? null,
+      wompiTransactionId ?? null,
+      wompiAuthCode ?? null,
+      wompiHash ?? null,
+      id,
+      id
+    );
+  }
+  return getOrderById(id);
+}
+
+export async function updateOrderDeliveryStatus(id, deliveryStatus) {
+  if (isPostgres) {
+    await pool.query('UPDATE orders SET delivery_status = $1 WHERE id = $2 OR order_number = $2', [deliveryStatus, id]);
+  } else {
+    sqliteDb.prepare('UPDATE orders SET delivery_status = ? WHERE id = ? OR order_number = ?').run(deliveryStatus, id, id);
+  }
+  return getOrderById(id);
+}
+
+// ==============================================================================
+// MÉTRICAS Y AJUSTES
+// ==============================================================================
+export async function getAdminMetrics() {
+  if (isPostgres) {
+    const totalSalesRes = await pool.query("SELECT COALESCE(SUM(total), 0) as total FROM orders WHERE payment_status = 'APROBADO'");
+    const totalOrdersRes = await pool.query('SELECT COUNT(*) as count FROM orders');
+    const paidOrdersRes = await pool.query("SELECT COUNT(*) as count FROM orders WHERE payment_status = 'APROBADO'");
+    const totalProductsRes = await pool.query('SELECT COUNT(*) as count FROM products');
+    const lowStockRes = await pool.query('SELECT COUNT(*) as count FROM products WHERE stock <= 5');
+    const recentOrdersRes = await pool.query('SELECT * FROM orders ORDER BY created_at DESC LIMIT 5');
+
+    return {
+      totalSales: parseFloat(totalSalesRes.rows[0].total) || 0,
+      totalOrders: parseInt(totalOrdersRes.rows[0].count, 10) || 0,
+      paidOrders: parseInt(paidOrdersRes.rows[0].count, 10) || 0,
+      totalProducts: parseInt(totalProductsRes.rows[0].count, 10) || 0,
+      lowStockProducts: parseInt(lowStockRes.rows[0].count, 10) || 0,
+      recentOrders: recentOrdersRes.rows.map(formatOrderFromRow)
+    };
+  } else {
+    const totalSales = sqliteDb.prepare("SELECT COALESCE(SUM(total), 0) as total FROM orders WHERE payment_status = 'APROBADO'").get().total;
+    const totalOrders = sqliteDb.prepare('SELECT COUNT(*) as count FROM orders').get().count;
+    const paidOrders = sqliteDb.prepare("SELECT COUNT(*) as count FROM orders WHERE payment_status = 'APROBADO'").get().count;
+    const totalProducts = sqliteDb.prepare('SELECT COUNT(*) as count FROM products').get().count;
+    const lowStockProducts = sqliteDb.prepare('SELECT COUNT(*) as count FROM products WHERE stock <= 5').get().count;
+    const recentOrders = sqliteDb.prepare('SELECT * FROM orders ORDER BY created_at DESC LIMIT 5').all().map(formatOrderFromRow);
+
+    return {
+      totalSales: parseFloat(totalSales) || 0,
+      totalOrders,
+      paidOrders,
+      totalProducts,
+      lowStockProducts,
+      recentOrders
+    };
+  }
+}
+
+export async function getSetting(key, defaultValue = null) {
+  if (isPostgres) {
+    const res = await pool.query('SELECT value FROM settings WHERE key = $1', [key]);
+    return res.rows[0] ? res.rows[0].value : defaultValue;
+  } else {
+    const row = sqliteDb.prepare('SELECT value FROM settings WHERE key = ?').get(key);
+    return row ? row.value : defaultValue;
+  }
+}
+
+export async function getAllSettings() {
+  if (isPostgres) {
+    const res = await pool.query('SELECT key, value FROM settings');
+    const obj = {};
+    for (const r of res.rows) {
+      obj[r.key] = r.value;
+    }
+    return obj;
+  } else {
+    const rows = sqliteDb.prepare('SELECT key, value FROM settings').all();
+    const obj = {};
+    for (const r of rows) {
+      obj[r.key] = r.value;
+    }
+    return obj;
+  }
+}
+
+export async function updateSettings(settingsObj) {
+  if (isPostgres) {
+    for (const [key, value] of Object.entries(settingsObj)) {
+      await pool.query(
+        `INSERT INTO settings (key, value) VALUES ($1, $2)
+         ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value`,
+        [key, String(value)]
+      );
+    }
+  } else {
+    const upsert = sqliteDb.prepare(`
+      INSERT INTO settings (key, value) VALUES (?, ?)
+      ON CONFLICT(key) DO UPDATE SET value = excluded.value
+    `);
+    for (const [key, value] of Object.entries(settingsObj)) {
+      upsert.run(key, String(value));
+    }
   }
   return getAllSettings();
 }
@@ -474,20 +813,20 @@ function formatProductFromRow(row) {
     sku: row.sku,
     category: row.category,
     subcategory: row.subcategory,
-    price: row.price,
-    discountPrice: row.discount_price,
-    stock: row.stock,
-    sizes: row.sizes ? JSON.parse(row.sizes) : [],
-    colors: row.colors ? JSON.parse(row.colors) : [],
-    images: row.images ? JSON.parse(row.images) : [],
+    price: parseFloat(row.price),
+    discountPrice: row.discount_price !== null ? parseFloat(row.discount_price) : null,
+    stock: parseInt(row.stock, 10),
+    sizes: typeof row.sizes === 'string' ? JSON.parse(row.sizes || '[]') : (row.sizes || []),
+    colors: typeof row.colors === 'string' ? JSON.parse(row.colors || '[]') : (row.colors || []),
+    images: typeof row.images === 'string' ? JSON.parse(row.images || '[]') : (row.images || []),
     description: row.description,
-    features: row.features ? JSON.parse(row.features) : [],
-    fabricCare: row.fabric_care ? JSON.parse(row.fabric_care) : {},
+    features: typeof row.features === 'string' ? JSON.parse(row.features || '[]') : (row.features || []),
+    fabricCare: typeof row.fabric_care === 'string' ? JSON.parse(row.fabric_care || '{}') : (row.fabric_care || {}),
     isFeatured: Boolean(row.is_featured),
     isSale: Boolean(row.is_sale),
     isNew: Boolean(row.is_new),
-    rating: row.rating,
-    reviewsCount: row.reviews_count,
+    rating: parseFloat(row.rating || 5.0),
+    reviewsCount: parseInt(row.reviews_count || 0, 10),
     createdAt: row.created_at
   };
 }
@@ -505,9 +844,9 @@ function formatOrderFromRow(row) {
     addressLine: row.address_line,
     referencePoint: row.reference_point,
     postalCode: row.postal_code,
-    subtotal: row.subtotal,
-    shippingCost: row.shipping_cost,
-    total: row.total,
+    subtotal: parseFloat(row.subtotal),
+    shippingCost: parseFloat(row.shipping_cost),
+    total: parseFloat(row.total),
     paymentMethod: row.payment_method,
     paymentStatus: row.payment_status,
     wompiTransactionId: row.wompi_transaction_id,

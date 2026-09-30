@@ -74,10 +74,10 @@ function getDepartmentsSV() {
 // -------------------------------------------------------------
 
 // Listado de productos con filtros
-router.get('/products', (req, res) => {
+router.get('/products', async (req, res) => {
   try {
     const { category, isSale, isFeatured, search, sort } = req.query;
-    const products = getAllProducts({
+    const products = await getAllProducts({
       category,
       isSale: isSale === 'true',
       isFeatured: isFeatured === 'true',
@@ -91,9 +91,9 @@ router.get('/products', (req, res) => {
 });
 
 // Detalle de un producto
-router.get('/products/:id', (req, res) => {
+router.get('/products/:id', async (req, res) => {
   try {
-    const product = getProductById(req.params.id);
+    const product = await getProductById(req.params.id);
     if (!product) {
       return res.status(404).json({ success: false, error: 'Producto no encontrado' });
     }
@@ -104,19 +104,19 @@ router.get('/products/:id', (req, res) => {
 });
 
 // Crear nuevo producto (Admin)
-router.post('/products', (req, res) => {
+router.post('/products', async (req, res) => {
   try {
     const { name, sku, price } = req.body;
     if (!name || !sku || price === undefined) {
       return res.status(400).json({ success: false, error: 'Nombre, SKU y Precio son campos obligatorios.' });
     }
 
-    const existing = getProductBySku(sku);
+    const existing = await getProductBySku(sku);
     if (existing) {
       return res.status(400).json({ success: false, error: `Ya existe una prenda con el código SKU ${sku}.` });
     }
 
-    const newProduct = createProduct(req.body);
+    const newProduct = await createProduct(req.body);
     res.status(201).json({ success: true, message: 'Prenda creada con éxito', data: newProduct });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
@@ -124,9 +124,9 @@ router.post('/products', (req, res) => {
 });
 
 // Actualizar producto (Admin)
-router.put('/products/:id', (req, res) => {
+router.put('/products/:id', async (req, res) => {
   try {
-    const updated = updateProduct(req.params.id, req.body);
+    const updated = await updateProduct(req.params.id, req.body);
     if (!updated) {
       return res.status(404).json({ success: false, error: 'Producto no encontrado para actualizar' });
     }
@@ -137,9 +137,9 @@ router.put('/products/:id', (req, res) => {
 });
 
 // Eliminar producto (Admin)
-router.delete('/products/:id', (req, res) => {
+router.delete('/products/:id', async (req, res) => {
   try {
-    const ok = deleteProduct(req.params.id);
+    const ok = await deleteProduct(req.params.id);
     if (!ok) {
       return res.status(404).json({ success: false, error: 'Producto no encontrado' });
     }
@@ -194,7 +194,7 @@ router.get('/delivery-rates/:departmentId', (req, res) => {
 // -------------------------------------------------------------
 
 // Crear pedido inicial
-router.post('/orders', (req, res) => {
+router.post('/orders', async (req, res) => {
   try {
     const { customer, delivery, items, subtotal, shippingCost, total, notes } = req.body;
     if (!customer || !delivery || !items || items.length === 0) {
@@ -219,7 +219,7 @@ router.post('/orders', (req, res) => {
       notes: notes || ''
     };
 
-    const newOrder = createOrder(orderData, items);
+    const newOrder = await createOrder(orderData, items);
     res.status(201).json({ success: true, data: newOrder });
   } catch (error) {
     console.error('Error al registrar orden:', error);
@@ -228,9 +228,9 @@ router.post('/orders', (req, res) => {
 });
 
 // Listar todos los pedidos (Admin)
-router.get('/orders', (req, res) => {
+router.get('/orders', async (req, res) => {
   try {
-    const orders = getAllOrders();
+    const orders = await getAllOrders();
     res.json({ success: true, count: orders.length, data: orders });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
@@ -238,9 +238,9 @@ router.get('/orders', (req, res) => {
 });
 
 // Obtener un pedido específico
-router.get('/orders/:id', (req, res) => {
+router.get('/orders/:id', async (req, res) => {
   try {
-    const order = getOrderById(req.params.id);
+    const order = await getOrderById(req.params.id);
     if (!order) {
       return res.status(404).json({ success: false, error: 'Pedido no encontrado' });
     }
@@ -251,13 +251,13 @@ router.get('/orders/:id', (req, res) => {
 });
 
 // Actualizar estado de entrega (Admin)
-router.patch('/orders/:id/delivery-status', (req, res) => {
+router.patch('/orders/:id/delivery-status', async (req, res) => {
   try {
     const { deliveryStatus } = req.body;
     if (!deliveryStatus) {
       return res.status(400).json({ success: false, error: 'Se requiere deliveryStatus' });
     }
-    const updated = updateOrderDeliveryStatus(req.params.id, deliveryStatus);
+    const updated = await updateOrderDeliveryStatus(req.params.id, deliveryStatus);
     res.json({ success: true, data: updated });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
@@ -280,7 +280,7 @@ router.post('/wompi/initiate-3ds', async (req, res) => {
       return res.status(400).json({ success: false, error: 'Faltan parámetros obligatorios de compra' });
     }
 
-    const order = getOrderById(orderNumber);
+    const order = await getOrderById(orderNumber);
     if (!order) {
       return res.status(404).json({ success: false, error: `Pedido ${orderNumber} no encontrado` });
     }
@@ -313,7 +313,7 @@ router.post('/wompi/initiate-3ds', async (req, res) => {
     }
 
     // Actualizar pedido con el idTransaccion retornado por Wompi
-    updateOrderPayment(order.id, {
+    await updateOrderPayment(order.id, {
       paymentStatus: 'EN_PROCESO_3DS',
       wompiTransactionId: wompiResult.idTransaccion
     });
@@ -335,11 +335,11 @@ router.post('/wompi/initiate-3ds', async (req, res) => {
 /**
  * Confirmación de pago luego de completar el flujo 3DS (Redirect URL o retorno)
  */
-router.post('/wompi/confirm-payment', (req, res) => {
+router.post('/wompi/confirm-payment', async (req, res) => {
   try {
     const { orderNumber, idTransaccion, esAprobada, codigoAutorizacion, mensaje, hash } = req.body;
 
-    const order = getOrderById(orderNumber);
+    const order = await getOrderById(orderNumber);
     if (!order) {
       return res.status(404).json({ success: false, error: 'Pedido no encontrado' });
     }
@@ -347,7 +347,7 @@ router.post('/wompi/confirm-payment', (req, res) => {
     const isSuccess = String(esAprobada).toLowerCase() === 'true';
     const newStatus = isSuccess ? 'APROBADO' : 'FALLIDO';
 
-    const updated = updateOrderPayment(order.id, {
+    const updated = await updateOrderPayment(order.id, {
       paymentStatus: newStatus,
       wompiTransactionId: idTransaccion || order.wompiTransactionId,
       wompiAuthCode: codigoAutorizacion || (isSuccess ? 'AUTH' + Date.now().toString().slice(-6) : null),
@@ -369,14 +369,14 @@ router.post('/wompi/confirm-payment', (req, res) => {
  * Endpoint de Webhook de Wompi El Salvador
  * Recibe eventos de servidor a servidor cuando una transacción concluye
  */
-router.post('/wompi/webhook', (req, res) => {
+router.post('/wompi/webhook', async (req, res) => {
   try {
     console.log('🔔 Webhook recibido de Wompi:', req.body);
     const { idTransaccion, esProductiva, resultadoTransaccion, datosAdicionales } = req.body;
 
     if (datosAdicionales && datosAdicionales.orderNumber) {
       const isApproved = resultadoTransaccion === 'TransaccionExitosa' || resultadoTransaccion === 'Aprobada';
-      updateOrderPayment(datosAdicionales.orderNumber, {
+      await updateOrderPayment(datosAdicionales.orderNumber, {
         paymentStatus: isApproved ? 'APROBADO' : 'FALLIDO',
         wompiTransactionId: idTransaccion
       });
@@ -393,18 +393,18 @@ router.post('/wompi/webhook', (req, res) => {
 // PANEL DE ADMINISTRACIÓN (MÉTRICAS Y CONFIGURACIÓN)
 // -------------------------------------------------------------
 
-router.get('/admin/metrics', (req, res) => {
+router.get('/admin/metrics', async (req, res) => {
   try {
-    const metrics = getAdminMetrics();
+    const metrics = await getAdminMetrics();
     res.json({ success: true, data: metrics });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }
 });
 
-router.get('/admin/settings', (req, res) => {
+router.get('/admin/settings', async (req, res) => {
   try {
-    const settings = getAllSettings();
+    const settings = await getAllSettings();
     // Enmascarar la llave secreta para seguridad en la respuesta
     const safeSettings = { ...settings };
     if (safeSettings.wompi_client_secret && safeSettings.wompi_client_secret.length > 8) {
@@ -416,9 +416,9 @@ router.get('/admin/settings', (req, res) => {
   }
 });
 
-router.post('/admin/settings', (req, res) => {
+router.post('/admin/settings', async (req, res) => {
   try {
-    const updated = updateSettings(req.body);
+    const updated = await updateSettings(req.body);
     res.json({ success: true, message: 'Configuración guardada exitosamente', data: updated });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });

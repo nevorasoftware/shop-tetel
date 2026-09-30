@@ -15,8 +15,8 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Inicializar la base de datos SQLite y sembrar datos
-initDatabase();
+// Inicializar la base de datos (PostgreSQL en Railway o SQLite local)
+await initDatabase();
 
 // Middlewares
 app.use(cors());
