@@ -1,0 +1,57 @@
+:root {
+  /* Paleta de Color Premium Haute Couture / Shopify Luxe */
+  --color-primary: #0f172a;        /* Slate 900 - Negro elegante */
+  --color-primary-light: #1e293b;  /* Slate 800 */
+  --color-accent: #c59b27;         /* Oro Champagne / Luxury Gold */
+  --color-accent-hover: #b0881e;
+  --color-accent-subtle: #fbf7ee;
+  
+  --color-sale: #b91c1c;           /* Terracota / Carmesí Oferta */
+  --color-sale-light: #fef2f2;
+  --color-sale-border: #fecaca;
+  
+  --color-success: #059669;        /* Esmeralda Éxito */
+  --color-success-light: #ecfdf5;
+  --color-warning: #d97706;        /* Ámbar Alerta */
+  --color-info: #0284c7;           /* Azul Wompi */
+  --color-wompi: #1e40af;          /* Azul Corporativo Wompi SV */
+  
+  --color-bg: #f8fafc;             /* Fondo general */
+  --color-surface: #ffffff;        /* Tarjetas y modales */
+  --color-surface-hover: #f1f5f9;
+  --color-border: #e2e8f0;
+  --color-border-subtle: #edf2f7;
+  
+  --color-text-main: #0f172a;      /* Texto principal */
+  --color-text-muted: #64748b;     /* Texto secundario */
+  --color-text-subtle: #94a3b8;    /* Texto tenue */
+  --color-text-inverse: #ffffff;   /* Texto sobre oscuro */
+  
+  /* Tipografía */
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+  
+  /* Sombras Modernas */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.08), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.04);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.05);
+  --shadow-glass: 0 8px 32px 0 rgba(15, 23, 42, 0.12);
+  
+  /* Bordes y Radios */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+  
+  /* Transiciones */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-smooth: 350ms cubic-bezier(0.16, 1, 0.3, 1);
+  
+  /* Espaciado del Sistema */
+  --container-max-width: 1280px;
+  --header-height: 80px;
+}

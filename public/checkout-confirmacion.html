@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Confirmación de Pago | Wompi 3DS | TETEL</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/variables.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/checkout.css">
+</head>
+<body style="background: var(--color-bg); padding: 2rem 1rem;">
+
+<div class="container" style="max-width: 760px; margin: 0 auto;">
+  <div style="text-align: center; margin-bottom: 2rem;">
+    <h1 style="font-family: var(--font-serif); font-size: 2.25rem; letter-spacing: 0.1em; color: var(--color-primary);">TETEL</h1>
+    <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.25em; color: var(--color-accent); font-weight: 700;">ATELIER SALVADOREÑO</span>
+  </div>
+
+  <div id="confirmation-result-card" class="order-success-card" style="margin: 0 auto;">
+    <div style="padding: 3rem 1rem; text-align: center;">
+      <div style="display:inline-block; width:44px; height:44px; border:4px solid var(--color-accent); border-top-color:transparent; border-radius:50%; animation: spin 0.8s linear infinite;"></div>
+      <h3 style="margin-top: 1.5rem;">Validando resultado con Wompi El Salvador...</h3>
+      <p style="color: var(--color-text-muted);">Por favor no cierres esta ventana.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  async function processConfirmation() {
+    const params = new URLSearchParams(window.location.search);
+    const orderNumber = params.get('orderNumber');
+    const idTransaccion = params.get('idTransaccion');
+    const monto = params.get('monto');
+    const esAprobada = params.get('esAprobada');
+    const codigoAutorizacion = params.get('codigoAutorizacion');
+    const mensaje = params.get('mensaje');
+    const hash = params.get('hash');
+
+    const card = document.getElementById('confirmation-result-card');
+
+    try {
+      const res = await fetch('/api/wompi/confirm-payment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          orderNumber,
+          idTransaccion,
+          esAprobada,
+          codigoAutorizacion,
+          mensaje,
+          hash
+        })
+      });
+
+      const data = await res.json();
+      if (data.success && data.isAprobado) {
+        // Vaciar carrito
+        localStorage.removeItem('tetel_cart');
+
+        const order = data.data;
+        card.innerHTML = `
+          <div class="success-icon-wrapper">✓</div>
+          <h2 style="font-size: 2rem; margin-bottom: 0.5rem;">¡Pago Aprobado Exitosamente!</h2>
+          <p style="font-size: 1.05rem; color: var(--color-text-muted);">
+            Tu transacción ha sido validada por <strong>Wompi 3D Secure</strong> y tu pedido ya está en preparación en nuestro taller.
+          </p>
+
+          <div class="receipt-box">
+            <div class="receipt-row">
+              <span>Número de Pedido:</span>
+              <strong>${order.orderNumber}</strong>
+            </div>
+            <div class="receipt-row">
+              <span>Código Autorización Wompi:</span>
+              <strong style="color: var(--color-wompi); font-family: var(--font-mono);">${order.wompiAuthCode || codigoAutorizacion || 'AUTH000000'}</strong>
+            </div>
+            <div class="receipt-row">
+              <span>ID Transacción:</span>
+              <span style="font-family: var(--font-mono); font-size: 0.75rem;">${order.wompiTransactionId || idTransaccion}</span>
+            </div>
+            <div class="receipt-row">
+              <span>Cliente:</span>
+              <span>${order.customerName}</span>
+            </div>
+            <div class="receipt-row">
+              <span>Destino El Salvador:</span>
+              <strong>${order.district}, ${order.department}</strong>
+            </div>
+            <div class="receipt-row">
+              <span>Dirección de Entrega:</span>
+              <span>${order.addressLine}</span>
+            </div>
+            <div class="receipt-row">
+              <span>Estado de Envío:</span>
+              <span class="badge" style="background:#2563eb; color:white;">${order.deliveryStatus || 'Procesando'}</span>
+            </div>
+            <div class="receipt-row bold">
+              <span>Total Cancelado:</span>
+              <span style="font-size: 1.25rem; color: var(--color-success);">$${order.total.toFixed(2)} USD</span>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+            <a href="/" class="btn btn-primary">Volver a la Tienda</a>
+            <button class="btn btn-outline" onclick="window.print()">🖨️ Imprimir Comprobante</button>
+          </div>
+        `;
+      } else {
+        card.innerHTML = `
+          <div class="success-icon-wrapper" style="background: #fef2f2; color: #dc2626; box-shadow: 0 0 0 8px #fee2e2;">✕</div>
+          <h2 style="font-size: 2rem; margin-bottom: 0.5rem; color: var(--color-sale);">Transacción No Completada</h2>
+          <p style="font-size: 1rem; color: var(--color-text-muted); margin-bottom: 1.5rem;">
+            El banco emisor o la pasarela Wompi rechazó el pago (${mensaje || 'Transacción denegada'}). No se ha realizado ningún cobro a tu tarjeta.
+          </p>
+          <div style="display: flex; gap: 1rem; justify-content: center;">
+            <a href="/#checkout" class="btn btn-primary">Intentar con otra tarjeta</a>
+            <a href="/" class="btn btn-secondary">Regresar a la Tienda</a>
+          </div>
+        `;
+      }
+    } catch (e) {
+      console.error(e);
+      card.innerHTML = `
+        <h3 style="color: var(--color-sale);">Error al procesar la confirmación</h3>
+        <p>No pudimos sincronizar el estado del pago con el servidor.</p>
+        <a href="/" class="btn btn-primary" style="margin-top: 1rem;">Ir al Inicio</a>
+      `;
+    }
+  }
+
+  processConfirmation();
+</script>
+
+</body>
+</html>

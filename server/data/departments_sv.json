@@ -1,0 +1,318 @@
+[
+  {
+    "id": "san-salvador",
+    "name": "San Salvador",
+    "zone": "Central",
+    "shippingCost": 3.50,
+    "deliveryTime": "24 horas hábiles",
+    "freeShippingThreshold": 45.00,
+    "municipalities": [
+      {
+        "name": "San Salvador Centro",
+        "districts": ["San Salvador", "Mejicanos", "Ayutuxtepeque", "Cuscatancingo", "Ciudad Delgado"]
+      },
+      {
+        "name": "San Salvador Este",
+        "districts": ["Soyapango", "Ilopango", "San Martín", "Tonacatepeque"]
+      },
+      {
+        "name": "San Salvador Oeste",
+        "districts": ["Apopa", "Nejapa"]
+      },
+      {
+        "name": "San Salvador Norte",
+        "districts": ["Aguilares", "El Paisnal", "Guazapa"]
+      },
+      {
+        "name": "San Salvador Sur",
+        "districts": ["San Marcos", "Santo Tomás", "Santiago Texacuangos", "Panchimalco", "Rosario de Mora"]
+      }
+    ]
+  },
+  {
+    "id": "la-libertad",
+    "name": "La Libertad",
+    "zone": "Central",
+    "shippingCost": 4.00,
+    "deliveryTime": "24 - 48 horas hábiles",
+    "freeShippingThreshold": 50.00,
+    "municipalities": [
+      {
+        "name": "La Libertad Sur",
+        "districts": ["Santa Tecla", "Antiguo Cuscatlán"]
+      },
+      {
+        "name": "La Libertad Este",
+        "districts": ["Nuevo Cuscatlán", "San José Villanueva", "Zaragoza", "Huizúcar", "San Juan Talpa"]
+      },
+      {
+        "name": "La Libertad Centro",
+        "districts": ["San Juan Opico", "Ciudad Arce"]
+      },
+      {
+        "name": "La Libertad Oeste",
+        "districts": ["Colón", "Sacacoyo", "Tepecoyo", "Jayaque", "Talnique"]
+      },
+      {
+        "name": "La Libertad Costa",
+        "districts": ["La Libertad (Puerto)", "Tamanique (El Tunco/Sunzal)", "Chiltiupán", "Jicalapa", "Teotepeque"]
+      },
+      {
+        "name": "La Libertad Norte",
+        "districts": ["Quezaltepeque", "San Matías", "San Pablo Tacachico"]
+      }
+    ]
+  },
+  {
+    "id": "santa-ana",
+    "name": "Santa Ana",
+    "zone": "Occidente",
+    "shippingCost": 4.75,
+    "deliveryTime": "24 - 48 horas hábiles",
+    "freeShippingThreshold": 55.00,
+    "municipalities": [
+      {
+        "name": "Santa Ana Centro",
+        "districts": ["Santa Ana"]
+      },
+      {
+        "name": "Santa Ana Este",
+        "districts": ["Coatepeque", "El Congo"]
+      },
+      {
+        "name": "Santa Ana Oeste",
+        "districts": ["Chalchuapa", "San Sebastián Salitrillo", "El Porvenir", "Candelaria de la Frontera", "Santiago de la Frontera", "San Antonio Pajonal"]
+      },
+      {
+        "name": "Santa Ana Norte",
+        "districts": ["Metapán", "Texistepeque", "Santa Rosa Guachipilín", "Masahuat"]
+      }
+    ]
+  },
+  {
+    "id": "sonsonate",
+    "name": "Sonsonate",
+    "zone": "Occidente",
+    "shippingCost": 4.75,
+    "deliveryTime": "24 - 48 horas hábiles",
+    "freeShippingThreshold": 55.00,
+    "municipalities": [
+      {
+        "name": "Sonsonate Centro",
+        "districts": ["Sonsonate", "Sonzacate", "Nahulingo", "San Antonio del Monte", "Santo Domingo de Guzmán"]
+      },
+      {
+        "name": "Sonsonate Este",
+        "districts": ["Izalco", "Armenia", "Caluco", "San Julián", "Cuisnahuat", "Santa Isabel Ishuatán"]
+      },
+      {
+        "name": "Sonsonate Oeste",
+        "districts": ["Acajutla"]
+      },
+      {
+        "name": "Sonsonate Norte",
+        "districts": ["Juayúa", "Nahuizalco", "Salcoatitán", "Santa Catarina Masahuat"]
+      }
+    ]
+  },
+  {
+    "id": "ahuachapan",
+    "name": "Ahuachapán",
+    "zone": "Occidente",
+    "shippingCost": 5.00,
+    "deliveryTime": "48 horas hábiles",
+    "freeShippingThreshold": 60.00,
+    "municipalities": [
+      {
+        "name": "Ahuachapán Centro",
+        "districts": ["Ahuachapán", "Apaneca", "Concepción de Ataco", "Tacuba"]
+      },
+      {
+        "name": "Ahuachapán Norte",
+        "districts": ["Atiquizaya", "El Refugio", "San Lorenzo", "Turín"]
+      },
+      {
+        "name": "Ahuachapán Sur",
+        "districts": ["Guaymango", "Jujutla", "San Francisco Menéndez", "San Pedro Puxtla"]
+      }
+    ]
+  },
+  {
+    "id": "cuscatlan",
+    "name": "Cuscatlán",
+    "zone": "Paracentral",
+    "shippingCost": 4.50,
+    "deliveryTime": "24 - 48 horas hábiles",
+    "freeShippingThreshold": 50.00,
+    "municipalities": [
+      {
+        "name": "Cuscatlán Sur",
+        "districts": ["Cojutepeque", "San Rafael Cedros", "Candelaria", "El Carmen", "El Rosario", "Monte San Juan", "San Cristóbal", "San Ramón", "Santa Cruz Analquito", "Santa Cruz Michapa", "Tenancingo"]
+      },
+      {
+        "name": "Cuscatlán Norte",
+        "districts": ["Suchitoto", "San José Guayabal", "San Pedro Perulapán", "San Bartolomé Perulapía", "Oratorio de Concepción"]
+      }
+    ]
+  },
+  {
+    "id": "la-paz",
+    "name": "La Paz",
+    "zone": "Paracentral",
+    "shippingCost": 4.75,
+    "deliveryTime": "24 - 48 horas hábiles",
+    "freeShippingThreshold": 55.00,
+    "municipalities": [
+      {
+        "name": "La Paz Este",
+        "districts": ["Zacatecoluca", "San Juan Nonualco", "San Rafael Obrajuelo"]
+      },
+      {
+        "name": "La Paz Centro",
+        "districts": ["El Rosario", "San Luis Talpa", "San Luis La Herradura (Costa del Sol)", "Santiago Nonualco", "San Pedro Nonualco", "Santa María Ostuma", "San Pedro Masahuat"]
+      },
+      {
+        "name": "La Paz Oeste",
+        "districts": ["Olocuilta", "Cuyultitán", "San Juan Talpa", "San Juan Tepezontes", "San Antonio Masahuat", "San Miguel Tepezontes", "Tapalhuaca"]
+      }
+    ]
+  },
+  {
+    "id": "chalatenango",
+    "name": "Chalatenango",
+    "zone": "Norte",
+    "shippingCost": 5.25,
+    "deliveryTime": "48 horas hábiles",
+    "freeShippingThreshold": 60.00,
+    "municipalities": [
+      {
+        "name": "Chalatenango Centro",
+        "districts": ["Chalatenango", "Dulce Nombre de María", "San Fernando", "El Paraíso", "San Rafael", "Santa Rita", "La Reina", "Nueva Concepción", "Agua Caliente", "Tejutla"]
+      },
+      {
+        "name": "Chalatenango Norte",
+        "districts": ["La Palma", "San Ignacio (El Pital)", "Citalá"]
+      },
+      {
+        "name": "Chalatenango Sur",
+        "districts": ["Arcatao", "Azacualpa", "Cancasque", "Comalapa", "Concepción Quezaltepeque", "El Carrizal", "La Laguna", "Las Vueltas", "Nombre de Jesús", "Nueva Trinidad", "Ojos de Agua", "Potonico", "San Antonio de la Cruz", "San Antonio Los Ranchos", "San Francisco Lempa", "San Francisco Morazán", "San Isidro Labrador", "San José Cancasque", "San José Las Flores", "San Luis del Carmen", "San Miguel de Mercedes"]
+      }
+    ]
+  },
+  {
+    "id": "san-vicente",
+    "name": "San Vicente",
+    "zone": "Paracentral",
+    "shippingCost": 5.00,
+    "deliveryTime": "48 horas hábiles",
+    "freeShippingThreshold": 60.00,
+    "municipalities": [
+      {
+        "name": "San Vicente Sur",
+        "districts": ["San Vicente", "Guadalupe", "San Cayetano Istepeque", "Tecoluca", "Tepetitán", "Verapaz"]
+      },
+      {
+        "name": "San Vicente Norte",
+        "districts": ["Apastepeque", "Santa Clara", "San Ildefonso", "San Esteban Catarina", "San Lorenzo", "San Sebastián", "Santo Domingo"]
+      }
+    ]
+  },
+  {
+    "id": "cabanas",
+    "name": "Cabañas",
+    "zone": "Paracentral",
+    "shippingCost": 5.25,
+    "deliveryTime": "48 horas hábiles",
+    "freeShippingThreshold": 60.00,
+    "municipalities": [
+      {
+        "name": "Cabañas Este",
+        "districts": ["Sensuntepeque", "Victoria", "Dolores", "Guacotecti", "San Isidro"]
+      },
+      {
+        "name": "Cabañas Oeste",
+        "districts": ["Ilobasco", "Tejutepeque", "Jutiapa", "Cinquera"]
+      }
+    ]
+  },
+  {
+    "id": "usulutan",
+    "name": "Usulután",
+    "zone": "Oriente",
+    "shippingCost": 5.50,
+    "deliveryTime": "48 horas hábiles",
+    "freeShippingThreshold": 65.00,
+    "municipalities": [
+      {
+        "name": "Usulután Este",
+        "districts": ["Usulután", "Jucuarán", "San Dionisio", "Concepción Batres", "Santa María", "Ereguayquín", "Santa Elena", "Puerto El Triunfo"]
+      },
+      {
+        "name": "Usulután Norte",
+        "districts": ["Santiago de María", "Alegría", "Berlín", "Mercedes Umaña", "Jucuapa", "El Triunfo", "Estanzuelas", "Nueva Granada", "San Buenaventura", "California"]
+      },
+      {
+        "name": "Usulután Oeste",
+        "districts": ["Jiquilisco", "San Agustín", "Ozatlán", "Tecapán"]
+      }
+    ]
+  },
+  {
+    "id": "san-miguel",
+    "name": "San Miguel",
+    "zone": "Oriente",
+    "shippingCost": 5.50,
+    "deliveryTime": "24 - 48 horas hábiles",
+    "freeShippingThreshold": 65.00,
+    "municipalities": [
+      {
+        "name": "San Miguel Centro",
+        "districts": ["San Miguel", "Comacarán", "Uluazapa", "Chirilagua (Playa El Cuco)", "Quelepa", "Moncagua"]
+      },
+      {
+        "name": "San Miguel Norte",
+        "districts": ["Ciudad Barrios", "Sesori", "Nuevo Edén de San Juan", "San Gerardo", "San Luis de la Reina", "Carolina", "San Antonio del Mosco", "Chapeltique"]
+      },
+      {
+        "name": "San Miguel Oeste",
+        "districts": ["Chinameca", "Nueva Guadalupe", "Lolotique", "San Jorge", "San Rafael Oriente", "El Tránsito"]
+      }
+    ]
+  },
+  {
+    "id": "morazan",
+    "name": "Morazán",
+    "zone": "Oriente",
+    "shippingCost": 6.00,
+    "deliveryTime": "48 - 72 horas hábiles",
+    "freeShippingThreshold": 70.00,
+    "municipalities": [
+      {
+        "name": "Morazán Sur",
+        "districts": ["San Francisco Gotera", "Guatajiagua", "Chilanga", "Delicias de Concepción", "El Divisadero", "Jocoro", "Osicala", "San Carlos", "San Isidro", "San Simón", "Sensembra", "Sociedad", "Yamabal", "Yoloaiquín"]
+      },
+      {
+        "name": "Morazán Norte",
+        "districts": ["Perquín", "Arambala", "Cacaopera", "Corinto", "El Rosario", "Gualococti", "Joateca", "Jocoaitique", "Meanguera", "Torola", "San Fernando"]
+      }
+    ]
+  },
+  {
+    "id": "la-union",
+    "name": "La Unión",
+    "zone": "Oriente",
+    "shippingCost": 6.00,
+    "deliveryTime": "48 - 72 horas hábiles",
+    "freeShippingThreshold": 70.00,
+    "municipalities": [
+      {
+        "name": "La Unión Sur",
+        "districts": ["La Unión (Puerto)", "Conchagua", "Intipucá", "San Alejo", "El Carmen", "Yayantique", "Yucuaiquín", "Meanguera del Golfo"]
+      },
+      {
+        "name": "La Unión Norte",
+        "districts": ["Santa Rosa de Lima", "Anamorós", "Bolívar", "Concepción de Oriente", "El Sauce", "Lislique", "Nueva Esparta", "Pasaquina", "Polorós", "San José"]
+      }
+    ]
+  }
+]

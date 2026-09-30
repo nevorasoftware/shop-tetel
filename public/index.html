@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TETEL | Atelier & Alta Moda El Salvador | Pagos Seguros Wompi 3DS</title>
+  <meta name="description" content="E-commerce de moda y prendas exclusivas en El Salvador. Envíos a los 14 departamentos y pagos 100% seguros con Wompi 3D Secure.">
+
+  <!-- Google Fonts: Playfair Display + Plus Jakarta Sans + IBM Plex Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+
+  <!-- Estilos CSS Modulares -->
+  <link rel="stylesheet" href="/css/variables.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/shop.css">
+  <link rel="stylesheet" href="/css/cart.css">
+  <link rel="stylesheet" href="/css/checkout.css">
+  <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+
+  <!-- ============================================================= -->
+  <!-- BARRA DE ANUNCIOS SUPERIOR (SHOPIFY STYLE) -->
+  <!-- ============================================================= -->
+  <div class="announcement-bar">
+    <span>🇸🇻 <strong>Envíos garantizados</strong> a los 14 departamentos de El Salvador</span>
+    <span class="badge-highlight">WOMPI 3DS</span>
+    <span>💳 Tarjetas de crédito y débito protegidas con <strong>3D Secure</strong></span>
+    <span>✨ Envío <strong>GRATIS</strong> en compras mayores a $60</span>
+  </div>
+
+  <!-- ============================================================= -->
+  <!-- HEADER & NAVEGACIÓN -->
+  <!-- ============================================================= -->
+  <header class="site-header">
+    <div class="container header-container">
+      <!-- Logo Marca con Logo TL Oficial -->
+      <a href="/" class="brand-logo" onclick="window.location.hash = ''">
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <img src="/assets/logo.png" alt="TETEL TL Logo" style="width: 44px; height: 44px; object-fit: contain; border-radius: 4px; border: 1px solid var(--color-border);">
+          <div>
+            <span class="brand-title">TETEL</span>
+            <span class="brand-subtitle">HECHO CON CULTURA &bull; EL SALVADOR</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Menú Principal -->
+      <nav class="main-nav" id="main-nav">
+        <a href="#catalogo" class="nav-link active" onclick="storeApp.setCategory('Todos')">Colección</a>
+        <a href="#mujer" class="nav-link" onclick="storeApp.setCategory('Mujer')">Mujer</a>
+        <a href="#hombre" class="nav-link" onclick="storeApp.setCategory('Hombre')">Hombre</a>
+        <a href="#unisex" class="nav-link" onclick="storeApp.setCategory('Unisex')">Unisex</a>
+        <a href="#ofertas" class="nav-link text-gold" onclick="storeApp.setCategory('Ofertas')">🔥 Ofertas Especiales</a>
+      </nav>
+
+      <!-- Acciones de Usuario -->
+      <div class="header-actions">
+        <!-- Botón Lista de Deseos -->
+        <button class="btn-icon action-btn-badge" onclick="wishlistStore.openDrawer()" title="Lista de Deseos">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+          <span class="badge-count wishlist-count-badge" style="display: none;">0</span>
+        </button>
+
+        <!-- Botón Carrito Deslizable -->
+        <button class="btn-icon action-btn-badge" onclick="cartStore.openDrawer()" title="Carrito de Compras">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+          <span class="badge-count cart-count-badge" style="display: none;">0</span>
+        </button>
+
+        <!-- Acceso Directo al Panel de Administración -->
+        <a href="#admin" class="btn btn-sm btn-outline" style="border-radius: var(--radius-full); font-size: 0.8rem; font-weight: 700;">
+          ⚙️ Admin Store
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============================================================= -->
+  <!-- VISTA 1: TIENDA ONLINE / STOREFRONT -->
+  <!-- ============================================================= -->
+  <main id="store-main-view">
+    <!-- Hero Banner The New Era -->
+    <section class="hero-section">
+      <div class="container hero-grid">
+        <div>
+          <div class="hero-tag">
+            <span>✦ LIMITED RELEASE &bull; JUNE 2026 &bull; HECHO CON CULTURA</span>
+          </div>
+          <h1 class="hero-title">
+            THE NEW <span>ERA</span>.
+          </h1>
+          <p class="hero-description">
+            Una nueva visión. Diseños únicos inspirados en cultura, hechos para destacar. Descubre las chaquetas de eco-cuero con bandana paisley, camisas resort urbanas, joggers y accesorios exclusivos con envíos a los 14 departamentos de El Salvador.
+          </p>
+          <div class="hero-buttons">
+            <a href="#catalogo" class="btn btn-gold btn-lg" onclick="storeApp.setCategory('Todos')">
+              Descubre la Colección
+            </a>
+            <a href="#ofertas" class="btn btn-secondary btn-lg" onclick="storeApp.setCategory('Ofertas')">
+              Ver Ofertas con Descuento
+            </a>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="hero-image-wrapper">
+            <img src="/assets/campaign-banner.png" alt="TETEL - The New Era Collection" style="object-position: top center;">
+          </div>
+          <div class="hero-floating-card">
+            <span class="wompi-logo-pill">WOMPI 3DS</span>
+            <div>
+              <div style="font-weight: 700; font-size: 0.9rem;">Pagos 100% Protegidos</div>
+              <div style="font-size: 0.75rem; color: var(--color-text-muted);">Envíos a todo El Salvador • 3D Secure</div>
+            </div>
+          </div>
+    </section>
+
+    <!-- Barra de Confianza & Beneficios -->
+    <section class="trust-bar">
+      <div class="container trust-grid">
+        <div class="trust-item">
+          <div class="trust-icon">🇸🇻</div>
+          <div>
+            <div class="trust-title">Envíos a 14 Departamentos</div>
+            <div class="trust-desc">Cobertura nacional en los 44 municipios.</div>
+          </div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon">🔒</div>
+          <div>
+            <div class="trust-title">Wompi 3D Secure</div>
+            <div class="trust-desc">Autenticación bancaria encriptada.</div>
+          </div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon">🧵</div>
+          <div>
+            <div class="trust-title">Confección Exclusiva</div>
+            <div class="trust-desc">Materiales certificados de primera calidad.</div>
+          </div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon">⚡</div>
+          <div>
+            <div class="trust-title">Entrega Exprés</div>
+            <div class="trust-desc">24 horas en San Salvador y La Libertad.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Calculador de Envíos El Salvador en Portada -->
+    <div class="container">
+      <div class="sv-delivery-banner">
+        <div class="sv-delivery-content">
+          <div>
+            <span class="badge" style="background:#1e3a8a; color:white; margin-bottom: 0.5rem;">LOGÍSTICA EL SALVADOR</span>
+            <h2 class="sv-delivery-title">Consulta el costo y tiempo de entrega en tu zona</h2>
+            <p style="margin: 0; font-size: 0.95rem;">
+              Selecciona tu departamento y distrito para conocer la tarifa exacta de envío antes de ordenar.
+            </p>
+          </div>
+
+          <div class="sv-delivery-calc-box">
+            <div class="sv-delivery-form-row">
+              <div>
+                <label class="form-label" style="font-size:0.75rem;">Departamento</label>
+                <select class="form-select" id="home-calc-dept" style="padding: 0.55rem 0.75rem; font-size: 0.85rem;"></select>
+              </div>
+              <div>
+                <label class="form-label" style="font-size:0.75rem;">Distrito / Municipio</label>
+                <select class="form-select" id="home-calc-dist" style="padding: 0.55rem 0.75rem; font-size: 0.85rem;"></select>
+              </div>
+            </div>
+
+            <div class="sv-delivery-result">
+              <div>
+                <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--color-text-subtle); font-weight: 700;">Tarifa de Envío</div>
+                <div class="sv-cost-tag" id="home-calc-cost">$3.50</div>
+              </div>
+              <div style="text-align: right;">
+                <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--color-text-subtle); font-weight: 700;">Tiempo de Tránsito</div>
+                <div style="font-weight: 700; font-size: 0.95rem;" id="home-calc-time">⏱️ 24 horas hábiles</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Catálogo de Prendas -->
+    <section class="container catalog-section" id="catalogo">
+      <div class="catalog-header">
+        <div>
+          <span class="badge" style="background: var(--color-accent-subtle); color: var(--color-accent-hover); margin-bottom: 0.35rem;">CATÁLOGO TETEL</span>
+          <h2 class="section-title">Prendas y Tendencias de Moda</h2>
+          <p>Piezas curadas con código SKU único, detalles de confección y precios especiales.</p>
+        </div>
+
+        <!-- Filtro de Ordenamiento -->
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <label style="font-size: 0.85rem; font-weight: 600; color: var(--color-text-muted);">Ordenar:</label>
+          <select class="form-select" id="catalog-sort-select" style="width: auto; padding: 0.5rem 1rem;">
+            <option value="newest">Más recientes</option>
+            <option value="price_asc">Precio: Menor a Mayor</option>
+            <option value="price_desc">Precio: Mayor a Menor</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Barra de Categorías y Buscador -->
+      <div class="catalog-toolbar">
+        <div class="category-pills">
+          <button class="pill-btn active" data-category="Todos" onclick="storeApp.setCategory('Todos')">Todas las Prendas</button>
+          <button class="pill-btn" data-category="Mujer" onclick="storeApp.setCategory('Mujer')">Colección Mujer</button>
+          <button class="pill-btn" data-category="Hombre" onclick="storeApp.setCategory('Hombre')">Colección Hombre</button>
+          <button class="pill-btn" data-category="Unisex" onclick="storeApp.setCategory('Unisex')">Unisex</button>
+          <button class="pill-btn" data-category="Ofertas" onclick="storeApp.setCategory('Ofertas')">🔥 En Oferta</button>
+        </div>
+
+        <div class="search-box-wrapper">
+          <svg class="search-icon-inside" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <input type="text" class="form-input" id="catalog-search-input" placeholder="Buscar por nombre, SKU o prenda...">
+        </div>
+      </div>
+
+      <!-- Grid de Productos -->
+      <div class="products-grid" id="products-grid">
+        <!-- Renderizado dinámico vía app.js -->
+      </div>
+    </section>
+  </main>
+
+  <!-- ============================================================= -->
+  <!-- VISTA 2: CHECKOUT CON PAGOS WOMPI 3DS -->
+  <!-- ============================================================= -->
+  <main id="checkout-main-view" style="display: none;" class="checkout-view">
+    <div class="container">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <button class="btn btn-sm btn-secondary" onclick="window.location.hash = ''">
+          ← Regresar a la Tienda
+        </button>
+        <div style="font-weight: 800; font-size: 1.15rem; letter-spacing: 0.05em;">CHECKOUT SEGURO</div>
+      </div>
+
+      <div class="checkout-grid">
+        <!-- Columna de Pasos y Formulario -->
+        <div>
+          <!-- Indicador de Pasos -->
+          <div class="checkout-steps">
+            <div class="checkout-step-item active" id="step-indicator-1">
+              <span class="step-number">1</span>
+              <span>Datos & Entrega El Salvador</span>
+            </div>
+            <div class="checkout-step-item" id="step-indicator-2">
+              <span class="step-number">2</span>
+              <span>Método de Envío</span>
+            </div>
+            <div class="checkout-step-item" id="step-indicator-3">
+              <span class="step-number">3</span>
+              <span>Pago con Wompi 3DS</span>
+            </div>
+          </div>
+
+          <!-- PASO 1: Datos Personales y Dirección en El Salvador -->
+          <div id="checkout-step-1-content">
+            <h3 style="font-size: 1.35rem; margin-bottom: 1.25rem;">1. Información del Cliente y Entrega</h3>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Nombre y Apellido</label>
+                <input type="text" class="form-input" id="checkout-name" placeholder="Ej. Carlos Mendoza" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Correo Electrónico (Para confirmación Wompi)</label>
+                <input type="email" class="form-input" id="checkout-email" placeholder="cliente@ejemplo.com" required>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Teléfono Móvil (El Salvador)</label>
+                <input type="tel" class="form-input" id="checkout-phone" placeholder="Ej. 7890-1234" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Código Postal <span class="optional">(Opcional)</span></label>
+                <input type="text" class="form-input" id="checkout-postal" placeholder="CP 1101" value="CP 1101">
+              </div>
+            </div>
+
+            <!-- Selectores de El Salvador -->
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Departamento</label>
+                <select class="form-select" id="checkout-department" required></select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Municipio / Distrito</label>
+                <select class="form-select" id="checkout-district" required>
+                  <option value="">Primero elige un departamento</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Dirección Completa de Entrega</label>
+              <input type="text" class="form-input" id="checkout-address" placeholder="Colonia, calle, pasaje, polígono o número de casa" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Punto de Referencia <span class="optional">(Opcional)</span></label>
+              <input type="text" class="form-input" id="checkout-reference" placeholder="Ej. Frente al parque, casa con portón negro">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Notas para la entrega <span class="optional">(Opcional)</span></label>
+              <textarea class="form-textarea" id="checkout-notes" rows="2" placeholder="Instrucciones especiales para el repartidor..."></textarea>
+            </div>
+
+            <button class="btn btn-primary btn-lg btn-full" onclick="checkoutManager.validateStep1()" style="margin-top: 1rem;">
+              Continuar a Opciones de Envío →
+            </button>
+          </div>
+
+          <!-- PASO 2: Confirmación de Método de Entrega -->
+          <div id="checkout-step-2-content" style="display: none;">
+            <h3 style="font-size: 1.35rem; margin-bottom: 1.25rem;">2. Método de Entrega Seleccionado</h3>
+            <div id="step-2-delivery-summary" style="margin-bottom: 2rem;"></div>
+
+            <div style="display: flex; gap: 1rem;">
+              <button class="btn btn-secondary" onclick="checkoutManager.goToStep(1)">← Modificar Dirección</button>
+              <button class="btn btn-primary btn-lg btn-full" onclick="checkoutManager.goToStep(3)">Continuar al Pago con Tarjeta →</button>
+            </div>
+          </div>
+
+          <!-- PASO 3: Pasarela Wompi 3D Secure -->
+          <div id="checkout-step-3-content" style="display: none;">
+            <div class="wompi-trust-card">
+              <div class="wompi-trust-logo">WOMPI 3DS</div>
+              <div>
+                <strong style="font-size: 0.95rem; color: #1e3a8a;">Transacción Segura con 3D Secure 2.0</strong>
+                <p style="margin: 0; font-size: 0.775rem; color: #1e40af;">
+                  Al pagar, serás autenticado por tu banco emisor salvadoreño o internacional mediante código SMS / biometría.
+                </p>
+              </div>
+            </div>
+
+            <!-- Vista Previa de Tarjeta Interactiva -->
+            <div class="credit-card-mockup">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="card-chip"></div>
+                <div class="card-brand-badge" id="mockup-card-brand">CARD</div>
+              </div>
+              <div class="card-number-display" id="mockup-card-number">•••• •••• •••• ••••</div>
+              <div class="card-details-row">
+                <div>
+                  <div style="font-size: 0.65rem; text-transform: uppercase; color: #cbd5e1;">Titular</div>
+                  <div class="card-holder-name" id="mockup-card-holder">NOMBRE TITULAR</div>
+                </div>
+                <div style="text-align: right;">
+                  <div style="font-size: 0.65rem; text-transform: uppercase; color: #cbd5e1;">Vence</div>
+                  <div class="card-expiry-display" id="mockup-card-expiry">MM/AA</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Formulario de Tarjeta -->
+            <div class="form-group">
+              <label class="form-label">Número de Tarjeta</label>
+              <input type="text" class="form-input" id="card-number-input" placeholder="4000 1234 5678 9010" maxlength="19" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Nombre del Titular (Como aparece en la tarjeta)</label>
+              <input type="text" class="form-input" id="card-holder-input" placeholder="Ej. CARLOS MENDOZA" required>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Fecha de Vencimiento (MM/AA)</label>
+                <input type="text" class="form-input" id="card-exp-input" placeholder="12/28" maxlength="5" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Código CVV / CVC (3-4 dígitos)</label>
+                <input type="password" class="form-input" id="card-cvv-input" placeholder="123" maxlength="4" required>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+              <button class="btn btn-secondary" onclick="checkoutManager.goToStep(2)">← Atrás</button>
+              <button class="btn btn-wompi btn-lg btn-full" id="btn-wompi-pay-action" onclick="checkoutManager.processWompiPayment()">
+                <span id="wompi-pay-btn-text">🔒 Pagar con Wompi 3DS</span>
+              </button>
+            </div>
+
+            <div style="text-align: center; margin-top: 1rem; font-size: 0.75rem; color: var(--color-text-subtle);">
+              Aceptamos Visa, Mastercard y American Express de todos los bancos de El Salvador y el mundo.
+            </div>
+          </div>
+        </div>
+
+        <!-- Columna Resumen del Pedido -->
+        <div style="background: white; border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 1.5rem; position: sticky; top: 100px;">
+          <h4 style="font-size: 1.15rem; margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--color-border);">
+            Resumen de tu Compra
+          </h4>
+
+          <div id="checkout-items-summary-list" style="margin-bottom: 1.25rem; max-height: 280px; overflow-y: auto;"></div>
+
+          <div class="cart-summary-row">
+            <span>Subtotal de Prendas</span>
+            <strong id="checkout-subtotal">$0.00</strong>
+          </div>
+          <div class="cart-summary-row">
+            <span>Envío en El Salvador</span>
+            <strong id="checkout-shipping">$0.00</strong>
+          </div>
+          <div class="cart-summary-row total-row">
+            <span>Total a Pagar</span>
+            <span id="checkout-total" style="color: var(--color-primary);">$0.00</span>
+          </div>
+
+          <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px dashed var(--color-border); font-size: 0.75rem; color: var(--color-text-muted);">
+            🛡️ Tus fondos no se cobran hasta completar exitosamente el reto 3D Secure con tu banco.
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ============================================================= -->
+  <!-- VISTA 3: VISTA DE ÉXITO DE COMPRA -->
+  <!-- ============================================================= -->
+  <div id="order-success-view"></div>
+
+  <!-- ============================================================= -->
+  <!-- VISTA 4: PANEL DE ADMINISTRACIÓN (BACKOFFICE SHOPIFY STYLE) -->
+  <!-- ============================================================= -->
+  <div id="admin-main-view" style="display: none;" class="admin-view">
+    <!-- Sidebar Admin -->
+    <aside class="admin-sidebar">
+      <div class="admin-sidebar-header">
+        <div style="display: flex; align-items: center; gap: 0.65rem;">
+          <img src="/assets/logo.png" alt="TL" style="width: 34px; height: 34px; object-fit: contain; border-radius: 4px; background: white;">
+          <div>
+            <div class="admin-brand-title">TETEL ADMIN</div>
+            <div style="font-size: 0.65rem; color: var(--color-accent); font-weight: 700;">HECHO CON CULTURA</div>
+          </div>
+        </div>
+      </div>
+
+      <nav class="admin-nav">
+        <div class="admin-nav-item active" data-tab="products" onclick="adminManager.switchTab('products')">
+          <span>👗</span> Catálogo de Prendas
+        </div>
+        <div class="admin-nav-item" data-tab="orders" onclick="adminManager.switchTab('orders')">
+          <span>📦</span> Pedidos & Envíos SV
+        </div>
+        <div class="admin-nav-item" data-tab="delivery" onclick="adminManager.switchTab('delivery')">
+          <span>🇸🇻</span> Tarifas por Departamento
+        </div>
+        <div class="admin-nav-item" data-tab="settings" onclick="adminManager.switchTab('settings')">
+          <span>💳</span> Configuración Wompi
+        </div>
+      </nav>
+
+      <div class="admin-sidebar-footer">
+        <button class="btn btn-secondary btn-full btn-sm" onclick="adminManager.close()">
+          ← Volver a la Tienda
+        </button>
+      </div>
+    </aside>
+
+    <!-- Contenido Principal del Admin -->
+    <main class="admin-main-content">
+      <!-- Tarjetas de Métricas KPI -->
+      <div class="admin-kpi-grid">
+        <div class="admin-kpi-card">
+          <div class="kpi-icon-box kpi-icon-sales">💰</div>
+          <div>
+            <div class="kpi-title">Ventas Totales (Wompi)</div>
+            <div class="kpi-value" id="metric-total-sales">$0.00</div>
+          </div>
+        </div>
+        <div class="admin-kpi-card">
+          <div class="kpi-icon-box kpi-icon-orders">🛍️</div>
+          <div>
+            <div class="kpi-title">Pedidos Registrados</div>
+            <div class="kpi-value" id="metric-total-orders">0</div>
+          </div>
+        </div>
+        <div class="admin-kpi-card">
+          <div class="kpi-icon-box kpi-icon-products">👗</div>
+          <div>
+            <div class="kpi-title">Prendas en Catálogo</div>
+            <div class="kpi-value" id="metric-total-products">0</div>
+          </div>
+        </div>
+        <div class="admin-kpi-card">
+          <div class="kpi-icon-box kpi-icon-alerts">⚠️</div>
+          <div>
+            <div class="kpi-title">Stock Bajo (&le; 5 un.)</div>
+            <div class="kpi-value" id="metric-low-stock">0</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PANEL 1: GESTIÓN DE PRENDAS -->
+      <section id="admin-panel-products">
+        <div class="admin-page-header">
+          <div>
+            <h2 class="admin-page-title">Gestión de Prendas de Vestimenta</h2>
+            <p>Sube prendas con código SKU, tallas, precio normal, precio con descuento y características.</p>
+          </div>
+          <button class="btn btn-primary" onclick="adminManager.openNewProductModal()">
+            ＋ Subir Nueva Prenda
+          </button>
+        </div>
+
+        <div class="admin-card-table">
+          <div class="table-header-toolbar">
+            <input type="text" class="form-input" style="max-width: 320px;" placeholder="Buscar por SKU o nombre..." oninput="adminManager.renderProductsTable(this.value)">
+          </div>
+
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Foto</th>
+                <th>Código SKU</th>
+                <th>Prenda</th>
+                <th>Categoría</th>
+                <th>Precios</th>
+                <th>Inventario</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="admin-products-table-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- PANEL 2: GESTIÓN DE PEDIDOS -->
+      <section id="admin-panel-orders" style="display: none;">
+        <div class="admin-page-header">
+          <div>
+            <h2 class="admin-page-title">Pedidos de Clientes y Envíos SV</h2>
+            <p>Control de pagos procesados mediante Wompi 3DS y actualización de estado de entrega.</p>
+          </div>
+        </div>
+
+        <div class="admin-card-table">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>N° Pedido / Fecha</th>
+                <th>Cliente</th>
+                <th>Destino en El Salvador</th>
+                <th>Total</th>
+                <th>Pago Wompi</th>
+                <th>Estado de Envío</th>
+                <th>Detalles</th>
+              </tr>
+            </thead>
+            <tbody id="admin-orders-table-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- PANEL 3: TARIFAS DEPARTAMENTOS EL SALVADOR -->
+      <section id="admin-panel-delivery" style="display: none;">
+        <div class="admin-page-header">
+          <div>
+            <h2 class="admin-page-title">Cobertura y Tarifas por Departamento (El Salvador)</h2>
+            <p>Tiempos de entrega y costos asociados a los 14 departamentos y 44 municipios.</p>
+          </div>
+        </div>
+
+        <div id="admin-delivery-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem;"></div>
+      </section>
+
+      <!-- PANEL 4: CONFIGURACIÓN WOMPI -->
+      <section id="admin-panel-settings" style="display: none;">
+        <div class="admin-page-header">
+          <div>
+            <h2 class="admin-page-title">Configuración Pasarela de Pagos Wompi</h2>
+            <p>Credenciales de autenticación OAuth 2.0 y parámetros de 3D Secure de Wompi El Salvador.</p>
+          </div>
+        </div>
+
+        <div style="background: white; border-radius: var(--radius-lg); border: 1px solid var(--color-border); padding: 2rem; max-width: 720px;">
+          <form onsubmit="adminManager.saveWompiSettings(event)">
+            <div class="form-group">
+              <label class="form-label">Wompi Client ID (App ID)</label>
+              <input type="text" class="form-input" id="setting-wompi-client-id" placeholder="App ID de tu cuenta Wompi" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Wompi Client Secret (API Secret)</label>
+              <input type="password" class="form-input" id="setting-wompi-client-secret" placeholder="Ingresa llave secreta para actualizar">
+              <span style="font-size: 0.75rem; color: var(--color-text-subtle);">Por seguridad, la llave existente se mantiene a menos que escribas una nueva.</span>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Ambiente Wompi</label>
+                <select class="form-select" id="setting-wompi-env">
+                  <option value="desarrollo">Desarrollo (Sandbox / Pruebas)</option>
+                  <option value="produccion">Producción (Cobros Reales)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Umbral de Envío Gratis ($)</label>
+                <input type="number" step="0.01" class="form-input" id="setting-free-shipping" value="60.00">
+              </div>
+            </div>
+
+            <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: var(--radius-md); padding: 1rem; margin: 1.25rem 0;">
+              <label style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer; font-weight: 700; color: #1e3a8a;">
+                <input type="checkbox" id="setting-wompi-sim" style="width: 18px; height: 18px;">
+                Activar Modo Simulador 3DS (Recomendado para pruebas sin tarjeta real)
+              </label>
+              <p style="font-size: 0.8rem; color: #1e40af; margin: 0.35rem 0 0 2rem;">
+                Permite simular el flujo 3DS con cualquier tarjeta ficticia para validar el carrito y la generación de órdenes en la base de datos SQLite.
+              </p>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-lg">
+              💾 Guardar Configuración Wompi
+            </button>
+          </form>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- ============================================================= -->
+  <!-- MODALES Y DRAWERS GLOBALES -->
+  <!-- ============================================================= -->
+
+  <!-- Drawer Carrito (Shopify Style) -->
+  <div class="drawer-backdrop" id="cart-drawer-backdrop" onclick="if(event.target === this) cartStore.closeDrawer()">
+    <div class="drawer">
+      <div class="drawer-header">
+        <div class="drawer-title">
+          <span>🛍️ Tu Carrito</span>
+        </div>
+        <button class="btn-icon" onclick="cartStore.closeDrawer()">✕</button>
+      </div>
+
+      <div class="drawer-body">
+        <!-- Medidor de Envío Gratis -->
+        <div class="free-shipping-meter">
+          <div class="free-shipping-text" id="free-shipping-msg">
+            Agrega más para <strong>ENVÍO GRATIS</strong> en El Salvador
+          </div>
+          <div class="meter-track">
+            <div class="meter-bar" id="free-shipping-progress" style="width: 0%;"></div>
+          </div>
+        </div>
+
+        <!-- Lista de Artículos -->
+        <div class="cart-items-list" id="cart-items-container"></div>
+
+        <!-- Selector de Departamento para estimación -->
+        <div class="cart-shipping-calc-box">
+          <label>🇸🇻 Departamento de Destino:</label>
+          <select class="form-select" id="cart-dept-select" style="padding: 0.4rem 0.6rem; font-size: 0.85rem;"></select>
+        </div>
+      </div>
+
+      <div class="drawer-footer">
+        <div class="cart-summary-row">
+          <span>Subtotal:</span>
+          <strong id="cart-subtotal-val">$0.00</strong>
+        </div>
+        <div class="cart-summary-row">
+          <span>Envío Estimado SV:</span>
+          <strong id="cart-shipping-val">$0.00</strong>
+        </div>
+        <div class="cart-summary-row total-row">
+          <span>Total:</span>
+          <strong id="cart-total-val" style="color: var(--color-primary);">$0.00</strong>
+        </div>
+
+        <button class="btn btn-wompi btn-lg btn-full" id="cart-checkout-btn" onclick="checkoutManager.openCheckout()" style="margin-top: 1rem;">
+          🔒 Proceder al Pago con Wompi 3DS
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Drawer Lista de Deseos -->
+  <div class="drawer-backdrop" id="wishlist-drawer-backdrop" onclick="if(event.target === this) wishlistStore.closeDrawer()">
+    <div class="drawer">
+      <div class="drawer-header">
+        <div class="drawer-title">
+          <span>❤️ Lista de Deseos</span>
+        </div>
+        <button class="btn-icon" onclick="wishlistStore.closeDrawer()">✕</button>
+      </div>
+      <div class="drawer-body" id="wishlist-items-container"></div>
+    </div>
+  </div>
+
+  <!-- Modal Vista Rápida de Producto -->
+  <div class="modal-backdrop" id="product-quickview-backdrop" onclick="if(event.target === this) storeApp.closeQuickView()">
+    <div id="product-quickview-modal"></div>
+  </div>
+
+  <!-- Modal Reto 3D Secure Wompi -->
+  <div class="modal-backdrop" id="threed-modal-backdrop">
+    <div class="modal-content threed-auth-modal">
+      <div class="threed-header">
+        <div style="font-weight: 800; font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem;">
+          <span style="background: white; color: #1e3a8a; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.75rem;">wompi</span>
+          <span>Autenticación 3D Secure</span>
+        </div>
+      </div>
+      <div class="threed-body">
+        <div class="threed-bank-logo">BANCO EMISOR DE EL SALVADOR</div>
+        <p style="font-size: 0.85rem; color: var(--color-text-muted);">
+          Por tu seguridad, valida tu compra autorizando con el código SMS enviado a tu móvil.
+        </p>
+
+        <div style="background: #f8fafc; border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 1rem; margin: 1.25rem 0; font-size: 0.85rem; text-align: left;">
+          <div style="display:flex; justify-content:space-between; margin-bottom: 0.25rem;">
+            <span>Monto a Cobrar:</span>
+            <strong id="3ds-amount-val" style="color: var(--color-primary); font-size: 1rem;">$0.00</strong>
+          </div>
+          <div style="display:flex; justify-content:space-between; margin-bottom: 0.25rem;">
+            <span>Tarjeta:</span>
+            <span id="3ds-card-val" style="font-family: var(--font-mono);">•••• 4242</span>
+          </div>
+          <div style="display:flex; justify-content:space-between;">
+            <span>Pedido:</span>
+            <span id="3ds-order-val" style="font-family: var(--font-mono);">TTL-SV-0000</span>
+          </div>
+        </div>
+
+        <div style="margin: 1.5rem 0;">
+          <label style="display:block; font-size: 0.8rem; font-weight:700; margin-bottom: 0.5rem;">CÓDIGO DE VERIFICACIÓN (OTP)</label>
+          <input type="text" value="951204" maxlength="6" style="width: 180px; text-align:center; font-size: 1.5rem; font-family: var(--font-mono); font-weight: 800; letter-spacing: 0.2em; padding: 0.5rem; border: 2px solid #cbd5e1; border-radius: var(--radius-md);">
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 0.65rem;">
+          <button class="btn btn-wompi btn-lg btn-full" onclick="checkoutManager.complete3DSVerification(true)">
+            🔒 Autorizar Compra
+          </button>
+          <button class="btn btn-outline btn-full" style="color: var(--color-sale); border-color: var(--color-border);" onclick="checkoutManager.complete3DSVerification(false)">
+            ✕ Rechazar Transacción
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Admin: Subir / Editar Prenda -->
+  <div class="modal-backdrop" id="admin-product-modal-backdrop" onclick="if(event.target === this) adminManager.closeProductModal()">
+    <div class="modal-content" style="max-width: 680px; padding: 2rem;">
+      <button class="modal-close-btn" onclick="adminManager.closeProductModal()">✕</button>
+      <h3 id="product-modal-title" style="font-size: 1.5rem; margin-bottom: 1.5rem;">Subir Prenda al Catálogo</h3>
+
+      <form id="admin-product-form" onsubmit="adminManager.saveProduct(event)">
+        <input type="hidden" id="admin-product-id">
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Nombre de la Prenda</label>
+            <input type="text" class="form-input" id="form-product-name" placeholder="Ej. Vestido Plisado Seda" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Código SKU</label>
+            <input type="text" class="form-input" id="form-product-sku" placeholder="TTL-VST-101" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Categoría</label>
+            <select class="form-select" id="form-product-category" required>
+              <option value="Mujer">Mujer</option>
+              <option value="Hombre">Hombre</option>
+              <option value="Unisex">Unisex</option>
+              <option value="Accesorios">Accesorios</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Subcategoría <span class="optional">(Ej. Vestidos, Blazers)</span></label>
+            <input type="text" class="form-input" id="form-product-subcategory" placeholder="Vestidos">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Precio Normal ($ USD)</label>
+            <input type="number" step="0.01" class="form-input" id="form-product-price" placeholder="89.00" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Precio con Descuento ($ de oferta)</label>
+            <input type="number" step="0.01" class="form-input" id="form-product-discount-price" placeholder="69.00 (Opcional)">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Cantidad en Stock (Inventario)</label>
+          <input type="number" class="form-input" id="form-product-stock" placeholder="15" required value="10">
+        </div>
+
+        <!-- Tallas disponibles -->
+        <div class="form-group">
+          <label class="form-label">Tallas Disponibles</label>
+          <div style="display: flex; gap: 0.85rem; flex-wrap: wrap;">
+            <label style="display:flex; align-items:center; gap:0.35rem; font-size: 0.9rem;"><input type="checkbox" id="size-check-XS" checked> XS</label>
+            <label style="display:flex; align-items:center; gap:0.35rem; font-size: 0.9rem;"><input type="checkbox" id="size-check-S" checked> S</label>
+            <label style="display:flex; align-items:center; gap:0.35rem; font-size: 0.9rem;"><input type="checkbox" id="size-check-M" checked> M</label>
+            <label style="display:flex; align-items:center; gap:0.35rem; font-size: 0.9rem;"><input type="checkbox" id="size-check-L" checked> L</label>
+            <label style="display:flex; align-items:center; gap:0.35rem; font-size: 0.9rem;"><input type="checkbox" id="size-check-XL"> XL</label>
+            <label style="display:flex; align-items:center; gap:0.35rem; font-size: 0.9rem;"><input type="checkbox" id="size-check-XXL"> XXL</label>
+          </div>
+        </div>
+
+        <!-- Carga de Imagen -->
+        <div class="form-group">
+          <label class="form-label">Fotografía de la Prenda</label>
+          <div style="display: flex; gap: 0.75rem; margin-bottom: 0.5rem;">
+            <input type="text" class="form-input" id="admin-product-image-url" placeholder="Pega URL de imagen o sube un archivo">
+            <label class="btn btn-secondary" style="white-space: nowrap; cursor: pointer;">
+              📁 Subir Foto
+              <input type="file" id="admin-product-file-input" accept="image/*" style="display: none;">
+            </label>
+          </div>
+          <img id="admin-product-img-preview" src="" alt="Vista previa" class="dropzone-preview-img" style="display: none;">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Descripción</label>
+          <textarea class="form-textarea" id="form-product-desc" rows="3" placeholder="Describe los detalles de diseño, tacto y caída de la prenda..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Características (Una por línea)</label>
+          <textarea class="form-textarea" id="form-product-features" rows="3" placeholder="100% Lino orgánico&#10;Corte regular fit&#10;Botones de nácar auténtico"></textarea>
+        </div>
+
+        <div style="display: flex; gap: 1.5rem; margin-bottom: 1.5rem;">
+          <label style="display:flex; align-items:center; gap:0.4rem; cursor:pointer;">
+            <input type="checkbox" id="form-product-is-sale"> 🏷️ En Oferta
+          </label>
+          <label style="display:flex; align-items:center; gap:0.4rem; cursor:pointer;">
+            <input type="checkbox" id="form-product-is-featured" checked> ⭐ Destacado en Portada
+          </label>
+        </div>
+
+        <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+          <button type="button" class="btn btn-secondary" onclick="adminManager.closeProductModal()">Cancelar</button>
+          <button type="submit" class="btn btn-primary btn-lg">Guardar Prenda</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="footer-brand-title">TETEL</div>
+        <p style="font-size: 0.9rem; line-height: 1.6; max-width: 320px;">
+          Plataforma de moda de alta costura salvadoreña. Diseños exclusivos, entregas puntuales y pagos protegidos con Wompi 3D Secure.
+        </p>
+      </div>
+
+      <div>
+        <h4 class="footer-heading">Departamentos SV</h4>
+        <ul class="footer-links">
+          <li><a href="#catalogo">San Salvador &bull; Santa Tecla</a></li>
+          <li><a href="#catalogo">Santa Ana &bull; Sonsonate</a></li>
+          <li><a href="#catalogo">San Miguel &bull; Usulután</a></li>
+          <li><a href="#catalogo">La Libertad &bull; La Paz</a></li>
+          <li><a href="#catalogo">Cobertura en 14 Departamentos</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-heading">Seguridad & Pagos</h4>
+        <ul class="footer-links">
+          <li><a href="#checkout">Wompi 3D Secure 2.0</a></li>
+          <li><a href="#checkout">Tarjetas Visa y Mastercard</a></li>
+          <li><a href="#checkout">Banco Agrícola / BAC / Cuscatlán</a></li>
+          <li><a href="#checkout">Cifrado de grado bancario</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-heading">Administración</h4>
+        <ul class="footer-links">
+          <li><a href="#admin">Panel de Control Shopify Style</a></li>
+          <li><a href="#admin">Subir Prendas con SKU</a></li>
+          <li><a href="#admin">Gestión de Pedidos & Envíos</a></li>
+          <li><a href="#admin">Ajustes de Credenciales Wompi</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <div>
+        &copy; 2026 TETEL Fashion Atelier El Salvador. Todos los derechos reservados.
+      </div>
+      <div class="wompi-security-badge">
+        🔒 Pagos Procesados de forma segura con Wompi SV (3DS Certified)
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts Modulares -->
+  <script type="module" src="/js/app.js"></script>
+</body>
+</html>

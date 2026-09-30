@@ -1,0 +1,295 @@
+/* -------------------------------------------------------------
+   PANEL DE ADMINISTRACIÓN (ESTILO SHOPIFY ADMIN)
+------------------------------------------------------------- */
+.admin-view {
+  min-height: 100vh;
+  background-color: #f1f5f9;
+  display: flex;
+}
+
+.admin-sidebar {
+  width: 260px;
+  background-color: #0f172a;
+  color: #94a3b8;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  border-right: 1px solid #1e293b;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+
+.admin-sidebar-header {
+  padding: 1.5rem 1.25rem;
+  border-bottom: 1px solid #1e293b;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.admin-brand-title {
+  color: white;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.admin-nav {
+  padding: 1.25rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  flex: 1;
+}
+
+.admin-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.65rem 0.85rem;
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #cbd5e1;
+  transition: all var(--transition-fast);
+  cursor: pointer;
+}
+
+.admin-nav-item:hover {
+  background-color: #1e293b;
+  color: white;
+}
+
+.admin-nav-item.active {
+  background-color: var(--color-accent);
+  color: #0f172a;
+}
+
+.admin-sidebar-footer {
+  padding: 1.25rem;
+  border-top: 1px solid #1e293b;
+}
+
+.admin-main-content {
+  flex: 1;
+  padding: 2.5rem;
+  overflow-y: auto;
+}
+
+.admin-page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.admin-page-title {
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: var(--color-primary);
+}
+
+/* -------------------------------------------------------------
+   TARJETAS DE MÉTRICAS KPI
+------------------------------------------------------------- */
+.admin-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.admin-kpi-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.kpi-icon-box {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}
+
+.kpi-icon-sales {
+  background: #ecfdf5;
+  color: #059669;
+}
+
+.kpi-icon-orders {
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+.kpi-icon-products {
+  background: #fdf4ff;
+  color: #a855f7;
+}
+
+.kpi-icon-alerts {
+  background: #fffbeb;
+  color: #d97706;
+}
+
+.kpi-title {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  letter-spacing: 0.05em;
+}
+
+.kpi-value {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--color-primary);
+  margin-top: 0.15rem;
+}
+
+/* -------------------------------------------------------------
+   TABLAS DE DATOS SHOPIFY STYLE
+------------------------------------------------------------- */
+.admin-card-table {
+  background: white;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+.table-header-toolbar {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.admin-table th {
+  background: #f8fafc;
+  padding: 0.85rem 1.25rem;
+  font-size: 0.775rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.admin-table td {
+  padding: 1rem 1.25rem;
+  font-size: 0.9rem;
+  border-bottom: 1px solid var(--color-border-subtle);
+  vertical-align: middle;
+}
+
+.admin-table tr:hover td {
+  background-color: #f8fafc;
+}
+
+.table-product-thumb {
+  width: 48px;
+  height: 60px;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+  background: #f1f5f9;
+}
+
+/* Status Pills */
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.status-aprobado {
+  background: #ecfdf5;
+  color: #047857;
+}
+
+.status-pendiente {
+  background: #fffbeb;
+  color: #b45309;
+}
+
+.status-fallido {
+  background: #fef2f2;
+  color: #b91c1c;
+}
+
+.status-enviado {
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+
+.status-entregado {
+  background: #f0fdf4;
+  color: #15803d;
+}
+
+/* Dropzone de imagen */
+.image-upload-dropzone {
+  border: 2px dashed #cbd5e1;
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  text-align: center;
+  background: #f8fafc;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.image-upload-dropzone:hover {
+  border-color: var(--color-accent);
+  background: #fffdf5;
+}
+
+.dropzone-preview-img {
+  max-height: 180px;
+  border-radius: var(--radius-md);
+  margin: 1rem auto 0;
+  display: block;
+  box-shadow: var(--shadow-md);
+}
+
+@media (max-width: 900px) {
+  .admin-view {
+    flex-direction: column;
+  }
+  .admin-sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+  .admin-main-content {
+    padding: 1.5rem;
+  }
+  .admin-table {
+    display: block;
+    overflow-x: auto;
+  }
+}
