@@ -1,7 +1,8 @@
-# TETEL | Plataforma E-commerce de Moda & Alta Costura
+# TETEL | Urban Streetwear Atelier & E-commerce
+### Desarrollado por [Nevora Software](https://nevorasoftware.com/)
 ### Con Pasarela Wompi El Salvador 3D Secure, Logística Nacional y Panel de Administración
 
-Plataforma de comercio electrónico con propuesta visual y funcional **estilo Shopify**, diseñada específicamente para la venta de prendas de vestimenta en **El Salvador**.
+Plataforma de comercio electrónico con propuesta visual **Streetwear Contemporáneo** y arquitectura funcional **estilo Shopify**, diseñada y desarrollada por **[Nevora Software](https://nevorasoftware.com/)** para la venta de prendas de vestimenta en **El Salvador**.
 
 ---
 
@@ -120,3 +121,12 @@ Puedes configurar tus credenciales de dos maneras:
    WOMPI_ENVIRONMENT=desarrollo
    WOMPI_SIMULATOR_MODE=false
    ```
+
+---
+
+## 🛠️ Creado y Desarrollado por Nevora Software
+
+Esta solución de e-commerce, catálogo streetwear y pasarela de cobros Wompi 3DS fue creada y desarrollada por **Nevora Software**:
+- 🌐 **Sitio Web Oficial:** [https://nevorasoftware.com/](https://nevorasoftware.com/)
+- 💻 **Especialidad:** Desarrollo web a medida, plataformas e-commerce de alto rendimiento, integraciones fintech e interfaces UI/UX de alta conversión.
+

@@ -2,6 +2,8 @@
   "name": "tetel-ecommerce-moda",
   "version": "1.0.0",
   "description": "Plataforma E-commerce de moda estilo Shopify con integración Wompi El Salvador 3DS, base de datos y panel de administración",
+  "author": "Nevora Software <https://nevorasoftware.com/>",
+  "homepage": "https://nevorasoftware.com/",
   "main": "server/index.js",
   "type": "module",
   "scripts": {
