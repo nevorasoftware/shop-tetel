@@ -19,13 +19,31 @@ class StoreApp {
   }
 
   async init() {
-    await deliveryService.loadDepartments();
-    await this.loadProducts();
+    try {
+      await deliveryService.loadDepartments();
+    } catch (e) {
+      console.warn('Departments load error:', e);
+    }
+
+    try {
+      await this.loadProducts();
+    } catch (e) {
+      console.warn('Products load error:', e);
+    }
+
     this.initHomeDeliveryWidget();
     this.initEventListeners();
     this.handleRouting();
 
     window.addEventListener('hashchange', () => this.handleRouting());
+  }
+
+  goToAdmin(event) {
+    if (event) event.preventDefault();
+    if (window.location.hash !== '#admin') {
+      window.location.hash = '#admin';
+    }
+    this.handleRouting();
   }
 
   handleRouting() {
@@ -38,8 +56,10 @@ class StoreApp {
       if (!adminAuth.isAuthenticated()) {
         if (storeView) storeView.style.display = 'none';
         if (checkoutView) checkoutView.style.display = 'none';
+        if (adminView) adminView.style.display = 'none';
         adminAuth.showLoginModal();
       } else {
+        adminAuth.hideLoginModal();
         adminManager.open();
       }
     } else if (hash.startsWith('#checkout')) {
@@ -427,6 +447,16 @@ class StoreApp {
 }
 
 // Inicialización global
-document.addEventListener('DOMContentLoaded', () => {
-  window.storeApp = new StoreApp();
-});
+let appInstance = null;
+function startStoreApp() {
+  if (!window.storeApp) {
+    appInstance = new StoreApp();
+    window.storeApp = appInstance;
+  }
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', startStoreApp);
+} else {
+  startStoreApp();
+}

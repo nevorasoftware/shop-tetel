@@ -89,12 +89,13 @@ class AdminManager {
         userDisplay.textContent = user.email || 'admin@tetel.com';
       }
 
-      await this.loadMetrics();
-      await this.loadCategories();
-      await this.loadProducts();
-      await this.loadOrders();
-      await this.loadSettings();
       this.switchTab(this.activeTab);
+
+      try { await this.loadMetrics(); } catch(e) { console.warn('Métricas:', e); }
+      try { await this.loadCategories(); } catch(e) { console.warn('Categorías:', e); }
+      try { await this.loadProducts(); } catch(e) { console.warn('Productos:', e); }
+      try { await this.loadOrders(); } catch(e) { console.warn('Pedidos:', e); }
+      try { await this.loadSettings(); } catch(e) { console.warn('Ajustes:', e); }
     }
   }
 
@@ -269,7 +270,10 @@ class AdminManager {
     }
 
     const modal = document.getElementById('admin-category-modal-backdrop');
-    if (modal) modal.style.display = 'flex';
+    if (modal) {
+      modal.style.display = 'flex';
+      modal.classList.add('active');
+    }
   }
 
   openEditCategoryModal(id) {
@@ -295,12 +299,18 @@ class AdminManager {
     }
 
     const modal = document.getElementById('admin-category-modal-backdrop');
-    if (modal) modal.style.display = 'flex';
+    if (modal) {
+      modal.style.display = 'flex';
+      modal.classList.add('active');
+    }
   }
 
   closeCategoryModal() {
     const modal = document.getElementById('admin-category-modal-backdrop');
-    if (modal) modal.style.display = 'none';
+    if (modal) {
+      modal.classList.remove('active');
+      modal.style.display = 'none';
+    }
   }
 
   toggleCategoryParentSelect(isSub) {

@@ -94,7 +94,7 @@
         </button>
 
         <!-- Acceso Directo al Panel de Administración -->
-        <a href="#admin" class="btn btn-sm btn-outline" style="border-radius: var(--radius-xs); font-size: 0.8rem; font-weight: 700;">
+        <a href="#admin" onclick="if(window.storeApp){window.storeApp.goToAdmin(event);}else{window.location.hash='#admin';}" class="btn btn-sm btn-outline" style="border-radius: var(--radius-xs); font-size: 0.8rem; font-weight: 700;">
           ⚙️ Admin Store
         </a>
       </div>
@@ -143,80 +143,7 @@
       </div>
     </section>
 
-    <!-- Barra de Confianza & Beneficios -->
-    <section class="trust-bar">
-      <div class="container trust-grid">
-        <div class="trust-item">
-          <div class="trust-icon">🇸🇻</div>
-          <div>
-            <div class="trust-title">Envíos a 14 Departamentos</div>
-            <div class="trust-desc">Cobertura nacional en los 44 municipios.</div>
-          </div>
-        </div>
-        <div class="trust-item">
-          <div class="trust-icon">🔒</div>
-          <div>
-            <div class="trust-title">Pagos Seguros con 3DS</div>
-            <div class="trust-desc">Autenticación bancaria y cifrado 256-bit.</div>
-          </div>
-        </div>
-        <div class="trust-item">
-          <div class="trust-icon">🧵</div>
-          <div>
-            <div class="trust-title">Confección Exclusiva</div>
-            <div class="trust-desc">Materiales certificados de primera calidad.</div>
-          </div>
-        </div>
-        <div class="trust-item">
-          <div class="trust-icon">⚡</div>
-          <div>
-            <div class="trust-title">Entrega Exprés</div>
-            <div class="trust-desc">24 horas en San Salvador y La Libertad.</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Calculador de Envíos El Salvador en Portada -->
-    <div class="container">
-      <div class="sv-delivery-banner">
-        <div class="sv-delivery-content">
-          <div>
-            <span class="badge" style="background: rgba(37, 99, 235, 0.2); color: #60a5fa; border: 1px solid rgba(37, 99, 235, 0.4); margin-bottom: 0.65rem;">SV LOGISTICS TERMINAL &bull; 14 DEPARTAMENTOS</span>
-            <h2 class="sv-delivery-title">Calculadora de Flete & Tiempo de Entrega</h2>
-            <p style="margin: 0; font-size: 0.95rem; color: #94a3b8;">
-              Cotiza la tarifa de envío a domicilio y conoce el tiempo de tránsito exacto en tu municipio antes de ordenar.
-            </p>
-          </div>
-
-          <div class="sv-delivery-calc-box">
-            <div class="sv-delivery-form-row">
-              <div>
-                <label class="form-label" style="font-size:0.75rem;">Departamento</label>
-                <select class="form-select" id="home-calc-dept" style="padding: 0.55rem 0.75rem; font-size: 0.85rem;"></select>
-              </div>
-              <div>
-                <label class="form-label" style="font-size:0.75rem;">Distrito / Municipio</label>
-                <select class="form-select" id="home-calc-dist" style="padding: 0.55rem 0.75rem; font-size: 0.85rem;"></select>
-              </div>
-            </div>
-
-            <div class="sv-delivery-result">
-              <div>
-                <div style="font-size: 0.72rem; text-transform: uppercase; color: var(--color-text-subtle); font-weight: 700; font-family: var(--font-mono);">Tarifa de Envío</div>
-                <div class="sv-cost-tag" id="home-calc-cost">$3.50</div>
-              </div>
-              <div style="text-align: right;">
-                <div style="font-size: 0.72rem; text-transform: uppercase; color: var(--color-text-subtle); font-weight: 700; font-family: var(--font-mono);">Tiempo de Tránsito</div>
-                <div style="font-weight: 700; font-size: 0.95rem; color: #ffffff;" id="home-calc-time">⏱️ 24 horas hábiles</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Catálogo de Prendas Streetwear -->
+    <!-- Catálogo de Prendas Streetwear (ATENCIÓN PRINCIPAL EN PRENDAS) -->
     <section class="container catalog-section" id="catalogo">
       <div class="catalog-header">
         <div>
@@ -257,6 +184,79 @@
         <!-- Renderizado dinámico vía app.js -->
       </div>
     </section>
+
+    <!-- Barra de Confianza & Beneficios -->
+    <section class="trust-bar">
+      <div class="container trust-grid">
+        <div class="trust-item">
+          <div class="trust-icon">🇸🇻</div>
+          <div>
+            <div class="trust-title">Envíos a 14 Departamentos</div>
+            <div class="trust-desc">Cobertura nacional en los 44 municipios.</div>
+          </div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon">🔒</div>
+          <div>
+            <div class="trust-title">Pagos Seguros con 3DS</div>
+            <div class="trust-desc">Autenticación bancaria y cifrado 256-bit.</div>
+          </div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon">🧵</div>
+          <div>
+            <div class="trust-title">Confección Exclusiva</div>
+            <div class="trust-desc">Materiales certificados de primera calidad.</div>
+          </div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon">⚡</div>
+          <div>
+            <div class="trust-title">Entrega Exprés</div>
+            <div class="trust-desc">24 horas en San Salvador y La Libertad.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Calculador de Envíos El Salvador -->
+    <div class="container" style="margin-bottom: 4rem;">
+      <div class="sv-delivery-banner">
+        <div class="sv-delivery-content">
+          <div>
+            <span class="badge" style="background: rgba(37, 99, 235, 0.2); color: #60a5fa; border: 1px solid rgba(37, 99, 235, 0.4); margin-bottom: 0.65rem;">SV LOGISTICS TERMINAL &bull; 14 DEPARTAMENTOS</span>
+            <h2 class="sv-delivery-title">Calculadora de Flete & Tiempo de Entrega</h2>
+            <p style="margin: 0; font-size: 0.95rem; color: #94a3b8;">
+              Cotiza la tarifa de envío a domicilio y conoce el tiempo de tránsito exacto en tu municipio antes de ordenar.
+            </p>
+          </div>
+
+          <div class="sv-delivery-calc-box">
+            <div class="sv-delivery-form-row">
+              <div>
+                <label class="form-label" style="font-size:0.75rem;">Departamento</label>
+                <select class="form-select" id="home-calc-dept" style="padding: 0.55rem 0.75rem; font-size: 0.85rem;"></select>
+              </div>
+              <div>
+                <label class="form-label" style="font-size:0.75rem;">Distrito / Municipio</label>
+                <select class="form-select" id="home-calc-dist" style="padding: 0.55rem 0.75rem; font-size: 0.85rem;"></select>
+              </div>
+            </div>
+
+            <div class="sv-delivery-result">
+              <div>
+                <div style="font-size: 0.72rem; text-transform: uppercase; color: var(--color-text-subtle); font-weight: 700; font-family: var(--font-mono);">Tarifa de Envío</div>
+                <div class="sv-cost-tag" id="home-calc-cost">$3.50</div>
+              </div>
+              <div style="text-align: right;">
+                <div style="font-size: 0.72rem; text-transform: uppercase; color: var(--color-text-subtle); font-weight: 700; font-family: var(--font-mono);">Tiempo de Tránsito</div>
+                <div style="font-weight: 700; font-size: 0.95rem; color: #ffffff;" id="home-calc-time">⏱️ 24 horas hábiles</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </main>
 
   <!-- ============================================================= -->
@@ -759,7 +759,7 @@
         </div>
 
         <button class="btn btn-wompi btn-lg btn-full" id="cart-checkout-btn" onclick="checkoutManager.openCheckout()" style="margin-top: 1rem;">
-          🔒 Proceder al Pago con Wompi 3DS
+          🔒 Proceder al Pago Seguro con 3DS
         </button>
       </div>
     </div>
@@ -783,13 +783,13 @@
     <div id="product-quickview-modal"></div>
   </div>
 
-  <!-- Modal Reto 3D Secure Wompi -->
+  <!-- Modal Reto 3D Secure -->
   <div class="modal-backdrop" id="threed-modal-backdrop">
     <div class="modal-content threed-auth-modal">
       <div class="threed-header">
         <div style="font-weight: 800; font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem;">
-          <span style="background: white; color: #1e3a8a; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.75rem;">wompi</span>
-          <span>Autenticación 3D Secure</span>
+          <span style="background: white; color: #1e3a8a; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 800;">3D SECURE</span>
+          <span>Autenticación Bancaria Segura</span>
         </div>
       </div>
       <div class="threed-body">
@@ -1065,7 +1065,7 @@
         <ul class="footer-links">
           <li><a href="javascript:void(0)" onclick="cartStore.openDrawer()">Mi Carrito de Compras</a></li>
           <li><a href="javascript:void(0)" onclick="wishlistStore.openDrawer()">Lista de Deseos</a></li>
-          <li><a href="#admin">Acceso Administración 🔒</a></li>
+          <li><a href="#admin" onclick="if(window.storeApp){window.storeApp.goToAdmin(event);}else{window.location.hash='#admin';}">Acceso Administración 🔒</a></li>
         </ul>
       </div>
     </div>

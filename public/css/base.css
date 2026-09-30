@@ -82,6 +82,13 @@ img {
   padding-right: 1.5rem;
 }
 
+@media (max-width: 640px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
 /* Barra de desplazamiento urbana oscura */
 ::-webkit-scrollbar {
   width: 7px;

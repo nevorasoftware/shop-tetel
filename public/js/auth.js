@@ -25,23 +25,34 @@ class AdminAuth {
     const modal = document.getElementById('admin-login-modal');
     if (modal) {
       modal.style.display = 'flex';
+      modal.classList.add('active');
       const emailInput = document.getElementById('login-admin-email');
       const passInput = document.getElementById('login-admin-password');
       if (emailInput && !emailInput.value) emailInput.value = 'admin@tetel.com';
       if (passInput && !passInput.value) passInput.value = 'tetel@$2026';
       const errEl = document.getElementById('admin-login-error');
       if (errEl) errEl.style.display = 'none';
+      setTimeout(() => {
+        if (passInput) passInput.focus();
+      }, 100);
     }
   }
 
   hideLoginModal() {
     const modal = document.getElementById('admin-login-modal');
-    if (modal) modal.style.display = 'none';
+    if (modal) {
+      modal.classList.remove('active');
+      modal.style.display = 'none';
+    }
   }
 
   cancelLogin() {
     this.hideLoginModal();
     window.location.hash = '';
+    const storeView = document.getElementById('store-main-view');
+    if (storeView) storeView.style.display = 'block';
+    const adminView = document.getElementById('admin-main-view');
+    if (adminView) adminView.style.display = 'none';
   }
 
   async handleLogin(event) {
